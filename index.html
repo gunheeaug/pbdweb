@@ -368,8 +368,8 @@
                             <div class="phone-mockup">
                                 <div class="phone-frame">
                                     <div class="phone-screen">
-                                        <video class="app-video" id="shotupVideo" autoplay muted playsinline>
-                                            <source src="assets/videos/shotupai/Shotup AI Social _ All Shopping Items.mp4" type="video/mp4">
+                                        <video class="app-video" autoplay muted loop playsinline>
+                                            <source src="assets/videos/shotupai/Shotup AI Demo Screen.mp4" type="video/mp4">
                                         </video>
                                     </div>
                                     <div class="phone-notch"></div>
@@ -396,7 +396,7 @@
                                 <div class="phone-frame">
                                     <div class="phone-screen">
                                         <video class="app-video" autoplay muted loop playsinline>
-                                            <source src="assets/videos/superba/Superba video.MP4" type="video/mp4">
+                                            <source src="assets/videos/superba/Superba Demo Screen.mp4" type="video/mp4">
                                         </video>
                                     </div>
                                     <div class="phone-notch"></div>
@@ -530,26 +530,6 @@
             });
         });
 
-        // Shotup AI Video Playlist
-        const shotupVideos = [
-            'assets/videos/shotupai/Shotup AI Social _ All Shopping Items.mp4',
-            'assets/videos/shotupai/Shotup AI Social _ Food Posts from Instagram.mp4',
-            'assets/videos/shotupai/Shotup AI Social _ Interior Design References.mp4',
-            'assets/videos/shotupai/Shotup AI Social _ LA Restaurants.mp4',
-            'assets/videos/shotupai/Shotup AI Social _ Music.mp4',
-            'assets/videos/shotupai/Shotup AI Social _ Shopping Ikea.mp4',
-            'assets/videos/shotupai/Shotup AI Social _ Yahoofinance Brief.mp4'
-        ];
-        let shotupIndex = 0;
-        const shotupVideo = document.getElementById('shotupVideo');
-
-        if (shotupVideo) {
-            shotupVideo.addEventListener('ended', () => {
-                shotupIndex = (shotupIndex + 1) % shotupVideos.length;
-                shotupVideo.src = shotupVideos[shotupIndex];
-                shotupVideo.play();
-            });
-        }
     </script>
 </body>
 </html>
