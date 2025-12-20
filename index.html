@@ -107,27 +107,12 @@
             box-shadow: 0 30px 60px rgba(0,0,0,0.5);
         }
 
-        .app-icon {
+        .app-icon-img {
             width: 50px;
             height: 50px;
             border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: 800;
-        }
-
-        .app-icon.aug {
-            background: linear-gradient(135deg, #10b981, #059669);
-        }
-
-        .app-icon.shotup {
-            background: linear-gradient(135deg, #f59e0b, #ea580c);
-        }
-
-        .app-icon.superba {
-            background: linear-gradient(135deg, #3b82f6, #7c3aed);
+            object-fit: cover;
+            flex-shrink: 0;
         }
 
         .app-info h3 {
@@ -286,7 +271,7 @@
         <!-- App Stickers -->
         <a href="/aug/" class="floating-item sticker-aug">
             <div class="app-sticker">
-                <div class="app-icon aug">A</div>
+                <img src="assets/images/aug-icon.png" alt="aug" class="app-icon-img">
                 <div class="app-info">
                     <h3>aug</h3>
                     <p>Augmented reality</p>
@@ -296,7 +281,7 @@
 
         <a href="/shotupai/" class="floating-item sticker-shotup">
             <div class="app-sticker">
-                <div class="app-icon shotup">⚡</div>
+                <img src="assets/images/Shotupai-Icon.png" alt="Shotup AI" class="app-icon-img">
                 <div class="app-info">
                     <h3>Shotup AI</h3>
                     <p>Screenshot magic</p>
@@ -306,7 +291,7 @@
 
         <a href="/superba/" class="floating-item sticker-superba">
             <div class="app-sticker">
-                <div class="app-icon superba">✦</div>
+                <img src="assets/images/Superba-icon.png" alt="superba" class="app-icon-img">
                 <div class="app-info">
                     <h3>superba</h3>
                     <p>Productivity</p>
