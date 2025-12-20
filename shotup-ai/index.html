@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shotup AI — Screenshots, Supercharged | PBD LLC</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --app-color: #f59e0b;
+            --app-color-dark: #d97706;
+        }
+        
+        .shotup-gradient {
+            background: linear-gradient(135deg, var(--app-color), var(--app-color-dark));
+        }
+        
+        .shotup-glow {
+            position: fixed;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, transparent 60%);
+            top: -200px;
+            left: -200px;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .shotup-hero-icon {
+            background: linear-gradient(135deg, var(--app-color), #ea580c);
+        }
+        
+        .shotup-title {
+            background: linear-gradient(135deg, var(--app-color), #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .download-btn {
+            background: linear-gradient(135deg, var(--app-color), var(--app-color-dark));
+            color: white;
+            box-shadow: 0 10px 40px rgba(245, 158, 11, 0.3);
+        }
+        
+        .download-btn:hover {
+            box-shadow: 0 15px 50px rgba(245, 158, 11, 0.4);
+        }
+        
+        .feature-card:hover {
+            border-color: var(--app-color);
+        }
+        
+        .screenshot-demo {
+            position: relative;
+            max-width: 600px;
+            margin: 3rem auto;
+            perspective: 1000px;
+        }
+        
+        .screenshot-window {
+            background: linear-gradient(145deg, #1f1f23, #18181b);
+            border-radius: 16px;
+            padding: 0;
+            box-shadow: 
+                0 50px 100px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            transform: rotateX(5deg) rotateY(-5deg);
+            transition: transform 0.5s ease;
+        }
+        
+        .screenshot-window:hover {
+            transform: rotateX(0) rotateY(0);
+        }
+        
+        .window-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+        
+        .window-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .dot-red { background: #ff5f57; }
+        .dot-yellow { background: #ffbd2e; }
+        .dot-green { background: #28ca41; }
+        
+        .window-content {
+            padding: 2rem;
+            background: linear-gradient(135deg, #27272a, #18181b);
+            position: relative;
+            min-height: 300px;
+        }
+        
+        .ai-overlay {
+            position: absolute;
+            inset: 2rem;
+            border: 2px dashed var(--app-color);
+            border-radius: 8px;
+            animation: aiScan 3s ease-in-out infinite;
+        }
+        
+        @keyframes aiScan {
+            0%, 100% { 
+                opacity: 0.3;
+                border-color: var(--app-color);
+            }
+            50% { 
+                opacity: 1;
+                border-color: #fbbf24;
+            }
+        }
+        
+        .ai-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 6px 16px;
+            background: var(--app-color);
+            color: black;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border-radius: 100px;
+            letter-spacing: 0.05em;
+        }
+        
+        .placeholder-lines {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 1rem;
+        }
+        
+        .placeholder-line {
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+        }
+        
+        .placeholder-line:nth-child(1) { width: 80%; }
+        .placeholder-line:nth-child(2) { width: 60%; }
+        .placeholder-line:nth-child(3) { width: 90%; }
+        .placeholder-line:nth-child(4) { width: 40%; }
+        
+        .sparkle {
+            position: absolute;
+            font-size: 1.5rem;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+        
+        .sparkle-1 { top: 20%; right: 10%; animation-delay: 0s; }
+        .sparkle-2 { bottom: 30%; left: 15%; animation-delay: 0.5s; }
+        .sparkle-3 { top: 50%; right: 20%; animation-delay: 1s; }
+        
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1) rotate(180deg); }
+        }
+    </style>
+</head>
+<body class="app-page shotup-theme">
+    <div class="noise-overlay"></div>
+    <div class="shotup-glow"></div>
+    
+    <nav class="navbar">
+        <a href="/" class="logo">
+            <span class="logo-text">PBD</span>
+            <span class="logo-badge">LLC</span>
+        </a>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/aug/">aug</a>
+            <a href="/superba/">superba</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="app-hero">
+            <a href="/" class="back-link">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Back to PBD
+            </a>
+            
+            <div class="app-hero-icon shotup-hero-icon">
+                <span>⚡</span>
+            </div>
+            
+            <h1 class="app-hero-title shotup-title">Shotup AI</h1>
+            <p class="app-hero-tagline">
+                Transform your screenshots with AI-powered enhancements. Annotate, beautify, share.
+            </p>
+            
+            <a href="#" class="btn download-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                </svg>
+                <span>Download on App Store</span>
+            </a>
+            
+            <div class="screenshot-demo">
+                <div class="screenshot-window">
+                    <div class="window-header">
+                        <div class="window-dot dot-red"></div>
+                        <div class="window-dot dot-yellow"></div>
+                        <div class="window-dot dot-green"></div>
+                    </div>
+                    <div class="window-content">
+                        <div class="ai-overlay">
+                            <span class="ai-badge">AI ENHANCED</span>
+                        </div>
+                        <div class="placeholder-lines">
+                            <div class="placeholder-line"></div>
+                            <div class="placeholder-line"></div>
+                            <div class="placeholder-line"></div>
+                            <div class="placeholder-line"></div>
+                        </div>
+                        <span class="sparkle sparkle-1">✨</span>
+                        <span class="sparkle sparkle-2">✨</span>
+                        <span class="sparkle sparkle-3">⚡</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="app-features">
+            <div class="section-header">
+                <span class="section-tag">Features</span>
+                <h2 class="section-title">Screenshot superpowers</h2>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3 class="feature-title">Smart Beautify</h3>
+                    <p class="feature-desc">Automatically enhance your screenshots with perfect backgrounds, shadows, and device frames.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">✏️</div>
+                    <h3 class="feature-title">AI Annotations</h3>
+                    <p class="feature-desc">Intelligent arrows, highlights, and callouts that understand your content and place themselves perfectly.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3 class="feature-title">Text Recognition</h3>
+                    <p class="feature-desc">Extract, edit, and translate text from any screenshot instantly with OCR technology.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📤</div>
+                    <h3 class="feature-title">Quick Share</h3>
+                    <p class="feature-desc">One-tap sharing to any platform with automatic format optimization for each destination.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <span class="logo-text">PBD</span>
+            </div>
+            <div class="footer-links">
+                <a href="/">Home</a>
+                <a href="/aug/">aug</a>
+                <a href="/superba/">superba</a>
+            </div>
+            <div class="footer-copy">
+                © 2025 PBD LLC. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+</body>
+</html>
+
