@@ -39,159 +39,297 @@
             z-index: 1;
         }
 
-        /* Floating Elements */
-        .floating-elements {
-            position: fixed;
-            top: 0;
-            left: 0;
+        /* Main Content */
+        .main-content {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            padding: 2rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+        }
+
+        .logo span {
+            opacity: 0.5;
+            font-weight: 400;
+            font-size: 0.75rem;
+            margin-left: 0.5rem;
+        }
+
+        /* Carousel Section */
+        .carousel-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 2rem 0;
+        }
+
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .app-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        /* Phone Mockup */
+        .phone-mockup {
+            position: relative;
+            width: 280px;
+            height: 560px;
+            background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
+            border-radius: 40px;
+            padding: 8px;
+            box-shadow: 
+                0 50px 100px rgba(0, 0, 0, 0.6),
+                0 0 0 1px rgba(255,255,255,0.1),
+                inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+
+        .phone-screen {
             width: 100%;
             height: 100%;
-            z-index: 10;
-            pointer-events: none;
+            border-radius: 34px;
+            overflow: hidden;
+            position: relative;
+            background: #111;
         }
 
-        .floating-item {
+        .phone-notch {
             position: absolute;
-            pointer-events: auto;
-            cursor: pointer;
-            transition: transform 0.3s ease, filter 0.3s ease;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .floating-item:hover {
-            transform: scale(1.1) !important;
-            filter: brightness(1.2);
-            z-index: 100;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-        }
-
-        /* Logo */
-        .logo-container {
-            position: fixed;
-            top: 50%;
+            top: 12px;
             left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 5;
-            text-align: center;
-            pointer-events: none;
-        }
-
-        .pbd-logo {
-            font-size: 8rem;
-            font-weight: 900;
-            letter-spacing: -0.05em;
-            text-shadow: 0 0 60px rgba(255, 255, 255, 0.3);
-            opacity: 0.15;
-        }
-
-        /* App Cards */
-        .app-sticker {
-            background: linear-gradient(145deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
+            transform: translateX(-50%);
+            width: 100px;
+            height: 28px;
+            background: #000;
             border-radius: 20px;
-            padding: 1.25rem 1.75rem;
+            z-index: 10;
+        }
+
+        .video-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .video-placeholder.aug-bg {
+            background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
+        }
+
+        .video-placeholder.shotup-bg {
+            background: linear-gradient(135deg, #f59e0b 0%, #ea580c 50%, #dc2626 100%);
+        }
+
+        .video-placeholder.superba-bg {
+            background: linear-gradient(135deg, #3b82f6 0%, #6366f1 50%, #7c3aed 100%);
+        }
+
+        .video-placeholder-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 1rem;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .video-placeholder-icon svg {
+            width: 32px;
+            height: 32px;
+            fill: white;
+            margin-left: 4px;
+        }
+
+        .video-placeholder-text {
+            font-size: 0.875rem;
+            opacity: 0.8;
+            font-weight: 500;
+        }
+
+        /* App Info */
+        .app-info {
+            text-align: center;
+        }
+
+        .app-icon-large {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            margin: 0 auto 1rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .app-name {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .app-tagline {
+            font-size: 1rem;
+            opacity: 0.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .app-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.875rem 1.5rem;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 100px;
+            font-size: 0.875rem;
+            font-weight: 600;
             transition: all 0.3s ease;
         }
 
-        .app-sticker:hover {
-            background: linear-gradient(145deg, rgba(255,255,255,0.25), rgba(255,255,255,0.1));
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+        .app-cta:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
         }
 
-        .app-icon-img {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            object-fit: cover;
-            flex-shrink: 0;
+        /* Carousel Navigation */
+        .carousel-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            padding: 2rem;
         }
 
-        .app-info h3 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 0.15rem;
+        .carousel-dots {
+            display: flex;
+            gap: 0.75rem;
         }
 
-        .app-info p {
-            font-size: 0.8rem;
-            opacity: 0.7;
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        /* Positioning */
-        .sticker-aug {
-            top: 20%;
-            left: 8%;
-            animation-delay: 0s;
+        .carousel-dot.active {
+            background: #fff;
+            transform: scale(1.2);
         }
 
-        .sticker-shotup {
-            top: 15%;
-            right: 8%;
-            animation-delay: 1s;
+        .carousel-dot:hover {
+            background: rgba(255,255,255,0.6);
         }
 
-        .sticker-superba {
-            bottom: 25%;
-            left: 12%;
-            animation-delay: 2s;
+        .carousel-arrow {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        /* 3D Text Labels */
-        .label-3d {
-            font-size: 2.5rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            text-shadow: 
-                3px 3px 0 rgba(0,0,0,0.3),
-                6px 6px 10px rgba(0,0,0,0.2);
-            transform: perspective(500px) rotateX(10deg);
+        .carousel-arrow:hover {
+            background: rgba(255,255,255,0.2);
         }
 
-        .label-about {
-            top: 35%;
-            right: 15%;
-            animation-delay: 0.5s;
+        .carousel-arrow svg {
+            width: 20px;
+            height: 20px;
+            stroke: white;
+            stroke-width: 2;
+            fill: none;
         }
 
-        .label-apps {
-            bottom: 35%;
-            right: 10%;
-            animation-delay: 1.5s;
+        /* App Labels - Mini Pills */
+        .app-pills {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .app-pill {
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0.5;
+        }
+
+        .app-pill.active {
+            background: rgba(255,255,255,0.15);
+            border-color: rgba(255,255,255,0.3);
+            opacity: 1;
+        }
+
+        .app-pill:hover {
+            opacity: 0.8;
         }
 
         /* Footer */
         .footer {
-            position: fixed;
-            bottom: 2rem;
-            left: 0;
-            right: 0;
+            padding: 2rem 4rem;
             text-align: center;
-            z-index: 20;
-            pointer-events: none;
-        }
-
-        .footer-content {
-            pointer-events: auto;
         }
 
         .footer p {
             font-size: 0.875rem;
-            opacity: 0.5;
-            margin-bottom: 0.25rem;
+            opacity: 0.4;
         }
 
         .footer a {
-            opacity: 0.7;
+            opacity: 0.6;
             transition: opacity 0.2s;
         }
 
@@ -199,54 +337,28 @@
             opacity: 1;
         }
 
-        /* Decorative Stars */
-        .star {
-            position: absolute;
-            font-size: 1.5rem;
-            opacity: 0.8;
-            animation: twinkle 2s ease-in-out infinite;
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.8; transform: scale(1); }
-            50% { opacity: 0.4; transform: scale(0.8); }
-        }
-
-        .star-1 { top: 25%; left: 30%; animation-delay: 0s; }
-        .star-2 { top: 45%; right: 25%; animation-delay: 0.5s; }
-        .star-3 { bottom: 30%; left: 40%; animation-delay: 1s; }
-        .star-4 { top: 60%; left: 20%; animation-delay: 1.5s; }
-        .star-5 { bottom: 45%; right: 35%; animation-delay: 2s; }
-
         /* Responsive */
         @media (max-width: 768px) {
-            .pbd-logo {
-                font-size: 4rem;
+            .header {
+                padding: 1.5rem 2rem;
             }
 
-            .app-sticker {
-                padding: 1rem 1.25rem;
+            .phone-mockup {
+                width: 240px;
+                height: 480px;
             }
 
-            .app-icon {
-                width: 40px;
-                height: 40px;
-                font-size: 1.2rem;
-            }
-
-            .app-info h3 {
-                font-size: 1rem;
-            }
-
-            .label-3d {
+            .app-name {
                 font-size: 1.5rem;
             }
 
-            .sticker-aug { top: 12%; left: 5%; }
-            .sticker-shotup { top: 8%; right: 5%; }
-            .sticker-superba { bottom: 18%; left: 5%; }
-            .label-about { top: 28%; right: 5%; }
-            .label-apps { bottom: 30%; right: 5%; }
+            .carousel-nav {
+                gap: 1rem;
+            }
+
+            .footer {
+                padding: 1.5rem 2rem;
+            }
         }
     </style>
 </head>
@@ -254,102 +366,251 @@
     <!-- Three.js Globe -->
     <div id="globe-container"></div>
 
-    <!-- Background Logo -->
-    <div class="logo-container">
-        <div class="pbd-logo">PBD</div>
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">PBD<span>LLC</span></div>
+            <a href="mailto:hello@pbd.team" class="app-cta" style="padding: 0.5rem 1rem; font-size: 0.75rem;">Contact</a>
+        </header>
+
+        <!-- App Carousel -->
+        <section class="carousel-section">
+            <!-- App Pills Navigation -->
+            <div class="app-pills">
+                <button class="app-pill active" data-slide="0">aug</button>
+                <button class="app-pill" data-slide="1">Shotup AI</button>
+                <button class="app-pill" data-slide="2">superba</button>
+            </div>
+
+            <!-- Carousel -->
+            <div class="carousel-container">
+                <div class="carousel-track">
+                    <!-- Slide 1: aug -->
+                    <div class="carousel-slide">
+                        <div class="app-card">
+                            <div class="phone-mockup">
+                                <div class="phone-screen">
+                                    <div class="phone-notch"></div>
+                                    <div class="video-placeholder aug-bg">
+                                        <div class="video-placeholder-icon">
+                                            <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+                                        </div>
+                                        <span class="video-placeholder-text">App Preview</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="app-info">
+                                <img src="assets/images/aug-icon.png" alt="aug" class="app-icon-large">
+                                <h2 class="app-name">aug</h2>
+                                <p class="app-tagline">AI-powered spatial social</p>
+                                <a href="/aug/" class="app-cta">
+                                    Learn More
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 2: Shotup AI -->
+                    <div class="carousel-slide">
+                        <div class="app-card">
+                            <div class="phone-mockup">
+                                <div class="phone-screen">
+                                    <div class="phone-notch"></div>
+                                    <div class="video-placeholder shotup-bg">
+                                        <div class="video-placeholder-icon">
+                                            <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+                                        </div>
+                                        <span class="video-placeholder-text">App Preview</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="app-info">
+                                <img src="assets/images/Shotupai-Icon.png" alt="Shotup AI" class="app-icon-large">
+                                <h2 class="app-name">Shotup AI</h2>
+                                <p class="app-tagline">Screenshots, supercharged</p>
+                                <a href="/shotupai/" class="app-cta">
+                                    Learn More
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 3: superba -->
+                    <div class="carousel-slide">
+                        <div class="app-card">
+                            <div class="phone-mockup">
+                                <div class="phone-screen">
+                                    <div class="phone-notch"></div>
+                                    <div class="video-placeholder superba-bg">
+                                        <div class="video-placeholder-icon">
+                                            <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+                                        </div>
+                                        <span class="video-placeholder-text">App Preview</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="app-info">
+                                <img src="assets/images/Superba-icon.png" alt="superba" class="app-icon-large">
+                                <h2 class="app-name">superba</h2>
+                                <p class="app-tagline">Superb productivity</p>
+                                <a href="/superba/" class="app-cta">
+                                    Learn More
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carousel Navigation -->
+            <nav class="carousel-nav">
+                <button class="carousel-arrow" id="prevBtn">
+                    <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+                </button>
+                <div class="carousel-dots">
+                    <button class="carousel-dot active" data-slide="0"></button>
+                    <button class="carousel-dot" data-slide="1"></button>
+                    <button class="carousel-dot" data-slide="2"></button>
+                </div>
+                <button class="carousel-arrow" id="nextBtn">
+                    <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+                </button>
+            </nav>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>© PBD LLC 2025 · <a href="mailto:hello@pbd.team">hello@pbd.team</a></p>
+        </footer>
     </div>
-
-    <!-- Floating Elements -->
-    <div class="floating-elements">
-        <!-- Decorative Stars -->
-        <span class="star star-1">✦</span>
-        <span class="star star-2">✦</span>
-        <span class="star star-3">✦</span>
-        <span class="star star-4">✧</span>
-        <span class="star star-5">✧</span>
-
-        <!-- App Stickers -->
-        <a href="/aug/" class="floating-item sticker-aug">
-            <div class="app-sticker">
-                <img src="assets/images/aug-icon.png" alt="aug" class="app-icon-img">
-                <div class="app-info">
-                    <h3>aug</h3>
-                    <p>Augmented reality</p>
-                </div>
-            </div>
-        </a>
-
-        <a href="/shotupai/" class="floating-item sticker-shotup">
-            <div class="app-sticker">
-                <img src="assets/images/Shotupai-Icon.png" alt="Shotup AI" class="app-icon-img">
-                <div class="app-info">
-                    <h3>Shotup AI</h3>
-                    <p>Screenshot magic</p>
-                </div>
-            </div>
-        </a>
-
-        <a href="/superba/" class="floating-item sticker-superba">
-            <div class="app-sticker">
-                <img src="assets/images/Superba-icon.png" alt="superba" class="app-icon-img">
-                <div class="app-info">
-                    <h3>superba</h3>
-                    <p>Productivity</p>
-                </div>
-            </div>
-        </a>
-
-        <!-- 3D Labels -->
-        <a href="#about" class="floating-item label-about">
-            <span class="label-3d">About</span>
-        </a>
-
-        <a href="#apps" class="floating-item label-apps">
-            <span class="label-3d">Apps</span>
-        </a>
-    </div>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <p>© PBD LLC 2025</p>
-            <p><a href="mailto:hello@pbd.team">hello@pbd.team</a></p>
-        </div>
-    </footer>
 
     <script>
-        // Three.js Globe with realistic NASA textures
-        let scene, camera, renderer, globe, clouds, stars;
+        // Carousel functionality
+        const track = document.querySelector('.carousel-track');
+        const slides = document.querySelectorAll('.carousel-slide');
+        const dots = document.querySelectorAll('.carousel-dot');
+        const pills = document.querySelectorAll('.app-pill');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+
+        function goToSlide(index) {
+            if (index < 0) index = totalSlides - 1;
+            if (index >= totalSlides) index = 0;
+            
+            currentSlide = index;
+            track.style.transform = `translateX(-${currentSlide * 100}%)`;
+            
+            // Update dots
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentSlide);
+            });
+            
+            // Update pills
+            pills.forEach((pill, i) => {
+                pill.classList.toggle('active', i === currentSlide);
+            });
+        }
+
+        prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
+        nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
+
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                goToSlide(parseInt(dot.dataset.slide));
+            });
+        });
+
+        pills.forEach(pill => {
+            pill.addEventListener('click', () => {
+                goToSlide(parseInt(pill.dataset.slide));
+            });
+        });
+
+        // Touch/Swipe support
+        let startX = 0;
+        let isDragging = false;
+
+        track.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            isDragging = true;
+        });
+
+        track.addEventListener('touchend', (e) => {
+            if (!isDragging) return;
+            const endX = e.changedTouches[0].clientX;
+            const diff = startX - endX;
+            
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) {
+                    goToSlide(currentSlide + 1);
+                } else {
+                    goToSlide(currentSlide - 1);
+                }
+            }
+            isDragging = false;
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') goToSlide(currentSlide - 1);
+            if (e.key === 'ArrowRight') goToSlide(currentSlide + 1);
+        });
+
+        // Auto-advance carousel
+        let autoAdvance = setInterval(() => {
+            goToSlide(currentSlide + 1);
+        }, 6000);
+
+        // Pause auto-advance on interaction
+        [prevBtn, nextBtn, ...dots, ...pills].forEach(el => {
+            el.addEventListener('click', () => {
+                clearInterval(autoAdvance);
+                autoAdvance = setInterval(() => {
+                    goToSlide(currentSlide + 1);
+                }, 6000);
+            });
+        });
+    </script>
+
+    <script>
+        // Three.js Globe with realistic textures
+        let scene, camera, renderer, globe;
         let mouseX = 0, mouseY = 0;
         let targetRotationX = 0, targetRotationY = 0;
 
         function init() {
             const container = document.getElementById('globe-container');
             
-            // Scene
             scene = new THREE.Scene();
             
-            // Camera
             camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.z = 2.5;
+            camera.position.z = 2.8;
             
-            // Renderer
             renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             container.appendChild(renderer.domElement);
             
-            // Texture loader
             const textureLoader = new THREE.TextureLoader();
             
-            // Use custom Earth texture with enhanced color grading shader
             const earthTexture = textureLoader.load('https://unpkg.com/three-globe@2.31.0/example/img/earth-blue-marble.jpg');
             const cloudsTexture = textureLoader.load('https://unpkg.com/three-globe@2.31.0/example/img/earth-clouds.png');
             
-            // Earth geometry - high detail
             const geometry = new THREE.SphereGeometry(1, 128, 128);
             
-            // Custom shader material to match the reference image style
             const earthMaterial = new THREE.ShaderMaterial({
                 uniforms: {
                     earthTexture: { value: earthTexture },
@@ -378,48 +639,29 @@
                     varying vec3 vPosition;
                     
                     void main() {
-                        // Sample textures
                         vec4 earthColor = texture2D(earthTexture, vUv);
                         vec4 cloudColor = texture2D(cloudsTexture, vUv);
                         
-                        // Enhanced color grading to match reference
-                        // Boost saturation and vibrancy
                         vec3 color = earthColor.rgb;
-                        
-                        // Increase saturation
                         float gray = dot(color, vec3(0.299, 0.587, 0.114));
                         color = mix(vec3(gray), color, 1.4);
-                        
-                        // Boost blues in oceans
                         color.b = color.b * 1.15;
-                        
-                        // Boost greens in land
                         color.g = color.g * 1.1;
-                        
-                        // Add contrast
                         color = (color - 0.5) * 1.15 + 0.5;
                         
-                        // Blend clouds
                         float cloudIntensity = cloudColor.r * 0.5;
                         color = mix(color, vec3(1.0), cloudIntensity);
                         
-                        // Lighting
                         float diffuse = max(dot(vNormal, lightDirection), 0.0);
                         float ambient = 0.35;
-                        
-                        // Soft shadow on dark side
                         float lighting = ambient + diffuse * 0.75;
-                        
-                        // Slight brightness boost
                         color = color * lighting * 1.1;
                         
-                        // Atmospheric rim lighting (fresnel)
                         vec3 viewDir = normalize(-vPosition);
                         float fresnel = pow(1.0 - max(dot(vNormal, viewDir), 0.0), 3.0);
                         vec3 atmosphereColor = vec3(0.4, 0.7, 1.0);
                         color = mix(color, atmosphereColor, fresnel * 0.35);
                         
-                        // Clamp and output
                         color = clamp(color, 0.0, 1.0);
                         gl_FragColor = vec4(color, 1.0);
                     }
@@ -429,7 +671,7 @@
             globe = new THREE.Mesh(geometry, earthMaterial);
             scene.add(globe);
             
-            // Outer atmosphere glow - softer and more prominent
+            // Atmosphere glow
             const atmosphereGeometry = new THREE.SphereGeometry(1.12, 64, 64);
             const atmosphereMaterial = new THREE.ShaderMaterial({
                 vertexShader: `
@@ -447,7 +689,6 @@
                     void main() {
                         vec3 viewDir = normalize(-vPosition);
                         float intensity = pow(0.7 - dot(vNormal, viewDir), 2.5);
-                        // Soft blue atmospheric glow
                         vec3 glowColor = vec3(0.3, 0.6, 1.0);
                         gl_FragColor = vec4(glowColor, 1.0) * intensity * 0.7;
                     }
@@ -460,39 +701,6 @@
             const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
             scene.add(atmosphere);
             
-            // Inner atmospheric haze
-            const hazeGeometry = new THREE.SphereGeometry(1.02, 64, 64);
-            const hazeMaterial = new THREE.ShaderMaterial({
-                vertexShader: `
-                    varying vec3 vNormal;
-                    varying vec3 vPosition;
-                    void main() {
-                        vNormal = normalize(normalMatrix * normal);
-                        vPosition = (modelViewMatrix * vec4(position, 1.0)).xyz;
-                        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-                    }
-                `,
-                fragmentShader: `
-                    varying vec3 vNormal;
-                    varying vec3 vPosition;
-                    void main() {
-                        vec3 viewDir = normalize(-vPosition);
-                        float rim = 1.0 - max(dot(vNormal, viewDir), 0.0);
-                        float intensity = pow(rim, 4.0) * 0.4;
-                        vec3 hazeColor = vec3(0.5, 0.7, 1.0);
-                        gl_FragColor = vec4(hazeColor * intensity, intensity);
-                    }
-                `,
-                side: THREE.FrontSide,
-                blending: THREE.AdditiveBlending,
-                transparent: true,
-                depthWrite: false
-            });
-            
-            const haze = new THREE.Mesh(hazeGeometry, hazeMaterial);
-            scene.add(haze);
-            
-            // Mouse movement
             document.addEventListener('mousemove', onMouseMove);
             window.addEventListener('resize', onWindowResize);
             
@@ -510,16 +718,11 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         }
 
-        let time = 0;
         function animate() {
             requestAnimationFrame(animate);
             
-            time += 0.01;
-            
-            // Auto rotation - Earth (smooth, slow spin)
             globe.rotation.y += 0.0008;
             
-            // Mouse influence for subtle interactive tilt
             targetRotationX = mouseY * 0.15;
             targetRotationY = mouseX * 0.15;
             
@@ -528,22 +731,7 @@
             renderer.render(scene, camera);
         }
 
-        // Initialize
         init();
-
-        // Parallax effect for floating elements
-        document.addEventListener('mousemove', (e) => {
-            const floatingItems = document.querySelectorAll('.floating-item');
-            const x = (e.clientX / window.innerWidth - 0.5) * 2;
-            const y = (e.clientY / window.innerHeight - 0.5) * 2;
-            
-            floatingItems.forEach((item, index) => {
-                const speed = (index + 1) * 8;
-                const offsetX = x * speed;
-                const offsetY = y * speed;
-                item.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
-            });
-        });
     </script>
 </body>
 </html>
