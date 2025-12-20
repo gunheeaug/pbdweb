@@ -337,36 +337,6 @@
             fill: none;
         }
 
-        /* App Labels - Mini Pills */
-        .app-pills {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .app-pill {
-            padding: 0.5rem 1rem;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 100px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            opacity: 0.5;
-        }
-
-        .app-pill.active {
-            background: rgba(255,255,255,0.15);
-            border-color: rgba(255,255,255,0.3);
-            opacity: 1;
-        }
-
-        .app-pill:hover {
-            opacity: 0.8;
-        }
-
         /* Footer */
         .footer {
             padding: 2rem 4rem;
@@ -426,13 +396,6 @@
 
         <!-- App Carousel -->
         <section class="carousel-section">
-            <!-- App Pills Navigation -->
-            <div class="app-pills">
-                <button class="app-pill active" data-slide="0">aug</button>
-                <button class="app-pill" data-slide="1">Shotup AI</button>
-                <button class="app-pill" data-slide="2">superba</button>
-            </div>
-
             <!-- Carousel -->
             <div class="carousel-container">
                 <div class="carousel-track">
@@ -555,7 +518,6 @@
         const track = document.querySelector('.carousel-track');
         const slides = document.querySelectorAll('.carousel-slide');
         const dots = document.querySelectorAll('.carousel-dot');
-        const pills = document.querySelectorAll('.app-pill');
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
         
@@ -573,11 +535,6 @@
             dots.forEach((dot, i) => {
                 dot.classList.toggle('active', i === currentSlide);
             });
-            
-            // Update pills
-            pills.forEach((pill, i) => {
-                pill.classList.toggle('active', i === currentSlide);
-            });
         }
 
         prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
@@ -586,12 +543,6 @@
         dots.forEach(dot => {
             dot.addEventListener('click', () => {
                 goToSlide(parseInt(dot.dataset.slide));
-            });
-        });
-
-        pills.forEach(pill => {
-            pill.addEventListener('click', () => {
-                goToSlide(parseInt(pill.dataset.slide));
             });
         });
 
@@ -631,7 +582,7 @@
         }, 6000);
 
         // Pause auto-advance on interaction
-        [prevBtn, nextBtn, ...dots, ...pills].forEach(el => {
+        [prevBtn, nextBtn, ...dots].forEach(el => {
             el.addEventListener('click', () => {
                 clearInterval(autoAdvance);
                 autoAdvance = setInterval(() => {
