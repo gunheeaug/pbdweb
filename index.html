@@ -89,27 +89,42 @@
             position: relative;
             width: 100%;
             overflow: hidden;
+            display: flex;
+            justify-content: center;
         }
 
         .carousel-track {
             display: flex;
+            gap: 2rem;
             transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            align-items: center;
+            margin-left: calc(50vw - 160px);
         }
 
         .carousel-slide {
-            min-width: 100%;
+            flex-shrink: 0;
+            width: 320px;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 2rem;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0.4;
+            transform: scale(0.85);
+            filter: blur(2px);
+        }
+
+        .carousel-slide.active {
+            opacity: 1;
+            transform: scale(1);
+            filter: blur(0);
+            z-index: 10;
         }
 
         .app-card {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 2rem;
-            max-width: 400px;
+            gap: 1.5rem;
             width: 100%;
         }
 
@@ -432,13 +447,25 @@
         
         let currentSlide = 0;
         const totalSlides = slides.length;
+        const slideWidth = 320 + 32; // width + gap
+
+        // Initialize first slide as active
+        slides[0].classList.add('active');
 
         function goToSlide(index) {
             if (index < 0) index = totalSlides - 1;
             if (index >= totalSlides) index = 0;
             
             currentSlide = index;
-            track.style.transform = `translateX(-${currentSlide * 100}%)`;
+            
+            // Center the active slide
+            const offset = -currentSlide * slideWidth;
+            track.style.transform = `translateX(${offset}px)`;
+            
+            // Update active class on slides
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === currentSlide);
+            });
             
             // Update dots
             dots.forEach((dot, i) => {
