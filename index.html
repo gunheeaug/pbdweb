@@ -102,6 +102,8 @@
             transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             align-items: center;
             margin-left: calc(50vw - 160px);
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         .carousel-slide {
@@ -485,10 +487,11 @@
             });
         });
 
-        // Touch/Swipe support
+        // Touch/Swipe and Mouse Drag support
         let startX = 0;
         let isDragging = false;
 
+        // Touch events
         track.addEventListener('touchstart', (e) => {
             startX = e.touches[0].clientX;
             isDragging = true;
@@ -509,25 +512,40 @@
             isDragging = false;
         });
 
+        // Mouse events for desktop drag
+        track.addEventListener('mousedown', (e) => {
+            startX = e.clientX;
+            isDragging = true;
+            track.style.cursor = 'grabbing';
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+        });
+
+        document.addEventListener('mouseup', (e) => {
+            if (!isDragging) return;
+            const endX = e.clientX;
+            const diff = startX - endX;
+            
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) {
+                    goToSlide(currentSlide + 1);
+                } else {
+                    goToSlide(currentSlide - 1);
+                }
+            }
+            isDragging = false;
+            track.style.cursor = 'grab';
+        });
+
+        track.style.cursor = 'grab';
+
         // Keyboard navigation
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowLeft') goToSlide(currentSlide - 1);
             if (e.key === 'ArrowRight') goToSlide(currentSlide + 1);
-        });
-
-        // Auto-advance carousel
-        let autoAdvance = setInterval(() => {
-            goToSlide(currentSlide + 1);
-        }, 6000);
-
-        // Pause auto-advance on interaction
-        [prevBtn, nextBtn, ...dots].forEach(el => {
-            el.addEventListener('click', () => {
-                clearInterval(autoAdvance);
-                autoAdvance = setInterval(() => {
-                    goToSlide(currentSlide + 1);
-                }, 6000);
-            });
         });
 
     </script>
