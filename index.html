@@ -131,7 +131,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1rem;
+            gap: 0;
             width: 100%;
         }
 
@@ -140,6 +140,20 @@
             position: relative;
             width: 240px;
             height: 480px;
+        }
+
+        .phone-mockup:hover .app-info-overlay,
+        .app-info-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Mobile: show overlay on tap */
+        @media (hover: none) {
+            .app-info-overlay.show {
+                opacity: 1;
+                pointer-events: auto;
+            }
         }
 
         .phone-frame {
@@ -175,46 +189,67 @@
             background: #000;
         }
 
-        /* App Info */
+        /* App Info Overlay */
+        .app-info-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(10px);
+            border-radius: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 2rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 20;
+        }
+
         .app-info {
             text-align: center;
         }
 
         .app-icon-large {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            margin: 0 auto 0.5rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            margin: 0 auto 0.75rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         .app-name {
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             font-weight: 800;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.5rem;
         }
 
         .app-tagline {
-            font-size: 0.75rem;
-            opacity: 0.6;
-            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+            opacity: 0.8;
+            margin-bottom: 1rem;
         }
 
         .app-cta {
             display: inline-flex;
             align-items: center;
-            gap: 0.375rem;
-            padding: 0.5rem 1rem;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
             border-radius: 100px;
-            font-size: 0.75rem;
+            font-size: 0.875rem;
             font-weight: 600;
             transition: all 0.3s ease;
         }
 
         .app-cta:hover {
-            background: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.25);
             transform: translateY(-2px);
         }
 
@@ -353,17 +388,19 @@
                                     </div>
                                     <div class="phone-notch"></div>
                                 </div>
-                            </div>
-                            <div class="app-info">
-                                <img src="assets/images/aug-icon.png" alt="aug" class="app-icon-large">
-                                <h2 class="app-name">aug</h2>
-                                <p class="app-tagline">AI-powered spatial social</p>
-                                <a href="/aug/" class="app-cta">
-                                    Learn More
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                                    </svg>
-                                </a>
+                                <div class="app-info-overlay">
+                                    <div class="app-info">
+                                        <img src="assets/images/aug-icon.png" alt="aug" class="app-icon-large">
+                                        <h2 class="app-name">aug</h2>
+                                        <p class="app-tagline">AI-powered spatial social</p>
+                                        <a href="/aug/" class="app-cta">
+                                            Learn More
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -380,17 +417,19 @@
                                     </div>
                                     <div class="phone-notch"></div>
                                 </div>
-                            </div>
-                            <div class="app-info">
-                                <img src="assets/images/Shotupai-Icon.png" alt="Shotup AI" class="app-icon-large">
-                                <h2 class="app-name">Shotup AI</h2>
-                                <p class="app-tagline">Screenshots, supercharged</p>
-                                <a href="/shotupai/" class="app-cta">
-                                    Learn More
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                                    </svg>
-                                </a>
+                                <div class="app-info-overlay">
+                                    <div class="app-info">
+                                        <img src="assets/images/Shotupai-Icon.png" alt="Shotup AI" class="app-icon-large">
+                                        <h2 class="app-name">Shotup AI</h2>
+                                        <p class="app-tagline">Screenshots, supercharged</p>
+                                        <a href="/shotupai/" class="app-cta">
+                                            Learn More
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -407,17 +446,19 @@
                                     </div>
                                     <div class="phone-notch"></div>
                                 </div>
-                            </div>
-                            <div class="app-info">
-                                <img src="assets/images/Superba-icon.png" alt="superba" class="app-icon-large">
-                                <h2 class="app-name">superba</h2>
-                                <p class="app-tagline">Superb productivity</p>
-                                <a href="/superba/" class="app-cta">
-                                    Learn More
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                                    </svg>
-                                </a>
+                                <div class="app-info-overlay">
+                                    <div class="app-info">
+                                        <img src="assets/images/Superba-icon.png" alt="superba" class="app-icon-large">
+                                        <h2 class="app-name">superba</h2>
+                                        <p class="app-tagline">Superb productivity</p>
+                                        <a href="/superba/" class="app-cta">
+                                            Learn More
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -550,6 +591,21 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowLeft') goToSlide(currentSlide - 1);
             if (e.key === 'ArrowRight') goToSlide(currentSlide + 1);
+        });
+
+        // Touch/Click support for app info overlay on mobile
+        const phoneMockups = document.querySelectorAll('.phone-mockup');
+        phoneMockups.forEach(mockup => {
+            let tapTimeout;
+            mockup.addEventListener('click', (e) => {
+                // Only show overlay on tap (not drag)
+                if (!isDragging) {
+                    const overlay = mockup.querySelector('.app-info-overlay');
+                    if (overlay) {
+                        overlay.classList.toggle('show');
+                    }
+                }
+            });
         });
 
     </script>
