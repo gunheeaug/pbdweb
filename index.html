@@ -130,18 +130,9 @@
             height: 480px;
         }
 
-        .phone-mockup:hover .app-info-overlay,
-        .app-info-overlay.show {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        /* Mobile: show overlay on tap */
-        @media (hover: none) {
-            .app-info-overlay.show {
-                opacity: 1;
-                pointer-events: auto;
-            }
+        /* App info overlay - hidden, replaced by scratch card */
+        .app-info-overlay {
+            display: none;
         }
 
         .phone-frame {
@@ -195,7 +186,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            color: rgba(255,255,255,0.8);
+            color: rgba(255,255,255,0.9);
             font-size: 0.875rem;
             font-weight: 600;
             text-align: center;
@@ -203,18 +194,69 @@
             z-index: 16;
             text-shadow: 0 2px 4px rgba(0,0,0,0.5);
             transition: opacity 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
         }
 
-        .scratch-hint svg {
-            display: block;
-            margin: 0 auto 0.5rem;
-            width: 32px;
-            height: 32px;
-            opacity: 0.8;
+        .scratch-hint .scratch-logo {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        }
+
+        .scratch-hint .scratch-app-name {
+            font-size: 1.25rem;
+            font-weight: 800;
+        }
+
+        .scratch-hint .scratch-text {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+        }
+
+        .scratch-hint .scratch-text svg {
+            width: 16px;
+            height: 16px;
         }
 
         .scratch-hint.hidden {
             opacity: 0;
+        }
+
+        /* App CTA below screen */
+        .app-cta-below {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .app-cta-below .app-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: rgba(0,0,0,0.06);
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 100px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            transition: all 0.3s ease;
+        }
+
+        .app-cta-below .app-cta:hover {
+            background: rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .app-cta-below .app-cta svg {
+            width: 14px;
+            height: 14px;
         }
 
         /* App Info Overlay */
@@ -424,30 +466,29 @@
                                         <video class="app-video" autoplay muted loop playsinline>
                                             <source src="assets/videos/aug/aug app preview.mp4" type="video/mp4">
                                         </video>
-                                        <canvas class="scratch-canvas"></canvas>
+                                        <canvas class="scratch-canvas" data-app="aug"></canvas>
                                         <div class="scratch-hint">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                                <circle cx="12" cy="12" r="10"/>
-                                                <path d="M8 12h8M12 8v8"/>
-                                            </svg>
-                                            Scratch to reveal
+                                            <img src="assets/images/aug-icon.png" alt="aug" class="scratch-logo">
+                                            <span class="scratch-app-name">aug</span>
+                                            <span class="scratch-text">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <circle cx="12" cy="12" r="10"/>
+                                                    <path d="M8 12h8M12 8v8"/>
+                                                </svg>
+                                                Scratch to reveal
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="phone-notch"></div>
                                 </div>
-                                <div class="app-info-overlay">
-                                    <div class="app-info">
-                                        <img src="assets/images/aug-icon.png" alt="aug" class="app-icon-large">
-                                        <h2 class="app-name">aug</h2>
-                                        <p class="app-tagline">AI-powered spatial social</p>
-                                        <a href="/aug/" class="app-cta">
-                                            Learn More
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M5 12h14M12 5l7 7-7 7"/>
-                                            </svg>
-                                        </a>
-                                    </div>
-                                </div>
+                            </div>
+                            <div class="app-cta-below">
+                                <a href="/aug/" class="app-cta">
+                                    Learn More
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                                    </svg>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -461,30 +502,29 @@
                                         <video class="app-video" autoplay muted loop playsinline>
                                             <source src="assets/videos/shotupai/Shotup AI Demo Screen.mp4" type="video/mp4">
                                         </video>
-                                        <canvas class="scratch-canvas"></canvas>
+                                        <canvas class="scratch-canvas" data-app="shotupai"></canvas>
                                         <div class="scratch-hint">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                                <circle cx="12" cy="12" r="10"/>
-                                                <path d="M8 12h8M12 8v8"/>
-                                            </svg>
-                                            Scratch to reveal
+                                            <img src="assets/images/Shotupai-Icon.png" alt="Shotup AI" class="scratch-logo">
+                                            <span class="scratch-app-name">Shotup AI</span>
+                                            <span class="scratch-text">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <circle cx="12" cy="12" r="10"/>
+                                                    <path d="M8 12h8M12 8v8"/>
+                                                </svg>
+                                                Scratch to reveal
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="phone-notch"></div>
                                 </div>
-                                <div class="app-info-overlay">
-                                    <div class="app-info">
-                                        <img src="assets/images/Shotupai-Icon.png" alt="Shotup AI" class="app-icon-large">
-                                        <h2 class="app-name">Shotup AI</h2>
-                                        <p class="app-tagline">Screenshots, supercharged</p>
-                                        <a href="/shotupai/" class="app-cta">
-                                            Learn More
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M5 12h14M12 5l7 7-7 7"/>
-                                            </svg>
-                                        </a>
-                                    </div>
-                                </div>
+                            </div>
+                            <div class="app-cta-below">
+                                <a href="/shotupai/" class="app-cta">
+                                    Learn More
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                                    </svg>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -498,30 +538,29 @@
                                         <video class="app-video" autoplay muted loop playsinline>
                                             <source src="assets/videos/superba/Superba Demo Screen.mp4" type="video/mp4">
                                         </video>
-                                        <canvas class="scratch-canvas"></canvas>
+                                        <canvas class="scratch-canvas" data-app="superba"></canvas>
                                         <div class="scratch-hint">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                                <circle cx="12" cy="12" r="10"/>
-                                                <path d="M8 12h8M12 8v8"/>
-                                            </svg>
-                                            Scratch to reveal
+                                            <img src="assets/images/Superba-icon.png" alt="superba" class="scratch-logo">
+                                            <span class="scratch-app-name">superba</span>
+                                            <span class="scratch-text">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <circle cx="12" cy="12" r="10"/>
+                                                    <path d="M8 12h8M12 8v8"/>
+                                                </svg>
+                                                Scratch to reveal
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="phone-notch"></div>
                                 </div>
-                                <div class="app-info-overlay">
-                                    <div class="app-info">
-                                        <img src="assets/images/Superba-icon.png" alt="superba" class="app-icon-large">
-                                        <h2 class="app-name">superba</h2>
-                                        <p class="app-tagline">Superb productivity</p>
-                                        <a href="/superba/" class="app-cta">
-                                            Learn More
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M5 12h14M12 5l7 7-7 7"/>
-                                            </svg>
-                                        </a>
-                                    </div>
-                                </div>
+                            </div>
+                            <div class="app-cta-below">
+                                <a href="/superba/" class="app-cta">
+                                    Learn More
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                                    </svg>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -640,21 +679,6 @@
                 }
             }
             isDragging = false;
-        });
-
-        // Touch/Click support for app info overlay on mobile
-        const phoneMockups = document.querySelectorAll('.phone-mockup');
-        phoneMockups.forEach(mockup => {
-            let tapTimeout;
-            mockup.addEventListener('click', (e) => {
-                // Only show overlay on tap (not drag)
-                if (!isDragging) {
-                    const overlay = mockup.querySelector('.app-info-overlay');
-                    if (overlay) {
-                        overlay.classList.toggle('show');
-                    }
-                }
-            });
         });
 
         // Scratch Card Functionality
