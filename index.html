@@ -154,6 +154,28 @@
         .sticker-15 { animation-delay: 0.65s; animation-duration: 5s; }
         .sticker-16 { animation-delay: 0.95s; animation-duration: 4.2s; }
         .sticker-17 { animation-delay: 1.25s; animation-duration: 5.7s; }
+        .sticker-18 { animation-delay: 0.45s; animation-duration: 4.9s; }
+        .sticker-19 { animation-delay: 0.85s; animation-duration: 5.2s; }
+        .sticker-20 { animation-delay: 1.15s; animation-duration: 4.6s; }
+
+        /* App icon stickers */
+        .app-sticker {
+            display: block;
+            max-width: 70px !important;
+            border-radius: 16px;
+            overflow: visible;
+        }
+
+        .app-sticker img {
+            width: 100%;
+            height: auto;
+            border-radius: 16px;
+        }
+
+        /* App sticker positions */
+        .sticker-18 { top: 42%; left: 45%; transform: rotate(-5deg); }
+        .sticker-19 { top: 32%; right: 30%; transform: rotate(8deg); }
+        .sticker-20 { bottom: 35%; left: 30%; transform: rotate(-8deg); }
 
         /* Basquiat stickers - extra large */
         .earth-sticker.basquiat {
@@ -367,6 +389,11 @@
             <img src="assets/stickers/pbd sticker 2.png" alt="" class="earth-sticker sticker-15">
             <img src="assets/stickers/pbd sticker 4.png" alt="" class="earth-sticker sticker-16">
             <img src="assets/stickers/pbd sticker 6.png" alt="" class="earth-sticker sticker-17">
+            
+            <!-- App icons as stickers -->
+            <a href="/aug/" class="earth-sticker sticker-18 app-sticker"><img src="assets/images/aug-icon.png" alt="aug"></a>
+            <a href="/shotupai/" class="earth-sticker sticker-19 app-sticker"><img src="assets/images/Shotupai-Icon.png" alt="Shotup AI"></a>
+            <a href="/superba/" class="earth-sticker sticker-20 app-sticker"><img src="assets/images/Superba-icon.png" alt="superba"></a>
         </div>
 
     </section>
@@ -457,7 +484,10 @@
                         14: 'rotate(-15deg)',
                         15: 'rotate(8deg)',
                         16: 'rotate(5deg)',
-                        17: 'rotate(-20deg)'
+                        17: 'rotate(-20deg)',
+                        18: 'rotate(-5deg)',
+                        19: 'rotate(8deg)',
+                        20: 'rotate(-8deg)'
                     };
                     sticker.setAttribute('data-transform', transforms[match[1]] || '');
                 }
