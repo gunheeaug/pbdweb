@@ -128,50 +128,50 @@
             transition: transform 0.3s ease;
         }
 
-        /* Sticker positions with subtle rotation */
+        /* Sticker positions - rotated to face outward from Earth's surface */
         .sticker-1 { 
             top: 8%; left: 28%; max-width: 55px;
-            transform: rotate(-8deg);
+            transform: rotate(-35deg); /* upper-left: faces upper-left */
         }
         .sticker-2 { 
             top: 12%; right: 22%; max-width: 65px;
-            transform: rotate(12deg);
+            transform: rotate(40deg); /* upper-right: faces upper-right */
         }
         .sticker-3 { 
             top: 32%; left: 8%; max-width: 60px;
-            transform: rotate(-15deg);
+            transform: rotate(-65deg); /* left side: faces left */
         }
         .sticker-4 { 
             top: 28%; left: 38%; max-width: 50px;
-            transform: rotate(5deg);
+            transform: rotate(-20deg); /* upper-center-left: slight left tilt */
         }
         .sticker-5 { 
             top: 42%; right: 12%; max-width: 58px;
-            transform: rotate(18deg);
+            transform: rotate(70deg); /* right side: faces right */
         }
         .sticker-6 { 
             bottom: 32%; left: 18%; max-width: 65px;
-            transform: rotate(-10deg);
+            transform: rotate(-110deg); /* lower-left: faces lower-left */
         }
         .sticker-7 { 
             bottom: 28%; left: 42%; max-width: 55px;
-            transform: rotate(7deg);
+            transform: rotate(170deg); /* lower-center: faces downward */
         }
         .sticker-8 { 
             bottom: 22%; right: 28%; max-width: 60px;
-            transform: rotate(-5deg);
+            transform: rotate(130deg); /* lower-right: faces lower-right */
         }
         .sticker-9 { 
             bottom: 38%; right: 8%; max-width: 52px;
-            transform: rotate(20deg);
+            transform: rotate(100deg); /* right-lower: faces right-down */
         }
         .sticker-10 { 
             top: 48%; left: 32%; max-width: 55px;
-            transform: rotate(-3deg);
+            transform: rotate(-75deg); /* center-left: faces left */
         }
         .sticker-11 { 
             bottom: 12%; left: 38%; max-width: 58px;
-            transform: rotate(10deg);
+            transform: rotate(160deg); /* bottom-center: faces down */
         }
 
         /* Navigation - Hidden */
@@ -501,17 +501,17 @@
                 const match = cssTransform.match(/sticker-(\d+)/);
                 if (match) {
                     const transforms = {
-                        1: 'rotate(-8deg)',
-                        2: 'rotate(12deg)',
-                        3: 'rotate(-15deg)',
-                        4: 'rotate(5deg)',
-                        5: 'rotate(18deg)',
-                        6: 'rotate(-10deg)',
-                        7: 'rotate(7deg)',
-                        8: 'rotate(-5deg)',
-                        9: 'rotate(20deg)',
-                        10: 'rotate(-3deg)',
-                        11: 'rotate(10deg)'
+                        1: 'rotate(-35deg)',
+                        2: 'rotate(40deg)',
+                        3: 'rotate(-65deg)',
+                        4: 'rotate(-20deg)',
+                        5: 'rotate(70deg)',
+                        6: 'rotate(-110deg)',
+                        7: 'rotate(170deg)',
+                        8: 'rotate(130deg)',
+                        9: 'rotate(100deg)',
+                        10: 'rotate(-75deg)',
+                        11: 'rotate(160deg)'
                     };
                     sticker.setAttribute('data-transform', transforms[match[1]] || '');
                 }
