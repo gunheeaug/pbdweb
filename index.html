@@ -63,13 +63,14 @@
             overflow: hidden;
             border-right: 2px solid rgba(255,255,255,0.7);
             white-space: nowrap;
-            width: 0;
+            display: inline-block;
+            max-width: 0;
             animation: typing 2s steps(13) 0.5s forwards, blink 0.7s step-end infinite;
         }
 
         @keyframes typing {
-            from { width: 0; }
-            to { width: 10.2ch; }
+            from { max-width: 0; }
+            to { max-width: 100vw; }
         }
 
         @keyframes blink {
