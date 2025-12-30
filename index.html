@@ -47,24 +47,25 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            padding-top: 3rem;
+            padding-top: 15vh;
             position: relative;
             overflow: hidden;
         }
 
         /* Logo */
         .hero-logo {
-            height: clamp(24px, 3vw, 36px);
+            height: clamp(16px, 1.5vw, 22px);
             width: auto;
-            margin-bottom: 8rem;
+            margin-bottom: 4rem;
             z-index: 10;
         }
 
         /* Earth Container */
         .earth-container {
             position: relative;
-            width: clamp(400px, 60vw, 700px);
-            height: clamp(400px, 60vw, 700px);
+            width: clamp(280px, 40vw, 450px);
+            height: clamp(280px, 40vw, 450px);
+            perspective: 1000px;
         }
 
         .earth-image {
@@ -79,28 +80,58 @@
             position: absolute;
             width: auto;
             height: auto;
-            max-width: 120px;
+            max-width: 80px;
             z-index: 20;
             filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
             transition: transform 0.3s ease;
+            transform-style: preserve-3d;
         }
 
-        .earth-sticker:hover {
-            transform: scale(1.1);
+        /* Sticker positions with 3D rotation to follow Earth's curvature */
+        .sticker-1 { 
+            top: 8%; left: 28%; max-width: 55px;
+            transform: rotateX(-35deg) rotateY(-25deg) rotateZ(-5deg);
         }
-
-        /* Sticker positions - arranged around the globe */
-        .sticker-1 { top: 5%; left: 25%; max-width: 80px; }
-        .sticker-2 { top: 15%; right: 20%; max-width: 100px; }
-        .sticker-3 { top: 35%; left: 5%; max-width: 90px; }
-        .sticker-4 { top: 30%; left: 35%; max-width: 70px; }
-        .sticker-5 { top: 45%; right: 10%; max-width: 85px; }
-        .sticker-6 { bottom: 30%; left: 15%; max-width: 100px; }
-        .sticker-7 { bottom: 25%; left: 40%; max-width: 80px; }
-        .sticker-8 { bottom: 20%; right: 25%; max-width: 90px; }
-        .sticker-9 { bottom: 35%; right: 5%; max-width: 75px; }
-        .sticker-10 { top: 50%; left: 30%; max-width: 80px; }
-        .sticker-11 { bottom: 10%; left: 35%; max-width: 85px; }
+        .sticker-2 { 
+            top: 12%; right: 22%; max-width: 65px;
+            transform: rotateX(-30deg) rotateY(30deg) rotateZ(8deg);
+        }
+        .sticker-3 { 
+            top: 32%; left: 8%; max-width: 60px;
+            transform: rotateX(-10deg) rotateY(-45deg) rotateZ(-12deg);
+        }
+        .sticker-4 { 
+            top: 28%; left: 38%; max-width: 50px;
+            transform: rotateX(-15deg) rotateY(-8deg) rotateZ(3deg);
+        }
+        .sticker-5 { 
+            top: 42%; right: 12%; max-width: 58px;
+            transform: rotateX(5deg) rotateY(40deg) rotateZ(10deg);
+        }
+        .sticker-6 { 
+            bottom: 32%; left: 18%; max-width: 65px;
+            transform: rotateX(20deg) rotateY(-35deg) rotateZ(-8deg);
+        }
+        .sticker-7 { 
+            bottom: 28%; left: 42%; max-width: 55px;
+            transform: rotateX(25deg) rotateY(5deg) rotateZ(5deg);
+        }
+        .sticker-8 { 
+            bottom: 22%; right: 28%; max-width: 60px;
+            transform: rotateX(30deg) rotateY(25deg) rotateZ(-6deg);
+        }
+        .sticker-9 { 
+            bottom: 38%; right: 8%; max-width: 52px;
+            transform: rotateX(15deg) rotateY(45deg) rotateZ(12deg);
+        }
+        .sticker-10 { 
+            top: 48%; left: 32%; max-width: 55px;
+            transform: rotateX(8deg) rotateY(-12deg) rotateZ(-3deg);
+        }
+        .sticker-11 { 
+            bottom: 12%; left: 38%; max-width: 58px;
+            transform: rotateX(40deg) rotateY(8deg) rotateZ(7deg);
+        }
 
         /* Navigation - Hidden */
         .nav-bar {
@@ -281,7 +312,7 @@
             }
 
             .earth-sticker {
-                max-width: 60px !important;
+                max-width: 40px !important;
             }
 
             .apps-section {
@@ -429,18 +460,53 @@
             });
         });
 
-        // Parallax effect for stickers on mouse move
-        const earthContainer = document.querySelector('.earth-container');
+        // Store original transforms for each sticker
         const stickers = document.querySelectorAll('.earth-sticker');
+        const originalTransforms = [];
+        
+        stickers.forEach((sticker) => {
+            const computed = window.getComputedStyle(sticker);
+            originalTransforms.push(computed.transform);
+        });
 
+        // Parallax effect for stickers on mouse move - preserving 3D rotation
         document.addEventListener('mousemove', (e) => {
-            const x = (e.clientX / window.innerWidth - 0.5) * 20;
-            const y = (e.clientY / window.innerHeight - 0.5) * 20;
+            const x = (e.clientX / window.innerWidth - 0.5) * 15;
+            const y = (e.clientY / window.innerHeight - 0.5) * 15;
             
             stickers.forEach((sticker, index) => {
-                const speed = (index % 3 + 1) * 0.3;
-                sticker.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+                const speed = (index % 3 + 1) * 0.25;
+                const baseTransform = sticker.getAttribute('data-transform') || '';
+                sticker.style.transform = `${baseTransform} translate3d(${x * speed}px, ${y * speed}px, 0)`;
             });
+        });
+
+        // Store base transforms as data attributes
+        stickers.forEach((sticker) => {
+            const style = sticker.style.transform || window.getComputedStyle(sticker).transform;
+            if (style && style !== 'none') {
+                // Extract the CSS transform value
+                const cssTransform = sticker.className.split(' ').find(c => c.startsWith('sticker-'));
+                if (cssTransform) {
+                    const match = cssTransform.match(/sticker-(\d+)/);
+                    if (match) {
+                        const transforms = {
+                            1: 'rotateX(-35deg) rotateY(-25deg) rotateZ(-5deg)',
+                            2: 'rotateX(-30deg) rotateY(30deg) rotateZ(8deg)',
+                            3: 'rotateX(-10deg) rotateY(-45deg) rotateZ(-12deg)',
+                            4: 'rotateX(-15deg) rotateY(-8deg) rotateZ(3deg)',
+                            5: 'rotateX(5deg) rotateY(40deg) rotateZ(10deg)',
+                            6: 'rotateX(20deg) rotateY(-35deg) rotateZ(-8deg)',
+                            7: 'rotateX(25deg) rotateY(5deg) rotateZ(5deg)',
+                            8: 'rotateX(30deg) rotateY(25deg) rotateZ(-6deg)',
+                            9: 'rotateX(15deg) rotateY(45deg) rotateZ(12deg)',
+                            10: 'rotateX(8deg) rotateY(-12deg) rotateZ(-3deg)',
+                            11: 'rotateX(40deg) rotateY(8deg) rotateZ(7deg)'
+                        };
+                        sticker.setAttribute('data-transform', transforms[match[1]] || '');
+                    }
+                }
+            }
         });
     </script>
 </body>
