@@ -6,7 +6,7 @@
     <title>PBD LLC — App Label</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Questrial&family=Knewave&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Questrial&family=Knewave&family=Tiny5&display=swap" rel="stylesheet">
     <link href="https://cdn.cal.com/fonts/CalSans-SemiBold.woff2" rel="preload" as="font" type="font/woff2" crossorigin>
     <style>
         @font-face {
@@ -79,22 +79,24 @@
         .header {
             padding: 1rem 2rem;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             flex-shrink: 0;
+            position: relative;
         }
 
         .logo {
-            font-size: 1.25rem;
-            font-weight: 900;
-            letter-spacing: -0.02em;
+            font-family: 'Tiny5', sans-serif;
+            font-size: 2rem;
+            font-weight: 400;
+            letter-spacing: 0.05em;
         }
 
-        .logo span {
-            opacity: 0.5;
-            font-weight: 400;
-            font-size: 0.625rem;
-            margin-left: 0.5rem;
+        .header .contact-btn {
+            position: absolute;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
         }
 
         /* Carousel Section */
@@ -492,8 +494,8 @@
     <div class="main-content">
         <!-- Header -->
         <header class="header">
-            <div class="logo">PBD<span>LLC</span></div>
-            <a href="mailto:hello@pbd.team" class="app-cta" style="padding: 0.5rem 1rem; font-size: 0.75rem;">Contact</a>
+            <div class="logo">pbd</div>
+            <a href="mailto:hello@pbd.team" class="app-cta contact-btn" style="padding: 0.5rem 1rem; font-size: 0.75rem;">Contact</a>
         </header>
 
         <!-- App Carousel -->
