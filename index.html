@@ -888,30 +888,37 @@
             window.addEventListener('resize', resizeCanvas);
         });
 
-        // Stickerboard - randomly distribute stickers
+        // Stickerboard - randomly distribute stickers (one of each, no duplicates)
         const stickerImages = [
-            { src: 'assets/stickers/Pale Blue Dot Hand Sticker.png', minSize: 120, maxSize: 180 },
-            { src: 'assets/stickers/pbd hand sticker.png', minSize: 60, maxSize: 120 }
+            'assets/stickers/aug eyes sticker 1.png',
+            'assets/stickers/aug sticker 1.png',
+            'assets/stickers/aug sticker 2.png',
+            'assets/stickers/Basquiat sticker 1.png',
+            'assets/stickers/Basquiat sticker 2.png',
+            'assets/stickers/pbd sticker 1.png',
+            'assets/stickers/pbd sticker 2.png',
+            'assets/stickers/pbd sticker 3.png',
+            'assets/stickers/pbd sticker 4.png',
+            'assets/stickers/pbd sticker 5.png',
+            'assets/stickers/pbd sticker 6.png'
         ];
         
         const stickerboard = document.getElementById('stickerboard');
-        const numStickers = 20; // Total number of stickers to place
         
-        for (let i = 0; i < numStickers; i++) {
-            const stickerData = stickerImages[i % stickerImages.length];
+        stickerImages.forEach(src => {
             const img = document.createElement('img');
-            img.src = stickerData.src;
+            img.src = src;
             img.className = 'sticker';
             
             // Random position
-            const x = Math.random() * 100;
-            const y = Math.random() * 100;
+            const x = Math.random() * 90 + 5; // 5-95% to keep away from edges
+            const y = Math.random() * 85 + 5; // 5-90% to keep away from edges
             
-            // Random rotation (-30 to 30 degrees)
-            const rotation = (Math.random() - 0.5) * 60;
+            // Random rotation (-25 to 25 degrees)
+            const rotation = (Math.random() - 0.5) * 50;
             
-            // Random size based on sticker type
-            const size = stickerData.minSize + Math.random() * (stickerData.maxSize - stickerData.minSize);
+            // Random size (80px to 140px)
+            const size = 80 + Math.random() * 60;
             
             img.style.left = x + '%';
             img.style.top = y + '%';
@@ -919,7 +926,7 @@
             img.style.width = size + 'px';
             
             stickerboard.appendChild(img);
-        }
+        });
 
     </script>
 </body>
