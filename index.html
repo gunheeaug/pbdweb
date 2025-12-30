@@ -3,20 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PBD LLC — App Label</title>
+    <title>PBD — App Label</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Questrial&family=Knewave&family=Tiny5&display=swap" rel="stylesheet">
-    <link href="https://cdn.cal.com/fonts/CalSans-SemiBold.woff2" rel="preload" as="font" type="font/woff2" crossorigin>
-    <style>
-        @font-face {
-            font-family: 'Cal Sans';
-            src: url('https://cdn.cal.com/fonts/CalSans-SemiBold.woff2') format('woff2');
-            font-weight: 600;
-            font-style: normal;
-            font-display: swap;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;500;600;700;800;900&family=Cal+Sans&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -26,13 +16,13 @@
 
         html, body {
             height: 100%;
-            overflow: hidden;
+            overflow-x: hidden;
         }
 
         body {
-            font-family: 'Outfit', sans-serif;
-            background: #E8E6E6;
-            color: #1a1a1a;
+            font-family: 'Space Mono', monospace;
+            background: #0a0a0a;
+            color: #fff;
             cursor: default;
         }
 
@@ -41,13 +31,8 @@
             color: inherit;
         }
 
-        /* Earth Background - Hidden */
-        .earth-background {
-            display: none;
-        }
-
-        /* Stickerboard Background */
-        .stickerboard {
+        /* Floating Letters Background */
+        .floating-letters {
             position: fixed;
             top: 0;
             left: 0;
@@ -58,876 +43,399 @@
             overflow: hidden;
         }
 
-        .sticker {
+        .floating-letter {
             position: absolute;
-            width: 80px;
-            height: auto;
-            opacity: 0.9;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            font-family: 'Outfit', sans-serif;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.03);
+            user-select: none;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Main Content */
-        .main-content {
+        .floating-letter:hover {
+            color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Main Container */
+        .main-container {
             position: relative;
             z-index: 10;
-            height: 100%;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
 
         /* Header */
         .header {
-            padding: 1rem 2rem;
+            padding: 2rem 3rem;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            flex-shrink: 0;
-            position: relative;
         }
 
         .logo {
-            font-family: 'Tiny5', sans-serif;
-            font-size: 2rem;
-            font-weight: 400;
-            letter-spacing: 0.05em;
+            font-family: 'Space Mono', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
         }
 
-        .header .contact-btn {
-            position: absolute;
-            right: 2rem;
-            top: 50%;
-            transform: translateY(-50%);
+        .nav-links {
+            display: flex;
+            gap: 3rem;
         }
 
-        /* Carousel Section */
-        .carousel-section {
+        .nav-link {
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-link:hover {
+            opacity: 1;
+        }
+
+        /* Hero Section */
+        .hero {
             flex: 1;
             display: flex;
-            flex-direction: column;
+            align-items: center;
             justify-content: center;
-            padding: 0.5rem 0;
-            min-height: 0;
-        }
-
-        .carousel-container {
+            padding: 2rem;
             position: relative;
-            width: 100%;
-            overflow: visible;
-            display: flex;
-            justify-content: center;
-            padding: 2rem 0;
         }
 
-        .carousel-track {
+        .hero-text {
+            position: absolute;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .hero-letter {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(15rem, 25vw, 30rem);
+            font-weight: 900;
+            line-height: 0.8;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.15);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: default;
+        }
+
+        .hero-letter:hover {
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.4);
+            transform: translateY(-10px);
+        }
+
+        /* App Cards Grid */
+        .apps-section {
+            position: relative;
+            z-index: 20;
+            padding: 4rem 3rem;
+        }
+
+        .apps-label {
+            font-size: 0.65rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            opacity: 0.4;
+            margin-bottom: 2rem;
+        }
+
+        .apps-grid {
             display: flex;
             gap: 2rem;
-            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            align-items: center;
             justify-content: center;
-            user-select: none;
-            -webkit-user-select: none;
-        }
-
-        .carousel-slide {
-            flex-shrink: 0;
-            width: 260px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            opacity: 1;
-            transform: scale(1);
-            filter: blur(0);
-        }
-
-        .carousel-slide.active {
-            opacity: 1;
-            transform: scale(1);
-            filter: blur(0);
-            z-index: 10;
+            flex-wrap: wrap;
         }
 
         .app-card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0;
-            width: 100%;
-        }
-
-        /* Video Screen - Clean Rounded Rectangle */
-        .phone-mockup {
             position: relative;
-            width: 240px;
-            height: 440px;
+            width: 280px;
+            cursor: pointer;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* App info overlay - hidden, replaced by scratch card */
-        .app-info-overlay {
-            display: none;
+        .app-card:hover {
+            transform: translateY(-8px);
         }
 
-        .phone-frame {
-            position: relative;
+        .app-card:hover .app-video-container {
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .app-video-container {
             width: 100%;
-            height: 100%;
-            border-radius: 24px;
+            height: 400px;
+            border-radius: 16px;
             overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: border-color 0.3s ease;
+            position: relative;
+            background: #111;
         }
 
-        .phone-screen {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            overflow: hidden;
-            background: #000;
-        }
-
-        .phone-notch {
-            display: none;
-        }
-
-        /* App Video Styles */
         .app-video {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            background: #000;
-        }
-
-        /* Scratch Overlay */
-        .scratch-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%23B0F600'/%3E%3C/svg%3E") 32 32, crosshair;
-            border-radius: 24px;
-            z-index: 15;
-            touch-action: none;
-        }
-
-        .scratch-hint {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: rgba(255,255,255,0.9);
-            font-size: 0.875rem;
-            font-weight: 600;
-            text-align: center;
-            pointer-events: none;
-            z-index: 16;
-            transition: opacity 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .scratch-hint .scratch-logo {
-            width: 64px;
-            height: 64px;
-            border-radius: 16px;
-        }
-
-        .scratch-hint .scratch-app-name {
-            font-size: 1.25rem;
-            font-weight: 800;
-            color: #000;
-        }
-
-        .scratch-hint .scratch-app-name.font-aug {
-            font-family: 'Cal Sans', sans-serif;
-            font-weight: 600;
-        }
-
-        .scratch-hint .scratch-app-name.font-shotupai {
-            font-family: 'Outfit', sans-serif;
-            font-weight: 600;
-        }
-
-        .scratch-hint .scratch-app-name.font-superba {
-            font-family: 'Knewave', cursive;
-            font-weight: 400;
-        }
-
-        .scratch-hint .scratch-text {
-            font-size: 0.75rem;
-            opacity: 0.7;
-            display: flex;
-            align-items: center;
-            gap: 0.375rem;
-        }
-
-        .scratch-hint .scratch-text svg {
-            width: 16px;
-            height: 16px;
-        }
-
-        .scratch-hint.hidden {
-            opacity: 0;
-        }
-
-        /* App CTA below screen */
-        .app-cta-below {
-            margin-top: 1rem;
-            text-align: center;
-        }
-
-        .app-cta-below .app-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.625rem 1.25rem;
-            background: rgba(0,0,0,0.06);
-            border: 1px solid rgba(0,0,0,0.1);
-            border-radius: 100px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: #1a1a1a;
-            transition: all 0.3s ease;
-        }
-
-        .app-cta-below .app-cta:hover {
-            background: rgba(0,0,0,0.1);
-            transform: translateY(-2px);
-        }
-
-        .app-cta-below .app-cta svg {
-            width: 14px;
-            height: 14px;
-        }
-
-        /* App Info Overlay */
-        .app-info-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(10px);
-            border-radius: 24px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            padding: 2rem;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-            z-index: 20;
         }
 
         .app-info {
-            text-align: center;
+            padding: 1.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
-        .app-icon-large {
-            width: 60px;
-            height: 60px;
-            border-radius: 16px;
-            margin: 0 auto 0.75rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        .app-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+        }
+
+        .app-details {
+            flex: 1;
         }
 
         .app-name {
-            font-size: 1.5rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
         }
 
         .app-tagline {
-            font-size: 0.875rem;
-            opacity: 0.8;
-            margin-bottom: 1rem;
+            font-size: 0.7rem;
+            opacity: 0.5;
+            letter-spacing: 0.05em;
         }
 
-        .app-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            background: rgba(255,255,255,0.15);
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 100px;
-            font-size: 0.875rem;
-            font-weight: 600;
+        .app-arrow {
+            width: 24px;
+            height: 24px;
+            opacity: 0.3;
             transition: all 0.3s ease;
         }
 
-        .app-cta:hover {
-            background: rgba(255,255,255,0.25);
-            transform: translateY(-2px);
-        }
-
-        /* Carousel Navigation - Hidden on desktop */
-        .carousel-nav {
-            display: none;
-            justify-content: center;
-            align-items: center;
-            gap: 1.5rem;
-            padding: 1rem;
-            flex-shrink: 0;
-        }
-
-        .carousel-dots {
-            display: flex;
-            gap: 0.75rem;
-        }
-
-        .carousel-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: rgba(0,0,0,0.2);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .carousel-dot.active {
-            background: #1a1a1a;
-            transform: scale(1.2);
-        }
-
-        .carousel-dot:hover {
-            background: rgba(0,0,0,0.4);
-        }
-
-        .carousel-arrow {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: rgba(0,0,0,0.08);
-            border: 1px solid rgba(0,0,0,0.15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .carousel-arrow:hover {
-            background: rgba(0,0,0,0.15);
-        }
-
-        .carousel-arrow svg {
-            width: 16px;
-            height: 16px;
-            stroke: #1a1a1a;
-            stroke-width: 2;
-            fill: none;
+        .app-card:hover .app-arrow {
+            opacity: 1;
+            transform: translateX(4px);
         }
 
         /* Footer */
         .footer {
-            padding: 0.75rem 2rem;
-            text-align: center;
-            flex-shrink: 0;
+            padding: 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .footer p {
-            font-size: 0.75rem;
+        .footer-left {
+            font-size: 0.65rem;
             opacity: 0.4;
+            letter-spacing: 0.1em;
         }
 
-        .footer a {
-            opacity: 0.6;
-            transition: opacity 0.2s;
+        .footer-right {
+            display: flex;
+            gap: 2rem;
         }
 
-        .footer a:hover {
+        .footer-link {
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            opacity: 0.4;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-link:hover {
             opacity: 1;
         }
 
-        /* Responsive - Mobile carousel mode */
+        /* Responsive */
         @media (max-width: 768px) {
             .header {
-                padding: 1.5rem 2rem;
+                padding: 1.5rem;
             }
 
-            .carousel-container {
-                overflow: hidden;
-                padding: 1rem 0;
+            .nav-links {
+                display: none;
             }
 
-            .carousel-track {
-                justify-content: flex-start;
-                margin-left: calc(50vw - 130px);
+            .hero-letter {
+                font-size: clamp(8rem, 20vw, 15rem);
             }
 
-            .phone-mockup {
-                width: 240px;
-                height: 440px;
+            .apps-section {
+                padding: 2rem 1.5rem;
             }
 
-            .app-name {
-                font-size: 1.5rem;
+            .apps-grid {
+                flex-direction: column;
+                align-items: center;
             }
 
-            .carousel-nav {
-                display: flex;
-                gap: 1rem;
+            .app-card {
+                width: 100%;
+                max-width: 320px;
             }
 
             .footer {
-                padding: 1.5rem 2rem;
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Stickerboard Background -->
-    <div class="stickerboard" id="stickerboard"></div>
+    <!-- Floating Letters Background -->
+    <div class="floating-letters" id="floatingLetters"></div>
 
-    <!-- Earth Background -->
-    <div class="earth-background">
-        <img src="assets/images/Earth.png" alt="Earth">
-    </div>
-
-    <!-- Main Content -->
-    <div class="main-content">
+    <!-- Main Container -->
+    <div class="main-container">
         <!-- Header -->
         <header class="header">
-            <div class="logo">pbd</div>
-            <a href="mailto:hello@pbd.team" class="app-cta contact-btn" style="padding: 0.5rem 1rem; font-size: 0.75rem;">Contact</a>
+            <div class="logo">PBD</div>
+            <nav class="nav-links">
+                <a href="mailto:hello@pbd.team" class="nav-link">Contact</a>
+                <a href="#apps" class="nav-link">Apps</a>
+            </nav>
         </header>
 
-        <!-- App Carousel -->
-        <section class="carousel-section">
-            <!-- Carousel -->
-            <div class="carousel-container">
-                <div class="carousel-track">
-                    <!-- Slide 1: aug -->
-                    <div class="carousel-slide">
-                        <div class="app-card">
-                            <div class="phone-mockup">
-                                <div class="phone-frame">
-                                    <div class="phone-screen">
-                                        <video class="app-video" autoplay muted loop playsinline>
-                                            <source src="assets/videos/aug/aug app preview.mp4" type="video/mp4">
-                                        </video>
-                                        <canvas class="scratch-canvas" data-app="aug"></canvas>
-                                        <div class="scratch-hint">
-                                            <img src="assets/images/aug-icon.png" alt="aug" class="scratch-logo">
-                                            <span class="scratch-app-name font-aug">aug</span>
-                                        </div>
-                                    </div>
-                                    <div class="phone-notch"></div>
-                                </div>
-                            </div>
-                            <div class="app-cta-below">
-                                <a href="/aug/" class="app-cta">
-                                    Learn More
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                                    </svg>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 2: Shotup AI -->
-                    <div class="carousel-slide">
-                        <div class="app-card">
-                            <div class="phone-mockup">
-                                <div class="phone-frame">
-                                    <div class="phone-screen">
-                                        <video class="app-video" autoplay muted loop playsinline>
-                                            <source src="assets/videos/shotupai/Shotup AI Demo Screen.mp4" type="video/mp4">
-                                        </video>
-                                        <canvas class="scratch-canvas" data-app="shotupai"></canvas>
-                                        <div class="scratch-hint">
-                                            <img src="assets/images/Shotupai-Icon.png" alt="Shotup AI" class="scratch-logo">
-                                            <span class="scratch-app-name font-shotupai">Shotup AI</span>
-                                        </div>
-                                    </div>
-                                    <div class="phone-notch"></div>
-                                </div>
-                            </div>
-                            <div class="app-cta-below">
-                                <a href="/shotupai/" class="app-cta">
-                                    Learn More
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                                    </svg>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 3: superba -->
-                    <div class="carousel-slide">
-                        <div class="app-card">
-                            <div class="phone-mockup">
-                                <div class="phone-frame">
-                                    <div class="phone-screen">
-                                        <video class="app-video" autoplay muted loop playsinline>
-                                            <source src="assets/videos/superba/Superba Demo Screen.mp4" type="video/mp4">
-                                        </video>
-                                        <canvas class="scratch-canvas" data-app="superba"></canvas>
-                                        <div class="scratch-hint">
-                                            <img src="assets/images/Superba-icon.png" alt="superba" class="scratch-logo">
-                                            <span class="scratch-app-name font-superba">superba</span>
-                                        </div>
-                                    </div>
-                                    <div class="phone-notch"></div>
-                                </div>
-                            </div>
-                            <div class="app-cta-below">
-                                <a href="/superba/" class="app-cta">
-                                    Learn More
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                                    </svg>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-text">
+                <span class="hero-letter">P</span>
+                <span class="hero-letter">B</span>
+                <span class="hero-letter">D</span>
             </div>
+        </section>
 
-            <!-- Carousel Navigation -->
-            <nav class="carousel-nav">
-                <button class="carousel-arrow" id="prevBtn">
-                    <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-                </button>
-                <div class="carousel-dots">
-                    <button class="carousel-dot active" data-slide="0"></button>
-                    <button class="carousel-dot" data-slide="1"></button>
-                    <button class="carousel-dot" data-slide="2"></button>
-                </div>
-                <button class="carousel-arrow" id="nextBtn">
-                    <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
-                </button>
-            </nav>
+        <!-- Apps Section -->
+        <section class="apps-section" id="apps">
+            <div class="apps-label">Our Apps</div>
+            <div class="apps-grid">
+                <!-- aug -->
+                <a href="/aug/" class="app-card">
+                    <div class="app-video-container">
+                        <video class="app-video" autoplay muted loop playsinline>
+                            <source src="assets/videos/aug/aug app preview.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="app-info">
+                        <img src="assets/images/aug-icon.png" alt="aug" class="app-icon">
+                        <div class="app-details">
+                            <div class="app-name">aug</div>
+                            <div class="app-tagline">AI-powered spatial social</div>
+                        </div>
+                        <svg class="app-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </div>
+                </a>
+
+                <!-- Shotup AI -->
+                <a href="/shotupai/" class="app-card">
+                    <div class="app-video-container">
+                        <video class="app-video" autoplay muted loop playsinline>
+                            <source src="assets/videos/shotupai/Shotup AI Demo Screen.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="app-info">
+                        <img src="assets/images/Shotupai-Icon.png" alt="Shotup AI" class="app-icon">
+                        <div class="app-details">
+                            <div class="app-name">Shotup AI</div>
+                            <div class="app-tagline">Screenshots, supercharged</div>
+                        </div>
+                        <svg class="app-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </div>
+                </a>
+
+                <!-- superba -->
+                <a href="/superba/" class="app-card">
+                    <div class="app-video-container">
+                        <video class="app-video" autoplay muted loop playsinline>
+                            <source src="assets/videos/superba/Superba Demo Screen.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="app-info">
+                        <img src="assets/images/Superba-icon.png" alt="superba" class="app-icon">
+                        <div class="app-details">
+                            <div class="app-name">superba</div>
+                            <div class="app-tagline">Superb productivity</div>
+                        </div>
+                        <svg class="app-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </div>
+                </a>
+            </div>
         </section>
 
         <!-- Footer -->
         <footer class="footer">
-            <p>© PBD LLC 2025 · <a href="mailto:hello@pbd.team">hello@pbd.team</a></p>
+            <div class="footer-left">© PBD LLC 2025</div>
+            <div class="footer-right">
+                <a href="mailto:hello@pbd.team" class="footer-link">hello@pbd.team</a>
+            </div>
         </footer>
     </div>
 
     <script>
-        // Carousel functionality
-        const track = document.querySelector('.carousel-track');
-        const slides = document.querySelectorAll('.carousel-slide');
-        const dots = document.querySelectorAll('.carousel-dot');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
+        // Generate floating letters in background
+        const floatingLetters = document.getElementById('floatingLetters');
+        const letters = 'PBDPBDPBDPBDPBD';
         
-        let currentSlide = 0;
-        const totalSlides = slides.length;
-        const slideWidth = 260 + 32; // width + gap
-
-        // Check if mobile mode
-        function isMobile() {
-            return window.innerWidth <= 768;
-        }
-
-        // Initialize first slide as active
-        slides[0].classList.add('active');
-
-        function goToSlide(index) {
-            // Only slide on mobile
-            if (!isMobile()) return;
-            
-            if (index < 0) index = totalSlides - 1;
-            if (index >= totalSlides) index = 0;
-            
-            currentSlide = index;
-            
-            // Center the active slide
-            const offset = -currentSlide * slideWidth;
-            track.style.transform = `translateX(${offset}px)`;
-            
-            // Update active class on slides
-            slides.forEach((slide, i) => {
-                slide.classList.toggle('active', i === currentSlide);
-            });
-            
-            // Update dots
-            dots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === currentSlide);
-            });
-        }
-
-        // Reset carousel position on resize
-        function handleResize() {
-            if (!isMobile()) {
-                track.style.transform = 'translateX(0)';
-                slides.forEach(slide => slide.classList.remove('active'));
-            } else {
-                goToSlide(currentSlide);
-            }
-        }
-        
-        window.addEventListener('resize', handleResize);
-        handleResize();
-
-        prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
-        nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
-
-        dots.forEach(dot => {
-            dot.addEventListener('click', () => {
-                goToSlide(parseInt(dot.dataset.slide));
-            });
-        });
-
-        // Touch/Swipe support (mobile only)
-        let startX = 0;
-        let isDragging = false;
-
-        // Touch events
-        track.addEventListener('touchstart', (e) => {
-            if (!isMobile()) return;
-            startX = e.touches[0].clientX;
-            isDragging = true;
-        });
-
-        track.addEventListener('touchend', (e) => {
-            if (!isMobile() || !isDragging) return;
-            const endX = e.changedTouches[0].clientX;
-            const diff = startX - endX;
-            
-            if (Math.abs(diff) > 50) {
-                if (diff > 0) {
-                    goToSlide(currentSlide + 1);
-                } else {
-                    goToSlide(currentSlide - 1);
-                }
-            }
-            isDragging = false;
-        });
-
-        // Scratch Card Functionality
-        const scratchCanvases = document.querySelectorAll('.scratch-canvas');
-        
-        scratchCanvases.forEach(canvas => {
-            const ctx = canvas.getContext('2d');
-            const hint = canvas.parentElement.querySelector('.scratch-hint');
-            let isScratching = false;
-            let hasStartedScratching = false;
-            
-            // Set canvas size to match container
-            function resizeCanvas() {
-                const rect = canvas.parentElement.getBoundingClientRect();
-                canvas.width = rect.width;
-                canvas.height = rect.height;
-                drawMetallicCoating();
-            }
-            
-            // Draw metallic coating
-            function drawMetallicCoating() {
-                // Create metallic gradient
-                const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-                gradient.addColorStop(0, '#8B8B8B');
-                gradient.addColorStop(0.2, '#C0C0C0');
-                gradient.addColorStop(0.4, '#A8A8A8');
-                gradient.addColorStop(0.6, '#D4D4D4');
-                gradient.addColorStop(0.8, '#9E9E9E');
-                gradient.addColorStop(1, '#B8B8B8');
-                
-                ctx.fillStyle = gradient;
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                
-                // Add noise/texture for metallic effect
-                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                const data = imageData.data;
-                
-                for (let i = 0; i < data.length; i += 4) {
-                    const noise = (Math.random() - 0.5) * 30;
-                    data[i] = Math.min(255, Math.max(0, data[i] + noise));
-                    data[i + 1] = Math.min(255, Math.max(0, data[i + 1] + noise));
-                    data[i + 2] = Math.min(255, Math.max(0, data[i + 2] + noise));
-                }
-                
-                ctx.putImageData(imageData, 0, 0);
-                
-                // Add subtle scratchy lines for realism
-                ctx.strokeStyle = 'rgba(255,255,255,0.1)';
-                ctx.lineWidth = 1;
-                for (let i = 0; i < 20; i++) {
-                    ctx.beginPath();
-                    ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
-                    ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
-                    ctx.stroke();
-                }
-            }
-            
-            // Get position relative to canvas
-            function getPosition(e) {
-                const rect = canvas.getBoundingClientRect();
-                const clientX = e.clientX !== undefined ? e.clientX : e.touches[0].clientX;
-                const clientY = e.clientY !== undefined ? e.clientY : e.touches[0].clientY;
-                const x = clientX - rect.left;
-                const y = clientY - rect.top;
-                return { x, y };
-            }
-            
-            // Track last position for continuous line drawing
-            let lastPos = null;
-            const brushSize = 60;
-            
-            // Scratch function - draws continuous stroke path
-            function scratch(x, y) {
-                ctx.globalCompositeOperation = 'destination-out';
-                ctx.strokeStyle = 'rgba(255,255,255,1)';
-                ctx.fillStyle = 'rgba(255,255,255,1)';
-                ctx.lineCap = 'round';
-                ctx.lineJoin = 'round';
-                ctx.lineWidth = brushSize;
-                
-                if (lastPos) {
-                    // Draw continuous line from last position to current
-                    ctx.beginPath();
-                    ctx.moveTo(lastPos.x, lastPos.y);
-                    ctx.lineTo(x, y);
-                    ctx.stroke();
-                } else {
-                    // First point - draw a filled circle
-                    ctx.beginPath();
-                    ctx.arc(x, y, brushSize / 2, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-                
-                lastPos = { x, y };
-                
-                // Check scratch percentage
-                checkScratchProgress();
-            }
-            
-            function resetLastPos() {
-                lastPos = null;
-            }
-            
-            // Check how much has been scratched
-            function checkScratchProgress() {
-                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                const data = imageData.data;
-                let transparent = 0;
-                
-                for (let i = 3; i < data.length; i += 4) {
-                    if (data[i] === 0) transparent++;
-                }
-                
-                const percentage = (transparent / (data.length / 4)) * 100;
-                
-                // If more than 50% scratched, reveal completely
-                if (percentage > 50) {
-                    canvas.style.transition = 'opacity 0.5s ease';
-                    canvas.style.opacity = '0';
-                    if (hint) hint.style.opacity = '0';
-                    setTimeout(() => {
-                        canvas.style.display = 'none';
-                        if (hint) hint.style.display = 'none';
-                    }, 500);
-                }
-            }
-            
-            // Mouse events
-            canvas.addEventListener('mousedown', (e) => {
-                isScratching = true;
-                resetLastPos();
-                if (!hasStartedScratching && hint) {
-                    hint.classList.add('hidden');
-                    hasStartedScratching = true;
-                }
-                const pos = getPosition(e);
-                scratch(pos.x, pos.y);
-            });
-            
-            canvas.addEventListener('mousemove', (e) => {
-                if (!isScratching) return;
-                const pos = getPosition(e);
-                scratch(pos.x, pos.y);
-            });
-            
-            canvas.addEventListener('mouseup', () => {
-                isScratching = false;
-                resetLastPos();
-            });
-            canvas.addEventListener('mouseleave', () => {
-                isScratching = false;
-                resetLastPos();
-            });
-            
-            // Touch events
-            canvas.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                isScratching = true;
-                resetLastPos();
-                if (!hasStartedScratching && hint) {
-                    hint.classList.add('hidden');
-                    hasStartedScratching = true;
-                }
-                const pos = getPosition(e);
-                scratch(pos.x, pos.y);
-            });
-            
-            canvas.addEventListener('touchmove', (e) => {
-                e.preventDefault();
-                if (!isScratching) return;
-                const pos = getPosition(e);
-                scratch(pos.x, pos.y);
-            });
-            
-            canvas.addEventListener('touchend', () => {
-                isScratching = false;
-                resetLastPos();
-            });
-            
-            // Initialize
-            resizeCanvas();
-            window.addEventListener('resize', resizeCanvas);
-        });
-
-        // Stickerboard - randomly distribute stickers (one of each, no duplicates)
-        const stickerImages = [
-            'assets/stickers/aug eyes sticker 1.png',
-            'assets/stickers/aug sticker 1.png',
-            'assets/stickers/aug sticker 2.png',
-            'assets/stickers/Basquiat sticker 1.png',
-            'assets/stickers/Basquiat sticker 2.png',
-            'assets/stickers/pbd sticker 1.png',
-            'assets/stickers/pbd sticker 2.png',
-            'assets/stickers/pbd sticker 3.png',
-            'assets/stickers/pbd sticker 4.png',
-            'assets/stickers/pbd sticker 5.png',
-            'assets/stickers/pbd sticker 6.png'
-        ];
-        
-        const stickerboard = document.getElementById('stickerboard');
-        
-        stickerImages.forEach(src => {
-            const img = document.createElement('img');
-            img.src = src;
-            img.className = 'sticker';
+        for (let i = 0; i < 30; i++) {
+            const letter = document.createElement('span');
+            letter.className = 'floating-letter';
+            letter.textContent = letters[i % letters.length];
             
             // Random position
-            const x = Math.random() * 90 + 5; // 5-95% to keep away from edges
-            const y = Math.random() * 85 + 5; // 5-90% to keep away from edges
+            letter.style.left = Math.random() * 100 + '%';
+            letter.style.top = Math.random() * 100 + '%';
             
-            // Random rotation (-25 to 25 degrees)
-            const rotation = (Math.random() - 0.5) * 50;
+            // Random size
+            const size = 100 + Math.random() * 300;
+            letter.style.fontSize = size + 'px';
             
-            // Random size (80px to 140px)
-            const size = 80 + Math.random() * 60;
+            // Random rotation
+            const rotation = (Math.random() - 0.5) * 30;
+            letter.style.transform = `rotate(${rotation}deg)`;
             
-            img.style.left = x + '%';
-            img.style.top = y + '%';
-            img.style.transform = `rotate(${rotation}deg) translate(-50%, -50%)`;
-            img.style.width = size + 'px';
+            floatingLetters.appendChild(letter);
+        }
+
+        // Parallax effect on mouse move
+        document.addEventListener('mousemove', (e) => {
+            const letters = document.querySelectorAll('.floating-letter');
+            const x = (e.clientX / window.innerWidth - 0.5) * 20;
+            const y = (e.clientY / window.innerHeight - 0.5) * 20;
             
-            stickerboard.appendChild(img);
+            letters.forEach((letter, index) => {
+                const speed = (index % 3 + 1) * 0.5;
+                letter.style.transform = `translate(${x * speed}px, ${y * speed}px) rotate(${(Math.random() - 0.5) * 5}deg)`;
+            });
         });
 
+        // Hero letters hover effect
+        const heroLetters = document.querySelectorAll('.hero-letter');
+        heroLetters.forEach((letter, index) => {
+            letter.addEventListener('mouseenter', () => {
+                letter.style.transform = `translateY(-20px) rotate(${(Math.random() - 0.5) * 10}deg)`;
+            });
+            letter.addEventListener('mouseleave', () => {
+                letter.style.transform = '';
+            });
+        });
     </script>
 </body>
 </html>
