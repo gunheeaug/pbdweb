@@ -21,8 +21,8 @@
 
         body {
             font-family: 'Outfit', sans-serif;
-            background: #000;
-            color: #fff;
+            background: #E8E6E6;
+            color: #1a1a1a;
             cursor: default;
         }
 
@@ -31,22 +31,9 @@
             color: inherit;
         }
 
-        /* Earth Background */
+        /* Earth Background - Hidden */
         .earth-background {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 700px;
-            height: 700px;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .earth-background img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
+            display: none;
         }
 
         /* Main Content */
@@ -163,8 +150,8 @@
             border-radius: 40px;
             overflow: hidden;
             box-shadow: 
-                0 30px 60px rgba(0, 0, 0, 0.5),
-                0 0 0 1px rgba(255,255,255,0.1);
+                0 30px 60px rgba(0, 0, 0, 0.3),
+                0 0 0 1px rgba(0,0,0,0.1);
         }
 
         .phone-screen {
@@ -272,26 +259,26 @@
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.3);
+            background: rgba(0,0,0,0.2);
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
         .carousel-dot.active {
-            background: #fff;
+            background: #1a1a1a;
             transform: scale(1.2);
         }
 
         .carousel-dot:hover {
-            background: rgba(255,255,255,0.6);
+            background: rgba(0,0,0,0.4);
         }
 
         .carousel-arrow {
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.15);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -300,13 +287,13 @@
         }
 
         .carousel-arrow:hover {
-            background: rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.15);
         }
 
         .carousel-arrow svg {
             width: 16px;
             height: 16px;
-            stroke: white;
+            stroke: #1a1a1a;
             stroke-width: 2;
             fill: none;
         }
