@@ -138,27 +138,41 @@
             max-width: 60px !important;
         }
 
-        /* Sticker positions - scattered across Earth's surface */
-        /* 2D flat stickers - stay mostly within Earth boundary */
-        .sticker-1 { top: 8%; left: 18%; transform: rotate(-45deg); }
-        .sticker-2 { top: 12%; right: 15%; transform: rotate(50deg); }
-        .sticker-5 { top: 28%; right: 8%; transform: rotate(75deg); }
-        .sticker-6 { top: 40%; left: 5%; transform: rotate(-80deg); }
-        .sticker-7 { top: 22%; right: 28%; transform: rotate(40deg); }
-        .sticker-8 { top: 52%; left: 8%; transform: rotate(-85deg); }
-        .sticker-9 { top: 50%; right: 6%; transform: rotate(85deg); }
-        .sticker-11 { top: 60%; right: 12%; transform: rotate(90deg); }
-        .sticker-12 { bottom: 32%; left: 12%; transform: rotate(-110deg); }
-        .sticker-13 { bottom: 35%; right: 15%; transform: rotate(105deg); }
-        .sticker-14 { bottom: 20%; left: 25%; transform: rotate(-130deg); }
-        .sticker-15 { bottom: 22%; right: 22%; transform: rotate(125deg); }
-        .sticker-16 { bottom: 10%; left: 40%; transform: rotate(-160deg); }
-        .sticker-17 { bottom: 8%; right: 38%; transform: rotate(155deg); }
-        
-        /* 3D visual stickers - extend off Earth boundary */
-        .sticker-3 { top: 15%; left: -5%; transform: rotate(-55deg); }
-        .sticker-4 { top: 5%; right: -3%; transform: rotate(25deg); }
-        .sticker-10 { top: 65%; left: -4%; transform: rotate(-90deg); }
+        /* Sticker positions - matching mockup layout */
+        /* aug sticker 1 - top center (person raising hand) */
+        .sticker-1 { top: -8%; left: 42%; transform: rotate(0deg); }
+        /* aug sticker 2 - upper left "hello world" */
+        .sticker-2 { top: 8%; left: 8%; transform: rotate(-25deg); }
+        /* aug sticker 3 - 3D person jumping upper right */
+        .sticker-3 { top: 12%; right: 5%; transform: rotate(15deg); }
+        /* aug sticker 4 - 3D pink text upper right corner */
+        .sticker-4 { top: 5%; right: -8%; transform: rotate(20deg); }
+        /* aug sticker 5 - small sticker center area */
+        .sticker-5 { top: 32%; left: 42%; transform: rotate(-5deg); }
+        /* aug sticker 6 - couple sticker left side */
+        .sticker-6 { top: 35%; left: 12%; transform: rotate(-15deg); }
+        /* aug sticker 7 - girl with dog right side */
+        .sticker-7 { top: 28%; right: 18%; transform: rotate(10deg); }
+        /* aug sticker 8 - guy thumbs up lower center */
+        .sticker-8 { top: 58%; left: 35%; transform: rotate(5deg); }
+        /* aug sticker 9 - girl waving right side */
+        .sticker-9 { top: 38%; right: 12%; transform: rotate(15deg); }
+        /* aug sticker 10 - 3D pink AUG text bottom left */
+        .sticker-10 { bottom: 22%; left: -5%; transform: rotate(-35deg); }
+        /* aug eyes sticker - glasses center */
+        .sticker-11 { top: 35%; left: 52%; transform: rotate(5deg); }
+        /* Basquiat sticker 1 - "pale blue dot" text center left */
+        .sticker-12 { top: 45%; left: 18%; transform: rotate(-10deg); }
+        /* Basquiat sticker 2 - "LEAVE WORDS" bottom right */
+        .sticker-13 { bottom: 18%; right: 8%; transform: rotate(25deg); }
+        /* pbd sticker 1 - cursive text upper left */
+        .sticker-14 { top: 22%; left: 22%; transform: rotate(-15deg); }
+        /* pbd sticker 2 - "aug" label right side */
+        .sticker-15 { top: 42%; right: 22%; transform: rotate(8deg); }
+        /* pbd sticker 4 - "pbd" logo center */
+        .sticker-16 { top: 28%; left: 55%; transform: rotate(5deg); }
+        /* pbd sticker 6 - pink "pbd" text bottom left */
+        .sticker-17 { bottom: 28%; left: 28%; transform: rotate(-20deg); }
 
         /* Navigation - Hidden */
         .nav-bar {
@@ -385,23 +399,23 @@
                 const match = cssTransform.match(/sticker-(\d+)/);
                 if (match) {
                     const transforms = {
-                        1: 'rotate(-45deg)',
-                        2: 'rotate(50deg)',
-                        3: 'rotate(-55deg)',
-                        4: 'rotate(25deg)',
-                        5: 'rotate(75deg)',
-                        6: 'rotate(-80deg)',
-                        7: 'rotate(40deg)',
-                        8: 'rotate(-85deg)',
-                        9: 'rotate(85deg)',
-                        10: 'rotate(-90deg)',
-                        11: 'rotate(90deg)',
-                        12: 'rotate(-110deg)',
-                        13: 'rotate(105deg)',
-                        14: 'rotate(-130deg)',
-                        15: 'rotate(125deg)',
-                        16: 'rotate(-160deg)',
-                        17: 'rotate(155deg)'
+                        1: 'rotate(0deg)',
+                        2: 'rotate(-25deg)',
+                        3: 'rotate(15deg)',
+                        4: 'rotate(20deg)',
+                        5: 'rotate(-5deg)',
+                        6: 'rotate(-15deg)',
+                        7: 'rotate(10deg)',
+                        8: 'rotate(5deg)',
+                        9: 'rotate(15deg)',
+                        10: 'rotate(-35deg)',
+                        11: 'rotate(5deg)',
+                        12: 'rotate(-10deg)',
+                        13: 'rotate(25deg)',
+                        14: 'rotate(-15deg)',
+                        15: 'rotate(8deg)',
+                        16: 'rotate(5deg)',
+                        17: 'rotate(-20deg)'
                     };
                     sticker.setAttribute('data-transform', transforms[match[1]] || '');
                 }
