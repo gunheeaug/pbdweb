@@ -748,31 +748,33 @@
             
             // Track last position for continuous line drawing
             let lastPos = null;
-            const brushSize = 30;
+            const brushSize = 40;
             
-            // Scratch function - draws continuous line between points
+            // Scratch function - draws continuous stroke path
             function scratch(x, y) {
                 ctx.globalCompositeOperation = 'destination-out';
+                ctx.strokeStyle = 'rgba(255,255,255,1)';
+                ctx.fillStyle = 'rgba(255,255,255,1)';
                 ctx.lineCap = 'round';
                 ctx.lineJoin = 'round';
                 ctx.lineWidth = brushSize;
                 
                 if (lastPos) {
-                    // Draw line from last position to current
+                    // Draw continuous line from last position to current
                     ctx.beginPath();
                     ctx.moveTo(lastPos.x, lastPos.y);
                     ctx.lineTo(x, y);
                     ctx.stroke();
+                } else {
+                    // First point - draw a filled circle
+                    ctx.beginPath();
+                    ctx.arc(x, y, brushSize / 2, 0, Math.PI * 2);
+                    ctx.fill();
                 }
-                
-                // Also draw a circle at current position
-                ctx.beginPath();
-                ctx.arc(x, y, brushSize / 2, 0, Math.PI * 2);
-                ctx.fill();
                 
                 lastPos = { x, y };
                 
-                // Check scratch percentage (throttled)
+                // Check scratch percentage
                 checkScratchProgress();
             }
             
