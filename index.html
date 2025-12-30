@@ -80,9 +80,10 @@
         .carousel-container {
             position: relative;
             width: 100%;
-            overflow: hidden;
+            overflow: visible;
             display: flex;
             justify-content: center;
+            padding: 2rem 0;
         }
 
         .carousel-track {
@@ -323,6 +324,11 @@
         @media (max-width: 768px) {
             .header {
                 padding: 1.5rem 2rem;
+            }
+
+            .carousel-container {
+                overflow: hidden;
+                padding: 1rem 0;
             }
 
             .carousel-track {
