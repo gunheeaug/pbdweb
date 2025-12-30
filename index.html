@@ -888,16 +888,17 @@
 
         // Stickerboard - randomly distribute stickers
         const stickerImages = [
-            'assets/stickers/Pale Blue Dot Hand Sticker.png',
-            'assets/stickers/pbd hand sticker.png'
+            { src: 'assets/stickers/Pale Blue Dot Hand Sticker.png', minSize: 120, maxSize: 180 },
+            { src: 'assets/stickers/pbd hand sticker.png', minSize: 60, maxSize: 120 }
         ];
         
         const stickerboard = document.getElementById('stickerboard');
         const numStickers = 20; // Total number of stickers to place
         
         for (let i = 0; i < numStickers; i++) {
+            const stickerData = stickerImages[i % stickerImages.length];
             const img = document.createElement('img');
-            img.src = stickerImages[i % stickerImages.length];
+            img.src = stickerData.src;
             img.className = 'sticker';
             
             // Random position
@@ -907,8 +908,8 @@
             // Random rotation (-30 to 30 degrees)
             const rotation = (Math.random() - 0.5) * 60;
             
-            // Random size (60px to 120px)
-            const size = 60 + Math.random() * 60;
+            // Random size based on sticker type
+            const size = stickerData.minSize + Math.random() * (stickerData.maxSize - stickerData.minSize);
             
             img.style.left = x + '%';
             img.style.top = y + '%';
