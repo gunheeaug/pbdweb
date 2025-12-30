@@ -739,20 +739,45 @@
             // Get position relative to canvas
             function getPosition(e) {
                 const rect = canvas.getBoundingClientRect();
-                const x = (e.clientX || e.touches[0].clientX) - rect.left;
-                const y = (e.clientY || e.touches[0].clientY) - rect.top;
+                const clientX = e.clientX !== undefined ? e.clientX : e.touches[0].clientX;
+                const clientY = e.clientY !== undefined ? e.clientY : e.touches[0].clientY;
+                const x = clientX - rect.left;
+                const y = clientY - rect.top;
                 return { x, y };
             }
             
-            // Scratch function
+            // Track last position for continuous line drawing
+            let lastPos = null;
+            const brushSize = 30;
+            
+            // Scratch function - draws continuous line between points
             function scratch(x, y) {
                 ctx.globalCompositeOperation = 'destination-out';
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.lineWidth = brushSize;
+                
+                if (lastPos) {
+                    // Draw line from last position to current
+                    ctx.beginPath();
+                    ctx.moveTo(lastPos.x, lastPos.y);
+                    ctx.lineTo(x, y);
+                    ctx.stroke();
+                }
+                
+                // Also draw a circle at current position
                 ctx.beginPath();
-                ctx.arc(x, y, 25, 0, Math.PI * 2);
+                ctx.arc(x, y, brushSize / 2, 0, Math.PI * 2);
                 ctx.fill();
                 
-                // Check scratch percentage
+                lastPos = { x, y };
+                
+                // Check scratch percentage (throttled)
                 checkScratchProgress();
+            }
+            
+            function resetLastPos() {
+                lastPos = null;
             }
             
             // Check how much has been scratched
@@ -782,6 +807,7 @@
             // Mouse events
             canvas.addEventListener('mousedown', (e) => {
                 isScratching = true;
+                resetLastPos();
                 if (!hasStartedScratching && hint) {
                     hint.classList.add('hidden');
                     hasStartedScratching = true;
@@ -796,13 +822,20 @@
                 scratch(pos.x, pos.y);
             });
             
-            canvas.addEventListener('mouseup', () => isScratching = false);
-            canvas.addEventListener('mouseleave', () => isScratching = false);
+            canvas.addEventListener('mouseup', () => {
+                isScratching = false;
+                resetLastPos();
+            });
+            canvas.addEventListener('mouseleave', () => {
+                isScratching = false;
+                resetLastPos();
+            });
             
             // Touch events
             canvas.addEventListener('touchstart', (e) => {
                 e.preventDefault();
                 isScratching = true;
+                resetLastPos();
                 if (!hasStartedScratching && hint) {
                     hint.classList.add('hidden');
                     hasStartedScratching = true;
@@ -818,7 +851,10 @@
                 scratch(pos.x, pos.y);
             });
             
-            canvas.addEventListener('touchend', () => isScratching = false);
+            canvas.addEventListener('touchend', () => {
+                isScratching = false;
+                resetLastPos();
+            });
             
             // Initialize
             resizeCanvas();
