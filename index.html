@@ -46,25 +46,43 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
-            padding-top: 15vh;
+            justify-content: center;
             position: relative;
-            overflow: hidden;
+            overflow: visible;
         }
 
-        /* Logo */
-        .hero-logo {
-            height: clamp(16px, 1.5vw, 22px);
-            width: auto;
-            margin-bottom: 4rem;
+        /* Logo as typed text */
+        .hero-title {
+            font-family: 'Cal Sans', sans-serif;
+            font-size: clamp(1rem, 1.8vw, 1.4rem);
+            font-weight: 400;
+            color: #fff;
+            letter-spacing: 0.08em;
             z-index: 10;
+            overflow: hidden;
+            border-right: 2px solid rgba(255,255,255,0.7);
+            white-space: nowrap;
+            width: 0;
+            animation: typing 2s steps(13) 0.5s forwards, blink 0.7s step-end infinite;
         }
 
-        /* Earth Container */
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 13ch; }
+        }
+
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+
+        /* Earth Container - positioned below fold */
         .earth-container {
-            position: relative;
-            width: clamp(280px, 40vw, 450px);
-            height: clamp(280px, 40vw, 450px);
+            position: absolute;
+            top: 85vh;
+            left: 50%;
+            transform: translateX(-50%);
+            width: clamp(400px, 55vw, 600px);
+            height: clamp(400px, 55vw, 600px);
             perspective: 1000px;
         }
 
@@ -265,36 +283,6 @@
             opacity: 1;
         }
 
-        /* Scroll indicator */
-        .scroll-indicator {
-            position: absolute;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-            opacity: 0.4;
-            animation: bounce 2s infinite;
-        }
-
-        .scroll-indicator span {
-            font-size: 0.6rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-        }
-
-        .scroll-indicator svg {
-            width: 20px;
-            height: 20px;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
-            40% { transform: translateX(-50%) translateY(-10px); }
-            60% { transform: translateX(-50%) translateY(-5px); }
-        }
 
         /* Responsive */
         @media (max-width: 768px) {
@@ -351,7 +339,7 @@
 
     <!-- Hero Section -->
     <section class="hero-section">
-        <img src="assets/Logos/pale blue dot logo.png" alt="pale blue dot" class="hero-logo">
+        <h1 class="hero-title">pale blue dot</h1>
         
         <div class="earth-container">
             <img src="assets/images/Earth.png" alt="Earth" class="earth-image">
@@ -370,12 +358,6 @@
             <img src="assets/stickers/pbd sticker 6.png" alt="" class="earth-sticker sticker-11">
         </div>
 
-        <div class="scroll-indicator">
-            <span>Scroll</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 5v14M5 12l7 7 7-7"/>
-            </svg>
-        </div>
     </section>
 
     <!-- Apps Section -->
