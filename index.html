@@ -87,10 +87,10 @@
 
         .carousel-track {
             display: flex;
-            gap: 1.5rem;
+            gap: 2rem;
             transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             align-items: center;
-            margin-left: calc(50vw - 130px);
+            justify-content: center;
             user-select: none;
             -webkit-user-select: none;
         }
@@ -240,9 +240,9 @@
             transform: translateY(-2px);
         }
 
-        /* Carousel Navigation */
+        /* Carousel Navigation - Hidden on desktop */
         .carousel-nav {
-            display: flex;
+            display: none;
             justify-content: center;
             align-items: center;
             gap: 1.5rem;
@@ -319,10 +319,15 @@
             opacity: 1;
         }
 
-        /* Responsive */
+        /* Responsive - Mobile carousel mode */
         @media (max-width: 768px) {
             .header {
                 padding: 1.5rem 2rem;
+            }
+
+            .carousel-track {
+                justify-content: flex-start;
+                margin-left: calc(50vw - 130px);
             }
 
             .phone-mockup {
@@ -335,6 +340,7 @@
             }
 
             .carousel-nav {
+                display: flex;
                 gap: 1rem;
             }
 
@@ -484,12 +490,20 @@
         
         let currentSlide = 0;
         const totalSlides = slides.length;
-        const slideWidth = 260 + 24; // width + gap
+        const slideWidth = 260 + 32; // width + gap
+
+        // Check if mobile mode
+        function isMobile() {
+            return window.innerWidth <= 768;
+        }
 
         // Initialize first slide as active
         slides[0].classList.add('active');
 
         function goToSlide(index) {
+            // Only slide on mobile
+            if (!isMobile()) return;
+            
             if (index < 0) index = totalSlides - 1;
             if (index >= totalSlides) index = 0;
             
@@ -510,6 +524,19 @@
             });
         }
 
+        // Reset carousel position on resize
+        function handleResize() {
+            if (!isMobile()) {
+                track.style.transform = 'translateX(0)';
+                slides.forEach(slide => slide.classList.remove('active'));
+            } else {
+                goToSlide(currentSlide);
+            }
+        }
+        
+        window.addEventListener('resize', handleResize);
+        handleResize();
+
         prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
         nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
 
@@ -519,18 +546,19 @@
             });
         });
 
-        // Touch/Swipe and Mouse Drag support
+        // Touch/Swipe support (mobile only)
         let startX = 0;
         let isDragging = false;
 
         // Touch events
         track.addEventListener('touchstart', (e) => {
+            if (!isMobile()) return;
             startX = e.touches[0].clientX;
             isDragging = true;
         });
 
         track.addEventListener('touchend', (e) => {
-            if (!isDragging) return;
+            if (!isMobile() || !isDragging) return;
             const endX = e.changedTouches[0].clientX;
             const diff = startX - endX;
             
@@ -542,42 +570,6 @@
                 }
             }
             isDragging = false;
-        });
-
-        // Mouse events for desktop drag
-        track.addEventListener('mousedown', (e) => {
-            startX = e.clientX;
-            isDragging = true;
-            track.style.cursor = 'grabbing';
-        });
-
-        document.addEventListener('mousemove', (e) => {
-            if (!isDragging) return;
-            e.preventDefault();
-        });
-
-        document.addEventListener('mouseup', (e) => {
-            if (!isDragging) return;
-            const endX = e.clientX;
-            const diff = startX - endX;
-            
-            if (Math.abs(diff) > 50) {
-                if (diff > 0) {
-                    goToSlide(currentSlide + 1);
-                } else {
-                    goToSlide(currentSlide - 1);
-                }
-            }
-            isDragging = false;
-            track.style.cursor = 'grab';
-        });
-
-        track.style.cursor = 'grab';
-
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') goToSlide(currentSlide - 1);
-            if (e.key === 'ArrowRight') goToSlide(currentSlide + 1);
         });
 
         // Touch/Click support for app info overlay on mobile
