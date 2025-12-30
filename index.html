@@ -177,6 +177,46 @@
             background: #000;
         }
 
+        /* Scratch Overlay */
+        .scratch-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='12' fill='%23888' stroke='%23333' stroke-width='2'/%3E%3C/svg%3E") 16 16, crosshair;
+            border-radius: 40px;
+            z-index: 15;
+            touch-action: none;
+        }
+
+        .scratch-hint {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: rgba(255,255,255,0.8);
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-align: center;
+            pointer-events: none;
+            z-index: 16;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            transition: opacity 0.3s ease;
+        }
+
+        .scratch-hint svg {
+            display: block;
+            margin: 0 auto 0.5rem;
+            width: 32px;
+            height: 32px;
+            opacity: 0.8;
+        }
+
+        .scratch-hint.hidden {
+            opacity: 0;
+        }
+
         /* App Info Overlay */
         .app-info-overlay {
             position: absolute;
@@ -384,6 +424,14 @@
                                         <video class="app-video" autoplay muted loop playsinline>
                                             <source src="assets/videos/aug/aug app preview.mp4" type="video/mp4">
                                         </video>
+                                        <canvas class="scratch-canvas"></canvas>
+                                        <div class="scratch-hint">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <path d="M8 12h8M12 8v8"/>
+                                            </svg>
+                                            Scratch to reveal
+                                        </div>
                                     </div>
                                     <div class="phone-notch"></div>
                                 </div>
@@ -413,6 +461,14 @@
                                         <video class="app-video" autoplay muted loop playsinline>
                                             <source src="assets/videos/shotupai/Shotup AI Demo Screen.mp4" type="video/mp4">
                                         </video>
+                                        <canvas class="scratch-canvas"></canvas>
+                                        <div class="scratch-hint">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <path d="M8 12h8M12 8v8"/>
+                                            </svg>
+                                            Scratch to reveal
+                                        </div>
                                     </div>
                                     <div class="phone-notch"></div>
                                 </div>
@@ -442,6 +498,14 @@
                                         <video class="app-video" autoplay muted loop playsinline>
                                             <source src="assets/videos/superba/Superba Demo Screen.mp4" type="video/mp4">
                                         </video>
+                                        <canvas class="scratch-canvas"></canvas>
+                                        <div class="scratch-hint">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                                <circle cx="12" cy="12" r="10"/>
+                                                <path d="M8 12h8M12 8v8"/>
+                                            </svg>
+                                            Scratch to reveal
+                                        </div>
                                     </div>
                                     <div class="phone-notch"></div>
                                 </div>
@@ -591,6 +655,150 @@
                     }
                 }
             });
+        });
+
+        // Scratch Card Functionality
+        const scratchCanvases = document.querySelectorAll('.scratch-canvas');
+        
+        scratchCanvases.forEach(canvas => {
+            const ctx = canvas.getContext('2d');
+            const hint = canvas.parentElement.querySelector('.scratch-hint');
+            let isScratching = false;
+            let hasStartedScratching = false;
+            
+            // Set canvas size to match container
+            function resizeCanvas() {
+                const rect = canvas.parentElement.getBoundingClientRect();
+                canvas.width = rect.width;
+                canvas.height = rect.height;
+                drawMetallicCoating();
+            }
+            
+            // Draw metallic coating
+            function drawMetallicCoating() {
+                // Create metallic gradient
+                const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+                gradient.addColorStop(0, '#8B8B8B');
+                gradient.addColorStop(0.2, '#C0C0C0');
+                gradient.addColorStop(0.4, '#A8A8A8');
+                gradient.addColorStop(0.6, '#D4D4D4');
+                gradient.addColorStop(0.8, '#9E9E9E');
+                gradient.addColorStop(1, '#B8B8B8');
+                
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Add noise/texture for metallic effect
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const data = imageData.data;
+                
+                for (let i = 0; i < data.length; i += 4) {
+                    const noise = (Math.random() - 0.5) * 30;
+                    data[i] = Math.min(255, Math.max(0, data[i] + noise));
+                    data[i + 1] = Math.min(255, Math.max(0, data[i + 1] + noise));
+                    data[i + 2] = Math.min(255, Math.max(0, data[i + 2] + noise));
+                }
+                
+                ctx.putImageData(imageData, 0, 0);
+                
+                // Add subtle scratchy lines for realism
+                ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+                ctx.lineWidth = 1;
+                for (let i = 0; i < 20; i++) {
+                    ctx.beginPath();
+                    ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
+                    ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
+                    ctx.stroke();
+                }
+            }
+            
+            // Get position relative to canvas
+            function getPosition(e) {
+                const rect = canvas.getBoundingClientRect();
+                const x = (e.clientX || e.touches[0].clientX) - rect.left;
+                const y = (e.clientY || e.touches[0].clientY) - rect.top;
+                return { x, y };
+            }
+            
+            // Scratch function
+            function scratch(x, y) {
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.beginPath();
+                ctx.arc(x, y, 25, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Check scratch percentage
+                checkScratchProgress();
+            }
+            
+            // Check how much has been scratched
+            function checkScratchProgress() {
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const data = imageData.data;
+                let transparent = 0;
+                
+                for (let i = 3; i < data.length; i += 4) {
+                    if (data[i] === 0) transparent++;
+                }
+                
+                const percentage = (transparent / (data.length / 4)) * 100;
+                
+                // If more than 50% scratched, reveal completely
+                if (percentage > 50) {
+                    canvas.style.transition = 'opacity 0.5s ease';
+                    canvas.style.opacity = '0';
+                    if (hint) hint.style.opacity = '0';
+                    setTimeout(() => {
+                        canvas.style.display = 'none';
+                        if (hint) hint.style.display = 'none';
+                    }, 500);
+                }
+            }
+            
+            // Mouse events
+            canvas.addEventListener('mousedown', (e) => {
+                isScratching = true;
+                if (!hasStartedScratching && hint) {
+                    hint.classList.add('hidden');
+                    hasStartedScratching = true;
+                }
+                const pos = getPosition(e);
+                scratch(pos.x, pos.y);
+            });
+            
+            canvas.addEventListener('mousemove', (e) => {
+                if (!isScratching) return;
+                const pos = getPosition(e);
+                scratch(pos.x, pos.y);
+            });
+            
+            canvas.addEventListener('mouseup', () => isScratching = false);
+            canvas.addEventListener('mouseleave', () => isScratching = false);
+            
+            // Touch events
+            canvas.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                isScratching = true;
+                if (!hasStartedScratching && hint) {
+                    hint.classList.add('hidden');
+                    hasStartedScratching = true;
+                }
+                const pos = getPosition(e);
+                scratch(pos.x, pos.y);
+            });
+            
+            canvas.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                if (!isScratching) return;
+                const pos = getPosition(e);
+                scratch(pos.x, pos.y);
+            });
+            
+            canvas.addEventListener('touchend', () => isScratching = false);
+            
+            // Initialize
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
         });
 
     </script>
