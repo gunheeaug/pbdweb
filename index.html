@@ -122,57 +122,35 @@
             position: absolute;
             width: auto;
             height: auto;
-            max-width: 80px;
+            max-width: 120px;
             z-index: 20;
             filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
             transition: transform 0.3s ease;
         }
 
+        /* Basquiat stickers - extra large */
+        .earth-sticker.basquiat {
+            max-width: 160px;
+        }
+
         /* Sticker positions - rotated to face outward from Earth's surface */
-        .sticker-1 { 
-            top: 8%; left: 28%; max-width: 55px;
-            transform: rotate(-35deg); /* upper-left: faces upper-left */
-        }
-        .sticker-2 { 
-            top: 12%; right: 22%; max-width: 65px;
-            transform: rotate(40deg); /* upper-right: faces upper-right */
-        }
-        .sticker-3 { 
-            top: 32%; left: 8%; max-width: 60px;
-            transform: rotate(-65deg); /* left side: faces left */
-        }
-        .sticker-4 { 
-            top: 28%; left: 38%; max-width: 50px;
-            transform: rotate(-20deg); /* upper-center-left: slight left tilt */
-        }
-        .sticker-5 { 
-            top: 42%; right: 12%; max-width: 58px;
-            transform: rotate(70deg); /* right side: faces right */
-        }
-        .sticker-6 { 
-            bottom: 32%; left: 18%; max-width: 65px;
-            transform: rotate(-110deg); /* lower-left: faces lower-left */
-        }
-        .sticker-7 { 
-            bottom: 28%; left: 42%; max-width: 55px;
-            transform: rotate(170deg); /* lower-center: faces downward */
-        }
-        .sticker-8 { 
-            bottom: 22%; right: 28%; max-width: 60px;
-            transform: rotate(130deg); /* lower-right: faces lower-right */
-        }
-        .sticker-9 { 
-            bottom: 38%; right: 8%; max-width: 52px;
-            transform: rotate(100deg); /* right-lower: faces right-down */
-        }
-        .sticker-10 { 
-            top: 48%; left: 32%; max-width: 55px;
-            transform: rotate(-75deg); /* center-left: faces left */
-        }
-        .sticker-11 { 
-            bottom: 12%; left: 38%; max-width: 58px;
-            transform: rotate(160deg); /* bottom-center: faces down */
-        }
+        .sticker-1 { top: 5%; left: 25%; transform: rotate(-40deg); }
+        .sticker-2 { top: 8%; right: 20%; transform: rotate(45deg); }
+        .sticker-3 { top: 18%; left: 10%; transform: rotate(-55deg); }
+        .sticker-4 { top: 15%; left: 45%; transform: rotate(-15deg); }
+        .sticker-5 { top: 22%; right: 8%; transform: rotate(65deg); }
+        .sticker-6 { top: 35%; left: 5%; transform: rotate(-70deg); }
+        .sticker-7 { top: 30%; right: 15%; transform: rotate(55deg); }
+        .sticker-8 { top: 45%; left: 12%; transform: rotate(-80deg); }
+        .sticker-9 { top: 42%; right: 5%; transform: rotate(80deg); }
+        .sticker-10 { top: 55%; left: 8%; transform: rotate(-90deg); }
+        .sticker-11 { top: 52%; right: 12%; transform: rotate(85deg); }
+        .sticker-12 { bottom: 35%; left: 15%; transform: rotate(-105deg); }
+        .sticker-13 { bottom: 38%; right: 18%; transform: rotate(100deg); }
+        .sticker-14 { bottom: 25%; left: 25%; transform: rotate(-120deg); }
+        .sticker-15 { bottom: 28%; right: 25%; transform: rotate(115deg); }
+        .sticker-16 { bottom: 15%; left: 35%; transform: rotate(-145deg); }
+        .sticker-17 { bottom: 18%; right: 35%; transform: rotate(140deg); }
 
         /* Navigation - Hidden */
         .nav-bar {
@@ -323,7 +301,11 @@
             }
 
             .earth-sticker {
-                max-width: 40px !important;
+                max-width: 70px !important;
+            }
+
+            .earth-sticker.basquiat {
+                max-width: 100px !important;
             }
 
             .apps-section {
@@ -370,15 +352,21 @@
             <!-- Stickers on Earth -->
             <img src="assets/stickers/aug sticker 1.png" alt="" class="earth-sticker sticker-1">
             <img src="assets/stickers/aug sticker 2.png" alt="" class="earth-sticker sticker-2">
-            <img src="assets/stickers/aug eyes sticker 1.png" alt="" class="earth-sticker sticker-3">
-            <img src="assets/stickers/Basquiat sticker 1.png" alt="" class="earth-sticker sticker-4">
-            <img src="assets/stickers/Basquiat sticker 2.png" alt="" class="earth-sticker sticker-5">
-            <img src="assets/stickers/pbd sticker 1.png" alt="" class="earth-sticker sticker-6">
-            <img src="assets/stickers/pbd sticker 2.png" alt="" class="earth-sticker sticker-7">
-            <img src="assets/stickers/pbd sticker 3.png" alt="" class="earth-sticker sticker-8">
-            <img src="assets/stickers/pbd sticker 4.png" alt="" class="earth-sticker sticker-9">
-            <img src="assets/stickers/pbd sticker 5.png" alt="" class="earth-sticker sticker-10">
-            <img src="assets/stickers/pbd sticker 6.png" alt="" class="earth-sticker sticker-11">
+            <img src="assets/stickers/aug sticker 3.png" alt="" class="earth-sticker sticker-3">
+            <img src="assets/stickers/aug sticker 4.png" alt="" class="earth-sticker sticker-4">
+            <img src="assets/stickers/aug sticker 5.png" alt="" class="earth-sticker sticker-5">
+            <img src="assets/stickers/aug sticker 6.png" alt="" class="earth-sticker sticker-6">
+            <img src="assets/stickers/aug sticker 7.png" alt="" class="earth-sticker sticker-7">
+            <img src="assets/stickers/aug sticker 8.png" alt="" class="earth-sticker sticker-8">
+            <img src="assets/stickers/aug sticker 9.png" alt="" class="earth-sticker sticker-9">
+            <img src="assets/stickers/aug sticker 10.png" alt="" class="earth-sticker sticker-10">
+            <img src="assets/stickers/aug eyes sticker 1.png" alt="" class="earth-sticker sticker-11">
+            <img src="assets/stickers/Basquiat sticker 1.png" alt="" class="earth-sticker basquiat sticker-12">
+            <img src="assets/stickers/Basquiat sticker 2.png" alt="" class="earth-sticker basquiat sticker-13">
+            <img src="assets/stickers/pbd sticker 1.png" alt="" class="earth-sticker sticker-14">
+            <img src="assets/stickers/pbd sticker 2.png" alt="" class="earth-sticker sticker-15">
+            <img src="assets/stickers/pbd sticker 4.png" alt="" class="earth-sticker sticker-16">
+            <img src="assets/stickers/pbd sticker 6.png" alt="" class="earth-sticker sticker-17">
         </div>
 
     </section>
@@ -501,17 +489,23 @@
                 const match = cssTransform.match(/sticker-(\d+)/);
                 if (match) {
                     const transforms = {
-                        1: 'rotate(-35deg)',
-                        2: 'rotate(40deg)',
-                        3: 'rotate(-65deg)',
-                        4: 'rotate(-20deg)',
-                        5: 'rotate(70deg)',
-                        6: 'rotate(-110deg)',
-                        7: 'rotate(170deg)',
-                        8: 'rotate(130deg)',
-                        9: 'rotate(100deg)',
-                        10: 'rotate(-75deg)',
-                        11: 'rotate(160deg)'
+                        1: 'rotate(-40deg)',
+                        2: 'rotate(45deg)',
+                        3: 'rotate(-55deg)',
+                        4: 'rotate(-15deg)',
+                        5: 'rotate(65deg)',
+                        6: 'rotate(-70deg)',
+                        7: 'rotate(55deg)',
+                        8: 'rotate(-80deg)',
+                        9: 'rotate(80deg)',
+                        10: 'rotate(-90deg)',
+                        11: 'rotate(85deg)',
+                        12: 'rotate(-105deg)',
+                        13: 'rotate(100deg)',
+                        14: 'rotate(-120deg)',
+                        15: 'rotate(115deg)',
+                        16: 'rotate(-145deg)',
+                        17: 'rotate(140deg)'
                     };
                     sticker.setAttribute('data-transform', transforms[match[1]] || '');
                 }
