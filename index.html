@@ -138,24 +138,24 @@
             max-width: 60px !important;
         }
 
-        /* Sticker positions - rotated to face outward from Earth's surface */
-        .sticker-1 { top: 5%; left: 25%; transform: rotate(-40deg); }
-        .sticker-2 { top: 8%; right: 20%; transform: rotate(45deg); }
-        .sticker-3 { top: 18%; left: 10%; transform: rotate(-55deg); }
-        .sticker-4 { top: 15%; left: 45%; transform: rotate(-15deg); }
-        .sticker-5 { top: 22%; right: 8%; transform: rotate(65deg); }
-        .sticker-6 { top: 35%; left: 5%; transform: rotate(-70deg); }
-        .sticker-7 { top: 30%; right: 15%; transform: rotate(55deg); }
-        .sticker-8 { top: 45%; left: 12%; transform: rotate(-80deg); }
-        .sticker-9 { top: 42%; right: 5%; transform: rotate(80deg); }
-        .sticker-10 { top: 55%; left: 8%; transform: rotate(-90deg); }
-        .sticker-11 { top: 52%; right: 12%; transform: rotate(85deg); }
-        .sticker-12 { bottom: 35%; left: 15%; transform: rotate(-105deg); }
-        .sticker-13 { bottom: 38%; right: 18%; transform: rotate(100deg); }
-        .sticker-14 { bottom: 25%; left: 25%; transform: rotate(-120deg); }
-        .sticker-15 { bottom: 28%; right: 25%; transform: rotate(115deg); }
-        .sticker-16 { bottom: 15%; left: 35%; transform: rotate(-145deg); }
-        .sticker-17 { bottom: 18%; right: 35%; transform: rotate(140deg); }
+        /* Sticker positions - scattered across Earth's surface */
+        .sticker-1 { top: 2%; left: 15%; transform: rotate(-45deg); }
+        .sticker-2 { top: 5%; right: 10%; transform: rotate(50deg); }
+        .sticker-3 { top: 12%; left: -5%; transform: rotate(-60deg); }
+        .sticker-4 { top: 8%; left: 55%; transform: rotate(-10deg); }
+        .sticker-5 { top: 25%; right: -2%; transform: rotate(75deg); }
+        .sticker-6 { top: 38%; left: -8%; transform: rotate(-80deg); }
+        .sticker-7 { top: 20%; right: 25%; transform: rotate(40deg); }
+        .sticker-8 { top: 50%; left: 2%; transform: rotate(-85deg); }
+        .sticker-9 { top: 48%; right: -5%; transform: rotate(85deg); }
+        .sticker-10 { top: 62%; left: -3%; transform: rotate(-95deg); }
+        .sticker-11 { top: 58%; right: 5%; transform: rotate(90deg); }
+        .sticker-12 { bottom: 30%; left: 8%; transform: rotate(-110deg); }
+        .sticker-13 { bottom: 32%; right: 10%; transform: rotate(105deg); }
+        .sticker-14 { bottom: 18%; left: 20%; transform: rotate(-130deg); }
+        .sticker-15 { bottom: 20%; right: 18%; transform: rotate(125deg); }
+        .sticker-16 { bottom: 8%; left: 42%; transform: rotate(-160deg); }
+        .sticker-17 { bottom: 5%; right: 40%; transform: rotate(155deg); }
 
         /* Navigation - Hidden */
         .nav-bar {
@@ -382,23 +382,23 @@
                 const match = cssTransform.match(/sticker-(\d+)/);
                 if (match) {
                     const transforms = {
-                        1: 'rotate(-40deg)',
-                        2: 'rotate(45deg)',
-                        3: 'rotate(-55deg)',
-                        4: 'rotate(-15deg)',
-                        5: 'rotate(65deg)',
-                        6: 'rotate(-70deg)',
-                        7: 'rotate(55deg)',
-                        8: 'rotate(-80deg)',
-                        9: 'rotate(80deg)',
-                        10: 'rotate(-90deg)',
-                        11: 'rotate(85deg)',
-                        12: 'rotate(-105deg)',
-                        13: 'rotate(100deg)',
-                        14: 'rotate(-120deg)',
-                        15: 'rotate(115deg)',
-                        16: 'rotate(-145deg)',
-                        17: 'rotate(140deg)'
+                        1: 'rotate(-45deg)',
+                        2: 'rotate(50deg)',
+                        3: 'rotate(-60deg)',
+                        4: 'rotate(-10deg)',
+                        5: 'rotate(75deg)',
+                        6: 'rotate(-80deg)',
+                        7: 'rotate(40deg)',
+                        8: 'rotate(-85deg)',
+                        9: 'rotate(85deg)',
+                        10: 'rotate(-95deg)',
+                        11: 'rotate(90deg)',
+                        12: 'rotate(-110deg)',
+                        13: 'rotate(105deg)',
+                        14: 'rotate(-130deg)',
+                        15: 'rotate(125deg)',
+                        16: 'rotate(-160deg)',
+                        17: 'rotate(155deg)'
                     };
                     sticker.setAttribute('data-transform', transforms[match[1]] || '');
                 }
