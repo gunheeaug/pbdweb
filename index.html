@@ -149,8 +149,13 @@
         }
 
         /* Sticker positions - matching mockup layout */
-        /* aug sticker 1 - leave words bottom right */
-        .sticker-1 { bottom: 18%; right: 8%; transform: rotate(25deg); }
+        /* aug sticker 1 - leave words bottom right - curved to follow Earth */
+        .sticker-1 { 
+            bottom: 18%; 
+            right: 8%; 
+            transform: perspective(200px) rotateX(15deg) rotateY(-20deg) rotate(25deg);
+            transform-style: preserve-3d;
+        }
         /* aug sticker 2 - earth sticker */
         .sticker-2 { top: 35%; left: 48%; transform: rotate(0deg); }
         /* aug sticker 3 - hello world sticker upper left */
@@ -409,7 +414,7 @@
                 const match = cssTransform.match(/sticker-(\d+)/);
                 if (match) {
                     const transforms = {
-                        1: 'rotate(25deg)',
+                        1: 'perspective(200px) rotateX(15deg) rotateY(-20deg) rotate(25deg)',
                         2: 'rotate(0deg)',
                         3: 'rotate(-25deg)',
                         4: 'rotate(20deg)',
