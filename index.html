@@ -243,11 +243,7 @@
 
         /* Apps Section - Icon Row */
         .apps-section {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 4rem 2rem;
-            background: #000;
+            display: none;
         }
 
         .apps-icons {
@@ -274,12 +270,15 @@
 
         /* Footer */
         .footer {
+            margin-top: 80vh;
             padding: 3rem;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 0.5rem;
             background: transparent;
+            position: relative;
+            z-index: 5;
         }
 
         .footer-text {
@@ -384,21 +383,6 @@
             <a href="/superba/" class="earth-sticker sticker-20 app-sticker"><img src="assets/images/Superba-icon.png" alt="superba"></a>
         </div>
 
-    </section>
-
-    <!-- Apps Section - Three Icons -->
-    <section class="apps-section" id="apps">
-        <div class="apps-icons">
-            <a href="/aug/" class="app-icon-link">
-                <img src="assets/images/aug-icon.png" alt="aug" class="app-icon-large">
-            </a>
-            <a href="/shotupai/" class="app-icon-link">
-                <img src="assets/images/Shotupai-Icon.png" alt="Shotup AI" class="app-icon-large">
-            </a>
-            <a href="/superba/" class="app-icon-link">
-                <img src="assets/images/Superba-icon.png" alt="superba" class="app-icon-large">
-            </a>
-        </div>
     </section>
 
     <!-- Footer -->
