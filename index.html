@@ -156,6 +156,7 @@
             position: absolute;
             pointer-events: none;
             z-index: 2;
+            transform-style: preserve-3d;
         }
 
         /* Subtle floating animation for stickers */
@@ -164,8 +165,18 @@
             50% { transform: translate(var(--float-x, 2px), var(--float-y, 3px)) var(--rotation); }
         }
 
+        /* 3D floating animation for app icons - no perspective */
+        @keyframes float3d {
+            0%, 100% { transform: translate(0, 0) var(--tilt); }
+            50% { transform: translate(var(--float-x, 2px), var(--float-y, 3px)) var(--tilt); }
+        }
+
         .earth-sticker.floating {
             animation: float var(--float-duration, 6s) ease-in-out infinite;
+        }
+
+        .earth-sticker.floating-3d {
+            animation: float3d var(--float-duration, 6s) ease-in-out infinite;
         }
 
         /* Apps Section */
@@ -298,12 +309,12 @@
             
             <img src="assets/stickers/aug sticker 9.png" alt="" class="earth-sticker floating" style="width: 65px; top: 55%; right: 25%; --rotation: rotate(18deg); --float-x: 2px; --float-y: -3px; --float-duration: 8.5s;">
             
-            <!-- App icons as stickers - upright with 3D tilt effect -->
-            <img src="assets/images/aug-icon.png" alt="aug" class="earth-sticker floating" style="width: 70px; top: 45%; left: 0%; --rotation: rotateX(15deg) rotateY(-20deg) rotateZ(0deg); --float-x: 2px; --float-y: 2px; --float-duration: 7s; border-radius: 16px;">
+            <!-- App icons as stickers - upright (north-facing) with 3D tilt effect -->
+            <img src="assets/images/aug-icon.png" alt="aug" class="earth-sticker floating-3d" style="width: 70px; top: 45%; left: 0%; --tilt: rotateX(18deg) rotateY(-25deg); --float-x: 2px; --float-y: 2px; --float-duration: 7s; border-radius: 16px;">
             
-            <img src="assets/images/Shotupai-Icon.png" alt="Shotup AI" class="earth-sticker floating" style="width: 70px; top: 80%; left: 45%; --rotation: rotateX(-18deg) rotateY(5deg) rotateZ(0deg); --float-x: -2px; --float-y: 3px; --float-duration: 8s; border-radius: 16px;">
+            <img src="assets/images/Shotupai-Icon.png" alt="Shotup AI" class="earth-sticker floating-3d" style="width: 70px; top: 80%; left: 45%; --tilt: rotateX(-22deg) rotateY(8deg); --float-x: -2px; --float-y: 3px; --float-duration: 8s; border-radius: 16px;">
             
-            <img src="assets/images/Superba-icon.png" alt="superba" class="earth-sticker floating" style="width: 70px; top: 45%; right: 0%; --rotation: rotateX(12deg) rotateY(18deg) rotateZ(0deg); --float-x: 3px; --float-y: -2px; --float-duration: 7.5s; border-radius: 16px;">
+            <img src="assets/images/Superba-icon.png" alt="superba" class="earth-sticker floating-3d" style="width: 70px; top: 45%; right: 0%; --tilt: rotateX(15deg) rotateY(22deg); --float-x: 3px; --float-y: -2px; --float-duration: 7.5s; border-radius: 16px;">
         </div>
 
     </section>
