@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>aug — Augment Your Reality | PBD LLC</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --app-color: #10b981;
+            --app-color-dark: #059669;
+        }
+        
+        .aug-gradient {
+            background: linear-gradient(135deg, var(--app-color), var(--app-color-dark));
+        }
+        
+        .aug-glow {
+            position: fixed;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 60%);
+            top: -200px;
+            right: -200px;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .aug-hero-icon {
+            background: linear-gradient(135deg, var(--app-color), var(--app-color-dark));
+            font-family: var(--font-display);
+            font-weight: 800;
+            color: white;
+        }
+        
+        .aug-title {
+            background: linear-gradient(135deg, var(--app-color), #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .download-btn {
+            background: linear-gradient(135deg, var(--app-color), var(--app-color-dark));
+            color: white;
+            box-shadow: 0 10px 40px rgba(16, 185, 129, 0.3);
+        }
+        
+        .download-btn:hover {
+            box-shadow: 0 15px 50px rgba(16, 185, 129, 0.4);
+        }
+        
+        .feature-card:hover {
+            border-color: var(--app-color);
+        }
+        
+        .phone-mockup {
+            position: relative;
+            width: 280px;
+            height: 560px;
+            background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+            border-radius: 40px;
+            padding: 12px;
+            box-shadow: 
+                0 50px 100px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            margin: 3rem auto;
+        }
+        
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #10b981 0%, #059669 50%, #047857 100%);
+            border-radius: 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .phone-screen::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            width: 100px;
+            height: 28px;
+            background: #000;
+            border-radius: 20px;
+        }
+        
+        .screen-content {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            font-weight: 800;
+            color: white;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .ar-elements {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+        
+        .ar-box {
+            position: absolute;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            animation: arPulse 2s ease-in-out infinite;
+        }
+        
+        .ar-box-1 {
+            width: 60px;
+            height: 60px;
+            top: 30%;
+            left: 20%;
+            animation-delay: 0s;
+        }
+        
+        .ar-box-2 {
+            width: 80px;
+            height: 50px;
+            bottom: 35%;
+            right: 15%;
+            animation-delay: 0.5s;
+        }
+        
+        .ar-box-3 {
+            width: 40px;
+            height: 40px;
+            top: 50%;
+            right: 30%;
+            animation-delay: 1s;
+        }
+        
+        @keyframes arPulse {
+            0%, 100% { 
+                opacity: 0.5; 
+                transform: scale(1);
+            }
+            50% { 
+                opacity: 1; 
+                transform: scale(1.05);
+            }
+        }
+        
+        .ar-label {
+            position: absolute;
+            padding: 4px 10px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #059669;
+            font-size: 0.6rem;
+            font-weight: 700;
+            border-radius: 4px;
+        }
+        
+        .ar-label-1 {
+            top: calc(30% + 65px);
+            left: 20%;
+        }
+        
+        .ar-label-2 {
+            bottom: calc(35% - 25px);
+            right: 15%;
+        }
+    </style>
+</head>
+<body class="app-page aug-theme">
+    <div class="noise-overlay"></div>
+    <div class="aug-glow"></div>
+    
+    <nav class="navbar">
+        <a href="/" class="logo">
+            <span class="logo-text">PBD</span>
+            <span class="logo-badge">LLC</span>
+        </a>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/shotupai/">Shotup AI</a>
+            <a href="/superba/">superba</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="app-hero">
+            <a href="/" class="back-link">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Back to PBD
+            </a>
+            
+            <img src="../assets/images/aug-icon.png" alt="aug" class="app-hero-icon aug-hero-icon">
+            
+            <h1 class="app-hero-title aug-title">aug</h1>
+            <p class="app-hero-tagline">
+                Augment your reality with intelligent overlays. See the world differently.
+            </p>
+            
+            <a href="#" class="btn download-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                </svg>
+                <span>Download on App Store</span>
+            </a>
+            
+            <div class="phone-mockup">
+                <div class="phone-screen">
+                    <div class="ar-elements">
+                        <div class="ar-box ar-box-1"></div>
+                        <div class="ar-box ar-box-2"></div>
+                        <div class="ar-box ar-box-3"></div>
+                        <span class="ar-label ar-label-1">Object A</span>
+                        <span class="ar-label ar-label-2">Object B</span>
+                    </div>
+                    <div class="screen-content">aug</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="app-features">
+            <div class="section-header">
+                <span class="section-tag">Features</span>
+                <h2 class="section-title">What makes aug special</h2>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">👁️</div>
+                    <h3 class="feature-title">AR Vision</h3>
+                    <p class="feature-desc">Real-time object detection and intelligent overlays that enhance your perception of the world around you.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3 class="feature-title">Smart Recognition</h3>
+                    <p class="feature-desc">AI-powered recognition that learns and adapts to provide contextual information when you need it.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Instant Response</h3>
+                    <p class="feature-desc">Lightning-fast processing ensures smooth, lag-free augmented experiences in real-time.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3 class="feature-title">Privacy First</h3>
+                    <p class="feature-desc">All processing happens on-device. Your visual data never leaves your phone.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <span class="logo-text">PBD</span>
+            </div>
+            <div class="footer-links">
+                <a href="/">Home</a>
+                <a href="/shotupai/">Shotup AI</a>
+                <a href="/superba/">superba</a>
+            </div>
+            <div class="footer-copy">
+                © 2025 PBD LLC. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+</body>
+</html>
+
