@@ -65,12 +65,19 @@
             white-space: nowrap;
             display: inline-block;
             max-width: 0;
+            padding: 2rem;
+            margin: -2rem;
             animation: 
                 typing 2s steps(13) 0.5s forwards, 
                 blink 0.7s step-end 4,
                 hideCursor 0s 3.3s forwards,
-                glow 3s ease-out 3.5s forwards;
+                glow 3s ease-out 3.5s forwards,
+                showOverflow 0s 2.5s forwards;
             text-shadow: none;
+        }
+
+        @keyframes showOverflow {
+            to { overflow: visible; }
         }
 
         @keyframes typing {
