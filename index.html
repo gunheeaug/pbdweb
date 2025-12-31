@@ -412,56 +412,6 @@
             });
         });
 
-        // Store original transforms for each sticker
-        const stickers = document.querySelectorAll('.earth-sticker');
-        const originalTransforms = [];
-        
-        stickers.forEach((sticker) => {
-            const computed = window.getComputedStyle(sticker);
-            originalTransforms.push(computed.transform);
-        });
-
-        // Parallax effect for stickers on mouse move - preserving 3D rotation
-        document.addEventListener('mousemove', (e) => {
-            const x = (e.clientX / window.innerWidth - 0.5) * 15;
-            const y = (e.clientY / window.innerHeight - 0.5) * 15;
-            
-            stickers.forEach((sticker, index) => {
-                const speed = (index % 3 + 1) * 0.25;
-                const baseTransform = sticker.getAttribute('data-transform') || '';
-                sticker.style.transform = `${baseTransform} translate3d(${x * speed}px, ${y * speed}px, 0)`;
-            });
-        });
-
-        // Store base transforms as data attributes
-        stickers.forEach((sticker) => {
-            const cssTransform = sticker.className.split(' ').find(c => c.startsWith('sticker-'));
-            if (cssTransform) {
-                const match = cssTransform.match(/sticker-(\d+)/);
-                if (match) {
-                    const transforms = {
-                        1: 'perspective(200px) rotateX(-15deg) rotateY(20deg) rotate(25deg)',
-                        2: 'rotate(0deg)',
-                        3: 'rotate(-25deg)',
-                        4: 'rotate(20deg)',
-                        5: 'rotate(-5deg)',
-                        6: 'rotate(-15deg)',
-                        7: 'rotate(5deg)',
-                        8: 'rotate(10deg)',
-                        9: 'rotate(15deg)',
-                        10: 'rotate(-35deg)',
-                        11: 'rotate(180deg)',
-                        12: 'rotate(-10deg)',
-                        13: 'rotate(0deg)',
-                        14: 'rotate(-15deg)',
-                        15: 'rotate(8deg)',
-                        16: 'rotate(5deg)',
-                        17: 'rotate(-20deg)'
-                    };
-                    sticker.setAttribute('data-transform', transforms[match[1]] || '');
-                }
-            }
-        });
     </script>
 </body>
 </html>
