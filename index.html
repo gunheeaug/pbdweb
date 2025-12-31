@@ -152,28 +152,6 @@
         .sticker-15 { animation-delay: 1.2s; animation-duration: 8.3s; }
         .sticker-16 { animation-delay: 1.7s; animation-duration: 9.7s; }
         .sticker-17 { animation-delay: 2.2s; animation-duration: 8.7s; }
-        .sticker-18 { animation-delay: 0.9s; animation-duration: 9.8s; }
-        .sticker-19 { animation-delay: 1.4s; animation-duration: 8.1s; }
-        .sticker-20 { animation-delay: 1.9s; animation-duration: 9.9s; }
-
-        /* App icon stickers */
-        .app-sticker {
-            display: block;
-            max-width: 70px !important;
-            border-radius: 16px;
-            overflow: visible;
-        }
-
-        .app-sticker img {
-            width: 100%;
-            height: auto;
-            border-radius: 16px;
-        }
-
-        /* App sticker positions */
-        .sticker-18 { top: 45%; left: 2%; transform: rotate(-15deg); } /* aug - left end */
-        .sticker-19 { bottom: 5%; left: 45%; transform: rotate(180deg); } /* Shotup AI - bottom end */
-        .sticker-20 { top: 45%; right: 2%; transform: rotate(15deg); } /* superba - right end */
 
         /* Basquiat stickers - extra large */
         .earth-sticker.basquiat {
@@ -243,12 +221,18 @@
 
         /* Apps Section - Icon Row */
         .apps-section {
-            display: none;
+            margin-top: 80vh;
+            padding: 4rem 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 5;
         }
 
         .apps-icons {
             display: flex;
-            gap: 1.5rem;
+            gap: 2rem;
             justify-content: center;
             align-items: center;
         }
@@ -270,7 +254,6 @@
 
         /* Footer */
         .footer {
-            margin-top: 80vh;
             padding: 3rem;
             display: flex;
             flex-direction: column;
@@ -378,13 +361,23 @@
             <img src="assets/stickers/pbd sticker 2.png" alt="" class="earth-sticker sticker-15">
             <img src="assets/stickers/pbd sticker 4.png" alt="" class="earth-sticker sticker-16">
             <img src="assets/stickers/pbd sticker 6.png" alt="" class="earth-sticker sticker-17">
-            
-            <!-- App icons as stickers -->
-            <a href="/aug/" class="earth-sticker sticker-18 app-sticker"><img src="assets/images/aug-icon.png" alt="aug"></a>
-            <a href="/shotupai/" class="earth-sticker sticker-19 app-sticker"><img src="assets/images/Shotupai-Icon.png" alt="Shotup AI"></a>
-            <a href="/superba/" class="earth-sticker sticker-20 app-sticker"><img src="assets/images/Superba-icon.png" alt="superba"></a>
         </div>
 
+    </section>
+
+    <!-- Apps Section -->
+    <section class="apps-section">
+        <div class="apps-icons">
+            <a href="/aug/" class="app-icon-link">
+                <img src="assets/images/aug-icon.png" alt="aug" class="app-icon-large">
+            </a>
+            <a href="/shotupai/" class="app-icon-link">
+                <img src="assets/images/Shotupai-Icon.png" alt="Shotup AI" class="app-icon-large">
+            </a>
+            <a href="/superba/" class="app-icon-link">
+                <img src="assets/images/Superba-icon.png" alt="superba" class="app-icon-large">
+            </a>
+        </div>
     </section>
 
     <!-- Footer -->
@@ -456,10 +449,7 @@
                         14: 'rotate(-15deg)',
                         15: 'rotate(8deg)',
                         16: 'rotate(5deg)',
-                        17: 'rotate(-20deg)',
-                        18: 'rotate(-15deg)',
-                        19: 'rotate(180deg)',
-                        20: 'rotate(15deg)'
+                        17: 'rotate(-20deg)'
                     };
                     sticker.setAttribute('data-transform', transforms[match[1]] || '');
                 }
