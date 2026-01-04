@@ -26,6 +26,31 @@
         html, body {
             height: 100%;
             overflow-x: hidden;
+            width: 100%;
+        }
+
+        /* Hide scrollbar but keep scrolling */
+        html, body {
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+        }
+
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Edge */
+            width: 0;
+            height: 0;
+        }
+
+        *::-webkit-scrollbar {
+            display: none;
+            width: 0;
+            height: 0;
+        }
+
+        * {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
 
         body {
@@ -110,33 +135,158 @@
             max-width: 120px;
             z-index: 20;
             filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
-            animation: float 4s ease-in-out infinite;
+            opacity: 0;
         }
 
-        /* Subtle floating animation for space effect */
-        @keyframes float {
+        /* TV Static/Glitch appearance animation */
+        @keyframes tvStatic {
+            0% {
+                opacity: 0;
+                filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)) brightness(3) contrast(1.5);
+                clip-path: inset(0 0 100% 0);
+            }
+            5% {
+                opacity: 1;
+                clip-path: inset(0 0 60% 0);
+            }
+            10% {
+                opacity: 0.3;
+                filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)) brightness(2) saturate(0);
+                clip-path: inset(0 0 40% 0);
+            }
+            15% {
+                opacity: 1;
+                clip-path: inset(0 0 20% 0);
+            }
+            20% {
+                opacity: 0.5;
+                filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)) brightness(1.5);
+                clip-path: inset(0 0 30% 0);
+            }
+            25% {
+                opacity: 0.8;
+                clip-path: inset(0 0 10% 0);
+            }
+            30% {
+                opacity: 0.2;
+                filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)) brightness(2.5) contrast(2);
+                clip-path: inset(0 0 5% 0);
+            }
+            40% {
+                opacity: 1;
+                filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)) brightness(1.2);
+                clip-path: inset(0 0 0 0);
+            }
+            50% {
+                opacity: 0.6;
+                filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+            }
+            60% {
+                opacity: 1;
+            }
+            70% {
+                opacity: 0.8;
+                filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)) brightness(1.1);
+            }
+            80% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 0.9;
+            }
+            100% {
+                opacity: 1;
+                filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+                clip-path: inset(0 0 0 0);
+            }
+        }
+
+        /* Floating animations - more noticeable movement */
+        @keyframes float1 {
             0%, 100% { translate: 0 0; }
-            50% { translate: 1px -1px; }
+            50% { translate: 4px -6px; }
+        }
+        @keyframes float2 {
+            0%, 100% { translate: 0 0; }
+            50% { translate: -5px -4px; }
+        }
+        @keyframes float3 {
+            0%, 100% { translate: 0 0; }
+            50% { translate: 3px -5px; }
+        }
+        @keyframes float4 {
+            0%, 100% { translate: 0 0; }
+            50% { translate: -4px -6px; }
+        }
+        @keyframes float5 {
+            0%, 100% { translate: 0 0; }
+            50% { translate: 5px -3px; }
+        }
+        @keyframes float6 {
+            0%, 100% { translate: 0 0; }
+            50% { translate: -3px -5px; }
         }
 
-        /* Stagger animation delays for natural movement */
-        .sticker-1 { animation-delay: 0s; animation-duration: 8s; }
-        .sticker-2 { animation-delay: 0.5s; animation-duration: 9s; }
-        .sticker-3 { animation-delay: 1s; animation-duration: 8.5s; }
-        .sticker-4 { animation-delay: 1.5s; animation-duration: 9.5s; }
-        .sticker-5 { animation-delay: 2s; animation-duration: 8.2s; }
-        .sticker-6 { animation-delay: 0.3s; animation-duration: 9.2s; }
-        .sticker-7 { animation-delay: 0.8s; animation-duration: 8.8s; }
-        .sticker-8 { animation-delay: 1.3s; animation-duration: 9.3s; }
-        .sticker-9 { animation-delay: 1.8s; animation-duration: 8.6s; }
-        .sticker-10 { animation-delay: 0.6s; animation-duration: 9.6s; }
-        .sticker-11 { animation-delay: 1.1s; animation-duration: 8.4s; }
-        .sticker-12 { animation-delay: 1.6s; animation-duration: 9.1s; }
-        .sticker-13 { animation-delay: 0.2s; animation-duration: 8.9s; }
-        .sticker-14 { animation-delay: 0.7s; animation-duration: 9.4s; }
-        .sticker-15 { animation-delay: 1.2s; animation-duration: 8.3s; }
-        .sticker-16 { animation-delay: 1.7s; animation-duration: 9.7s; }
-        .sticker-17 { animation-delay: 2.2s; animation-duration: 8.7s; }
+        /* Rotating animation for specific stickers */
+        @keyframes spin {
+            0% { rotate: 0deg; }
+            100% { rotate: 360deg; }
+        }
+
+        /* Looping TV glitch effect - disappear and reappear (less frequent) */
+        @keyframes tvBlink {
+            0%, 100% { 
+                opacity: 1;
+                filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+            }
+            92% {
+                opacity: 1;
+                filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+            }
+            94% {
+                opacity: 0.3;
+                filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)) brightness(2);
+            }
+            95% {
+                opacity: 0;
+                filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)) brightness(3);
+            }
+            96% {
+                opacity: 0.2;
+                filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)) brightness(2) saturate(0);
+            }
+            97% {
+                opacity: 0.8;
+                filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)) brightness(1.5);
+            }
+            98% {
+                opacity: 0.4;
+                filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)) brightness(2);
+            }
+            99% {
+                opacity: 1;
+                filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+            }
+        }
+
+        /* Stagger TV static appearance then floating + random blink - sequential appearance */
+        .sticker-1 { animation: tvStatic 0.5s ease-out 0.3s forwards, float1 6s ease-in-out 0.8s infinite, tvBlink 20s ease-in-out 8s infinite; }
+        .sticker-2 { animation: tvStatic 0.5s ease-out 0.5s forwards, spin 8s linear 1.0s infinite, tvBlink 25s ease-in-out 12s infinite; }
+        .sticker-3 { animation: tvStatic 0.5s ease-out 0.7s forwards, float3 5.5s ease-in-out 1.2s infinite, tvBlink 22s ease-in-out 6s infinite; }
+        .sticker-4 { animation: tvStatic 0.5s ease-out 0.9s forwards, float4 6.5s ease-in-out 1.4s infinite, tvBlink 28s ease-in-out 15s infinite; }
+        .sticker-5 { animation: tvStatic 0.5s ease-out 1.1s forwards, float5 7.5s ease-in-out 1.6s infinite, tvBlink 18s ease-in-out 10s infinite; }
+        .sticker-6 { animation: tvStatic 0.5s ease-out 1.3s forwards, float6 6.2s ease-in-out 1.8s infinite, tvBlink 30s ease-in-out 18s infinite; }
+        .sticker-7 { animation: tvStatic 0.5s ease-out 1.5s forwards, float1 5.8s ease-in-out 2.0s infinite, tvBlink 24s ease-in-out 9s infinite; }
+        .sticker-8 { animation: tvStatic 0.5s ease-out 1.7s forwards, float2 6.8s ease-in-out 2.2s infinite, tvBlink 26s ease-in-out 14s infinite; }
+        .sticker-9 { animation: tvStatic 0.5s ease-out 1.9s forwards, float3 7.2s ease-in-out 2.4s infinite, tvBlink 20s ease-in-out 7s infinite; }
+        .sticker-10 { animation: tvStatic 0.5s ease-out 2.1s forwards, float4 5.5s ease-in-out 2.6s infinite, tvBlink 28s ease-in-out 20s infinite; }
+        .sticker-11 { animation: tvStatic 0.5s ease-out 2.3s forwards, float5 6.4s ease-in-out 2.8s infinite, tvBlink 22s ease-in-out 11s infinite; }
+        .sticker-12 { animation: tvStatic 0.5s ease-out 2.5s forwards, float6 7.1s ease-in-out 3.0s infinite, tvBlink 25s ease-in-out 16s infinite; }
+        .sticker-13 { animation: tvStatic 0.5s ease-out 2.7s forwards, float1 5.9s ease-in-out 3.2s infinite, tvBlink 30s ease-in-out 22s infinite; }
+        .sticker-14 { animation: tvStatic 0.5s ease-out 2.9s forwards, float2 6.6s ease-in-out 3.4s infinite, tvBlink 18s ease-in-out 8s infinite; }
+        .sticker-15 { animation: tvStatic 0.5s ease-out 3.1s forwards, spin 10s linear 3.6s infinite, tvBlink 26s ease-in-out 17s infinite; }
+        .sticker-16 { animation: tvStatic 0.5s ease-out 3.3s forwards, spin 12s linear 3.8s infinite, tvBlink 24s ease-in-out 13s infinite; }
+        .sticker-17 { animation: tvStatic 0.5s ease-out 3.5s forwards, float5 6.9s ease-in-out 4.0s infinite, tvBlink 22s ease-in-out 10s infinite; }
 
         /* Basquiat stickers - extra large */
         .earth-sticker.basquiat {
@@ -154,7 +304,10 @@
         }
 
         /* Extra small stickers */
-        .sticker-15, .sticker-16 {
+        .sticker-15 {
+            max-width: 30px !important;
+        }
+        .sticker-16 {
             max-width: 40px !important;
         }
 
@@ -166,8 +319,15 @@
             transform: perspective(200px) rotateX(-15deg) rotateY(20deg) rotate(25deg);
             transform-style: preserve-3d;
         }
-        /* aug sticker 2 - earth sticker */
-        .sticker-2 { top: 35%; left: 48%; transform: rotate(0deg); }
+        /* aug sticker 2 - earth sticker - extra padding for shadow during rotation */
+        .sticker-2 { 
+            top: 35%; 
+            left: 48%; 
+            transform: rotate(0deg);
+            padding: 20px;
+            margin: -20px;
+            box-sizing: content-box;
+        }
         /* aug sticker 3 - hello world sticker upper left */
         .sticker-3 { top: 8%; left: 8%; transform: rotate(-25deg); }
         /* aug sticker 4 - 3D pink text upper right corner */
@@ -181,21 +341,35 @@
         /* aug sticker 8 - cat upper right corner */
         .sticker-8 { top: 12%; right: 8%; transform: rotate(10deg); }
         /* aug sticker 9 - girl waving right side */
-        .sticker-9 { top: 38%; right: 12%; transform: rotate(15deg); }
+        .sticker-9 { top: 38%; right: 2%; transform: rotate(15deg); }
         /* aug sticker 10 - 3D pink AUG text bottom left */
         .sticker-10 { bottom: 22%; left: 2%; transform: rotate(-35deg); }
-        /* aug eyes sticker - glasses bottom center */
-        .sticker-11 { bottom: 10%; left: 40%; transform: rotate(180deg); }
+        /* aug eyes sticker - glasses bottom center - facing north */
+        .sticker-11 { bottom: 10%; left: 40%; transform: rotate(0deg); }
         /* Basquiat sticker 1 - "pale blue dot" text center left */
         .sticker-12 { top: 45%; left: 18%; transform: rotate(-10deg); }
         /* Basquiat sticker 2 - person raising hand top center */
         .sticker-13 { top: -2%; left: 42%; transform: rotate(0deg); }
         /* pbd sticker 1 - cursive text left side */
         .sticker-14 { top: 25%; left: 18%; transform: rotate(-15deg); max-width: 140px; }
-        /* pbd sticker 2 - "aug" label right side */
-        .sticker-15 { top: 42%; right: 22%; transform: rotate(8deg); }
-        /* pbd sticker 4 - "pbd" logo lower center */
-        .sticker-16 { top: 58%; left: 35%; transform: rotate(5deg); }
+        /* pbd sticker 2 - "aug" label right side - extra padding for shadow during rotation */
+        .sticker-15 { 
+            top: 42%; 
+            right: 22%; 
+            transform: rotate(8deg);
+            padding: 20px;
+            margin: -20px;
+            box-sizing: content-box;
+        }
+        /* pbd sticker 4 - "pbd" logo lower center - extra padding for shadow during rotation */
+        .sticker-16 { 
+            top: 58%; 
+            left: 35%; 
+            transform: rotate(5deg);
+            padding: 20px;
+            margin: -20px;
+            box-sizing: content-box;
+        }
         /* pbd sticker 6 - pink "pbd" text bottom left */
         .sticker-17 { bottom: 28%; left: 28%; transform: rotate(-20deg); }
 
@@ -204,37 +378,170 @@
             display: none;
         }
 
-        /* Apps Section - Icon Row */
+        /* Apps Section - App Cards */
         .apps-section {
             margin-top: 80vh;
             padding: 4rem 2rem 8rem;
             display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+            align-items: flex-start;
+            position: relative;
+            z-index: 5;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .app-card {
+            background: #1c1c1e;
+            border-radius: 20px;
+            padding: 20px;
+            width: 340px;
+            flex-shrink: 0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .app-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+        }
+
+        .app-card-header {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .app-card-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 14px;
+            flex-shrink: 0;
+        }
+
+        .app-card-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .app-card-title {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            font-size: 17px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 2px;
+        }
+
+        .app-card-tagline {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            font-size: 13px;
+            color: #8e8e93;
+            margin-bottom: 6px;
+        }
+
+        .app-card-rating {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .app-card-stars {
+            color: #ff9500;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .app-card-rating-count {
+            font-size: 12px;
+            color: #8e8e93;
+        }
+
+        .app-card-download {
+            flex-shrink: 0;
+        }
+
+        .app-card-download-btn {
+            background: rgba(10, 132, 255, 0.15);
+            color: #0a84ff;
+            border: none;
+            padding: 6px 18px;
+            border-radius: 100px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .app-card-download-btn:hover {
+            background: rgba(10, 132, 255, 0.25);
+        }
+
+        .app-card-badges {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            font-size: 12px;
+            color: #8e8e93;
+        }
+
+        .app-card-badge {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .app-card-badge svg {
+            width: 14px;
+            height: 14px;
+            fill: #8e8e93;
+        }
+
+        .app-card-previews {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .app-card-previews::-webkit-scrollbar {
+            display: none;
+        }
+
+        .app-card-preview {
+            flex-shrink: 0;
+            height: 220px;
+            border-radius: 12px;
+            background: #2c2c2e;
+            overflow: hidden;
+        }
+
+        .app-card-preview img {
+            height: 100%;
+            width: auto;
+            object-fit: cover;
+        }
+
+        /* NVIDIA Inception Logo */
+        .nvidia-section {
+            display: flex;
             justify-content: center;
             align-items: center;
+            padding: 3rem 2rem;
             position: relative;
             z-index: 5;
         }
 
-        .apps-icons {
-            display: flex;
-            gap: 3rem;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .app-icon-link {
-            display: block;
-            transition: transform 0.3s ease;
-        }
-
-        .app-icon-link:hover {
-            transform: scale(1.1);
-        }
-
-        .app-icon-large {
-            width: 64px;
-            height: 64px;
-            border-radius: 14px;
+        .nvidia-logo {
+            max-width: 140px;
+            height: auto;
+            filter: invert(1) hue-rotate(180deg) brightness(1.5);
+            opacity: 1;
         }
 
         /* Footer */
@@ -272,6 +579,7 @@
         /* Responsive */
         @media (max-width: 768px) {
             .hero-title {
+                font-family: 'Cal Sans', sans-serif !important;
                 font-size: 1.2rem;
             }
 
@@ -288,26 +596,38 @@
                 height: 90vw;
             }
 
+            /* Scale stickers proportionally on mobile */
             .earth-sticker {
-                max-width: 70px !important;
+                max-width: 50px !important;
             }
 
             .earth-sticker.basquiat {
-                max-width: 100px !important;
+                max-width: 70px !important;
             }
+
+            /* Specific mobile sticker adjustments */
+            .sticker-7 { max-width: 55px !important; }
+            .sticker-14 { max-width: 80px !important; }
+            .sticker-4, .sticker-5, .sticker-11 { max-width: 35px !important; }
+            .sticker-15, .sticker-16 { max-width: 25px !important; }
+            .sticker-10 { max-width: 45px !important; }
+            
+            /* Move aug sticker 9 to far right on mobile */
+            .sticker-9 { right: 0%; }
 
             .apps-section {
-                padding: 3rem 1.5rem;
-            }
-
-            .apps-grid {
+                padding: 3rem 1rem;
                 flex-direction: column;
                 align-items: center;
             }
 
             .app-card {
                 width: 100%;
-                max-width: 320px;
+                max-width: 340px;
+            }
+
+            .app-card-preview {
+                height: 180px;
             }
 
         }
@@ -356,18 +676,103 @@
 
     <!-- Apps Section -->
     <section class="apps-section">
-        <div class="apps-icons">
-            <a href="/aug/" class="app-icon-link">
-                <img src="assets/images/aug-icon.png" alt="aug" class="app-icon-large">
-            </a>
-            <a href="/shotupai/" class="app-icon-link">
-                <img src="assets/images/Shotupai-Icon.png" alt="Shotup AI" class="app-icon-large">
-            </a>
-            <a href="/superba/" class="app-icon-link">
-                <img src="assets/images/Superba-icon.png" alt="superba" class="app-icon-large">
-            </a>
-        </div>
+        <!-- aug App Card -->
+        <a href="/aug/" class="app-card">
+            <div class="app-card-header">
+                <img src="assets/images/aug-icon.png" alt="aug" class="app-card-icon">
+                <div class="app-card-info">
+                    <div class="app-card-title">aug spatial</div>
+                    <div class="app-card-tagline">Make anything into AR</div>
+                </div>
+                <div class="app-card-download">
+                    <button class="app-card-download-btn">GET</button>
+                </div>
+            </div>
+            <div class="app-card-badges">
+                <span class="app-card-badge">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                    Social Networking
+                </span>
+                <span class="app-card-badge">|</span>
+                <span class="app-card-badge">
+                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    PBD LLC
+                </span>
+            </div>
+            <div class="app-card-previews">
+                <div class="app-card-preview"><img src="assets/App Previews/aug/aug 1.png" alt="aug preview"></div>
+                <div class="app-card-preview"><img src="assets/App Previews/aug/aug 2.png" alt="aug preview"></div>
+                <div class="app-card-preview"><img src="assets/App Previews/aug/aug 3.png" alt="aug preview"></div>
+            </div>
+        </a>
+
+        <!-- Shotup AI App Card -->
+        <a href="/shotupai/" class="app-card">
+            <div class="app-card-header">
+                <img src="assets/images/Shotupai-Icon.png" alt="Shotup AI" class="app-card-icon">
+                <div class="app-card-info">
+                    <div class="app-card-title">Shotup AI</div>
+                    <div class="app-card-tagline">Instant AI Screenshots</div>
+                </div>
+                <div class="app-card-download">
+                    <button class="app-card-download-btn">GET</button>
+                </div>
+            </div>
+            <div class="app-card-badges">
+                <span class="app-card-badge">
+                    <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+                    Photo & Video
+                </span>
+                <span class="app-card-badge">|</span>
+                <span class="app-card-badge">
+                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    PBD LLC
+                </span>
+            </div>
+            <div class="app-card-previews">
+                <div class="app-card-preview"><img src="assets/App Previews/Shotup AI/Shotup AI 1.png" alt="Shotup AI preview"></div>
+                <div class="app-card-preview"><img src="assets/App Previews/Shotup AI/Shotup AI 2.png" alt="Shotup AI preview"></div>
+                <div class="app-card-preview"><img src="assets/App Previews/Shotup AI/Shotup AI 3.png" alt="Shotup AI preview"></div>
+            </div>
+        </a>
+
+        <!-- Superba App Card -->
+        <a href="/superba/" class="app-card">
+            <div class="app-card-header">
+                <img src="assets/images/Superba-icon.png" alt="Superba" class="app-card-icon">
+                <div class="app-card-info">
+                    <div class="app-card-title">Superba - Run with Friends</div>
+                    <div class="app-card-tagline">Run IRL with Friends</div>
+                </div>
+                <div class="app-card-download">
+                    <button class="app-card-download-btn">GET</button>
+                </div>
+            </div>
+            <div class="app-card-badges">
+                <span class="app-card-badge">
+                    <svg viewBox="0 0 24 24"><path d="M13.49 5.48c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-3.6 13.9l1-4.4 2.1 2v6h2v-7.5l-2.1-2 .6-3c1.3 1.5 3.3 2.5 5.5 2.5v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1l-5.2 2.2v4.7h2v-3.4l1.8-.7-1.6 8.1-4.9-1-.4 2 7 1.4z"/></svg>
+                    Health & Fitness
+                </span>
+                <span class="app-card-badge">|</span>
+                <span class="app-card-badge">Social</span>
+                <span class="app-card-badge">|</span>
+                <span class="app-card-badge">
+                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    PBD LLC
+                </span>
+            </div>
+            <div class="app-card-previews">
+                <div class="app-card-preview"><img src="assets/App Previews/Superba/Superba 1.png" alt="Superba preview"></div>
+                <div class="app-card-preview"><img src="assets/App Previews/Superba/Superba 2.png" alt="Superba preview"></div>
+                <div class="app-card-preview"><img src="assets/App Previews/Superba/Superba 3.png" alt="Superba preview"></div>
+            </div>
+        </a>
     </section>
+
+    <!-- NVIDIA Inception Logo -->
+    <div class="nvidia-section">
+        <img src="assets/Logos/nvidia-inception-logo.webp" alt="NVIDIA Inception" class="nvidia-logo">
+    </div>
 
     <!-- Footer -->
     <footer class="footer">
