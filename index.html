@@ -102,16 +102,6 @@
 
         .bottom-section {
             position: relative;
-            background: url('/assets/images/basquiat bg.jpg') center top / cover no-repeat;
-        }
-
-        .bottom-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
             background: 
                 linear-gradient(to bottom, 
                     #000 0%, 
@@ -124,14 +114,8 @@
                     rgba(0,0,0,0.28) 70%, 
                     rgba(0,0,0,0.16) 80%, 
                     rgba(0,0,0,0.06) 90%, 
-                    transparent 100%);
-            filter: url(#grain);
-            pointer-events: none;
-        }
-
-        .bottom-section > * {
-            position: relative;
-            z-index: 1;
+                    transparent 100%),
+                url('/assets/images/basquiat bg.jpg') center top / cover no-repeat;
         }
 
         a {
@@ -799,9 +783,6 @@
 
             .bottom-section {
                 margin-top: 35vh;
-            }
-
-            .bottom-section::before {
                 background: 
                     linear-gradient(to bottom, 
                         #000 0%, 
@@ -814,24 +795,14 @@
                         rgba(0,0,0,0.28) 68%, 
                         rgba(0,0,0,0.16) 80%, 
                         rgba(0,0,0,0.06) 90%, 
-                        transparent 100%);
+                        transparent 100%),
+                    url('/assets/images/basquiat bg.jpg') center top / cover no-repeat;
             }
 
         }
     </style>
 </head>
 <body>
-    <!-- SVG Grain Filter -->
-    <svg style="position: absolute; width: 0; height: 0;">
-        <defs>
-            <filter id="grain">
-                <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch" result="noise"/>
-                <feColorMatrix type="saturate" values="0" in="noise" result="monoNoise"/>
-                <feBlend in="SourceGraphic" in2="monoNoise" mode="multiply"/>
-            </filter>
-        </defs>
-    </svg>
-
     <!-- Loading Screen -->
     <div class="loading-screen" id="loadingScreen">
         <img src="assets/images/Earth.png" alt="Loading" class="loading-earth">
