@@ -693,8 +693,17 @@
 
         .app-card-badge {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 4px;
+            line-height: 1.3;
+        }
+
+        .app-card-badge-emoji {
+            flex-shrink: 0;
+        }
+
+        .app-card-badge-text {
+            flex: 1;
         }
 
         .app-card-badge svg {
@@ -931,9 +940,9 @@
                 </div>
             </div>
             <div class="app-card-badges">
-                <span class="app-card-badge">🌐 Spatial / AR</span>
-                <span class="app-card-badge">📍 Social Map</span>
-                <span class="app-card-badge">🤝 IRL Interactions</span>
+                <span class="app-card-badge"><span class="app-card-badge-emoji">🌐</span><span class="app-card-badge-text">Spatial / AR</span></span>
+                <span class="app-card-badge"><span class="app-card-badge-emoji">📍</span><span class="app-card-badge-text">Social Map</span></span>
+                <span class="app-card-badge"><span class="app-card-badge-emoji">🤝</span><span class="app-card-badge-text">IRL Interactions</span></span>
             </div>
             <div class="app-card-previews">
                 <div class="app-card-preview"><img src="assets/App Previews/aug/aug 1.png" alt="aug preview"></div>
@@ -955,9 +964,9 @@
                 </div>
             </div>
             <div class="app-card-badges">
-                <span class="app-card-badge">🤖 AI Assistant</span>
-                <span class="app-card-badge">⚡ Productivity</span>
-                <span class="app-card-badge">📁 Personal Archive</span>
+                <span class="app-card-badge"><span class="app-card-badge-emoji">🤖</span><span class="app-card-badge-text">AI Assistant</span></span>
+                <span class="app-card-badge"><span class="app-card-badge-emoji">⚡</span><span class="app-card-badge-text">Productivity</span></span>
+                <span class="app-card-badge"><span class="app-card-badge-emoji">📁</span><span class="app-card-badge-text">Personal Archive</span></span>
             </div>
             <div class="app-card-previews">
                 <div class="app-card-preview"><img src="assets/App Previews/Shotup AI/Shotup AI 1.png" alt="Shotup AI preview"></div>
@@ -979,9 +988,9 @@
                 </div>
             </div>
             <div class="app-card-badges">
-                <span class="app-card-badge">🏃 IRL Running</span>
-                <span class="app-card-badge">❤️ Apple Health</span>
-                <span class="app-card-badge">📍 Social Map</span>
+                <span class="app-card-badge"><span class="app-card-badge-emoji">🏃</span><span class="app-card-badge-text">IRL Running</span></span>
+                <span class="app-card-badge"><span class="app-card-badge-emoji">❤️</span><span class="app-card-badge-text">Apple Health</span></span>
+                <span class="app-card-badge"><span class="app-card-badge-emoji">📍</span><span class="app-card-badge-text">Social Map</span></span>
             </div>
             <div class="app-card-previews">
                 <div class="app-card-preview"><img src="assets/App Previews/Superba/Superba 1.png" alt="Superba preview"></div>
