@@ -102,10 +102,9 @@
 
         .bottom-section {
             position: relative;
-            padding-top: 8rem;
             background: 
-                linear-gradient(to bottom, #000 0%, #000 15%, rgba(0,0,0,0.85) 30%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.3) 75%, rgba(0,0,0,0.2) 100%),
-                url('/assets/images/basquiat bg.jpg') center top / 100% auto no-repeat;
+                linear-gradient(to bottom, #000 0%, rgba(0,0,0,0.7) 20%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.2) 100%),
+                url('/assets/images/basquiat bg.jpg') center bottom / cover no-repeat;
         }
 
         a {
@@ -476,8 +475,9 @@
             padding: 20px;
             width: 340px;
             flex-shrink: 0;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            opacity: 1;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, opacity 0.6s ease;
+            opacity: 0;
+            transform: translateY(40px);
             box-shadow: 
                 0 2px 4px rgba(0,0,0,0.05),
                 0 8px 16px rgba(0,0,0,0.08),
@@ -520,7 +520,12 @@
             border-radius: 50%;
         }
 
-        .app-card:hover {
+        .app-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .app-card.visible:hover {
             transform: translateY(-10px) rotateX(4deg);
             box-shadow: 
                 0 4px 8px rgba(0,0,0,0.04),
@@ -955,6 +960,37 @@
                 block: 'start'
             });
         }
+
+        // App cards sequential reveal animation
+        let cardsRevealed = false;
+        let revealTimeout = null;
+
+        const taglineSection = document.getElementById('tagline-section');
+        const appCards = document.querySelectorAll('.app-card');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !cardsRevealed) {
+                    // Start 2 second timer when tagline is visible
+                    revealTimeout = setTimeout(() => {
+                        // Reveal cards in sequence
+                        appCards.forEach((card, index) => {
+                            setTimeout(() => {
+                                card.classList.add('visible');
+                            }, index * 200); // 200ms delay between each card
+                        });
+                        cardsRevealed = true;
+                    }, 2000);
+                } else if (!entry.isIntersecting && !cardsRevealed) {
+                    // Clear timeout if user scrolls away before 2 seconds
+                    clearTimeout(revealTimeout);
+                }
+            });
+        }, {
+            threshold: 0.3 // Trigger when 30% of tagline section is visible
+        });
+
+        observer.observe(taglineSection);
 
     </script>
 </body>
