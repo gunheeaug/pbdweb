@@ -963,7 +963,6 @@
 
         // App cards sequential reveal animation
         let cardsRevealed = false;
-        let revealTimeout = null;
 
         const taglineSection = document.getElementById('tagline-section');
         const appCards = document.querySelectorAll('.app-card');
@@ -971,19 +970,13 @@
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting && !cardsRevealed) {
-                    // Start 2 second timer when tagline is visible
-                    revealTimeout = setTimeout(() => {
-                        // Reveal cards in sequence
-                        appCards.forEach((card, index) => {
-                            setTimeout(() => {
-                                card.classList.add('visible');
-                            }, index * 200); // 200ms delay between each card
-                        });
-                        cardsRevealed = true;
-                    }, 2000);
-                } else if (!entry.isIntersecting && !cardsRevealed) {
-                    // Clear timeout if user scrolls away before 2 seconds
-                    clearTimeout(revealTimeout);
+                    // Reveal cards in sequence immediately
+                    appCards.forEach((card, index) => {
+                        setTimeout(() => {
+                            card.classList.add('visible');
+                        }, index * 200); // 200ms delay between each card
+                    });
+                    cardsRevealed = true;
                 }
             });
         }, {
