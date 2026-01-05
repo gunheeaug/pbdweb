@@ -7,14 +7,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;500;600;700;800;900&family=Google+Sans+Flex:wght@400;500&display=swap" rel="stylesheet">
-    <link href="assets/fonts/CalSans-Regular.ttf" rel="preload" as="font" type="font/ttf" crossorigin>
+    <link href="/assets/fonts/CalSans-Regular.ttf" rel="preload" as="font" type="font/ttf">
     <style>
         @font-face {
             font-family: 'Cal Sans';
-            src: url('assets/fonts/CalSans-Regular.ttf') format('truetype');
-            font-weight: 400 700;
+            src: url('/assets/fonts/CalSans-Regular.ttf') format('truetype');
+            font-weight: normal;
             font-style: normal;
-            font-display: block;
+            font-display: swap;
         }
 
         * {
@@ -119,9 +119,9 @@
 
         /* Logo as typed text */
         .hero-title {
-            font-family: 'Cal Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+            font-family: 'Cal Sans', sans-serif;
             font-size: clamp(1rem, 1.8vw, 1.4rem);
-            font-weight: 600 !important;
+            font-weight: normal;
             color: #fff;
             letter-spacing: -0.03em;
             z-index: 10;
@@ -698,9 +698,9 @@
         /* Responsive */
         @media (max-width: 768px) {
             .hero-title {
-                font-family: 'Cal Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+                font-family: 'Cal Sans', sans-serif;
                 font-size: 1.2rem;
-                font-weight: 600 !important;
+                font-weight: normal;
                 -webkit-font-smoothing: antialiased;
                 -moz-osx-font-smoothing: grayscale;
             }
