@@ -544,6 +544,7 @@
             gap: 14px;
             align-items: flex-start;
             margin-bottom: 16px;
+            position: relative;
         }
 
         .app-card-icon {
@@ -568,12 +569,11 @@
 
         .app-card-tagline {
             font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
-            font-size: 14px;
+            font-size: 13px;
             color: #6e6e73;
-            margin: 8px 0 12px 0;
-            width: 100%;
-            position: relative;
-            z-index: 2;
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: visible;
         }
 
         .app-card-rating {
@@ -594,7 +594,9 @@
         }
 
         .app-card-download {
-            flex-shrink: 0;
+            position: absolute;
+            top: 0;
+            right: 0;
         }
 
         .app-card-download-btn {
@@ -822,12 +824,12 @@
                 <img src="assets/images/aug-icon.png" alt="aug" class="app-card-icon">
                 <div class="app-card-info">
                     <div class="app-card-title">aug - Easy Spatial Snap</div>
+                    <div class="app-card-tagline">Make anything into AR</div>
                 </div>
                 <div class="app-card-download">
                     <button class="app-card-download-btn">More</button>
                 </div>
             </div>
-            <div class="app-card-tagline">Make anything into AR</div>
             <div class="app-card-badges">
                 <span class="app-card-badge">🌐 Spatial / AR</span>
                 <span class="app-card-badge">📍 Social Map</span>
@@ -846,12 +848,12 @@
                 <img src="assets/images/Shotupai-Icon.png" alt="Shotup AI" class="app-card-icon">
                 <div class="app-card-info">
                     <div class="app-card-title">Shotup AI - Screenshots</div>
+                    <div class="app-card-tagline">AI Learns Your Screenshots</div>
                 </div>
                 <div class="app-card-download">
                     <button class="app-card-download-btn">More</button>
                 </div>
             </div>
-            <div class="app-card-tagline">AI Learns Your Screenshots</div>
             <div class="app-card-badges">
                 <span class="app-card-badge">🤖 AI Assistant</span>
                 <span class="app-card-badge">⚡ Productivity</span>
@@ -870,12 +872,12 @@
                 <img src="assets/images/Superba-icon.png" alt="Superba" class="app-card-icon">
                 <div class="app-card-info">
                     <div class="app-card-title">Superba - Run with Friends</div>
+                    <div class="app-card-tagline">Run IRL with Friends</div>
                 </div>
                 <div class="app-card-download">
                     <button class="app-card-download-btn">More</button>
                 </div>
             </div>
-            <div class="app-card-tagline">Run IRL with Friends</div>
             <div class="app-card-badges">
                 <span class="app-card-badge">🏃 IRL Running</span>
                 <span class="app-card-badge">❤️ Apple Health</span>
