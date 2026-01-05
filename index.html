@@ -180,9 +180,16 @@
             position: absolute;
             top: 70vh;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translateX(-50%) scale(0.8);
             width: clamp(400px, 55vw, 600px);
             height: clamp(400px, 55vw, 600px);
+            opacity: 0;
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+        .earth-container.visible {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
         }
 
         .earth-image {
@@ -954,6 +961,7 @@
         window.addEventListener('load', async function() {
             const loadingScreen = document.getElementById('loadingScreen');
             const heroTitle = document.querySelector('.hero-title');
+            const earthContainer = document.querySelector('.earth-container');
             
             // Wait for Cal Sans font to load
             try {
@@ -966,7 +974,7 @@
             setTimeout(function() {
                 loadingScreen.classList.add('hidden');
                 
-                // Start typing animation AFTER loading screen starts fading (600ms fade)
+                // Start typing animation AFTER loading screen fades (600ms fade)
                 setTimeout(function() {
                     if (heroTitle) {
                         // Remove any existing animation class first
@@ -975,7 +983,14 @@
                         // Add animate class to start fresh animation
                         heroTitle.classList.add('animate');
                     }
-                }, 100); // Small delay after fade starts
+                    
+                    // Show Earth after typing animation is done (0.5s delay + 3.5s typing = 4s)
+                    setTimeout(function() {
+                        if (earthContainer) {
+                            earthContainer.classList.add('visible');
+                        }
+                    }, 4000);
+                }, 600); // Wait for loading screen fade
             }, 500);
         });
 
