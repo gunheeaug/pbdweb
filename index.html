@@ -802,7 +802,7 @@
     </section>
 
     <!-- Tagline -->
-    <div class="tagline-section">
+    <div class="tagline-section" id="tagline-section">
         <p class="tagline-text">We make Earth more interesting.</p>
     </div>
 
@@ -925,11 +925,11 @@
             });
         });
 
-        // Scroll to apps section when sticker is clicked
+        // Scroll to tagline and apps section when sticker is clicked
         function scrollToApps() {
-            document.getElementById('apps-section').scrollIntoView({
+            document.getElementById('tagline-section').scrollIntoView({
                 behavior: 'smooth',
-                block: 'center'
+                block: 'start'
             });
         }
 
