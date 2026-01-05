@@ -177,6 +177,7 @@
         /* Stickers on Earth */
         .earth-sticker {
             position: absolute;
+            cursor: pointer;
             width: auto;
             height: auto;
             max-width: 120px;
@@ -779,23 +780,23 @@
             <img src="assets/images/Earth.png" alt="Earth" class="earth-image">
             
             <!-- Stickers on Earth -->
-            <img src="assets/stickers/aug sticker 1.png" alt="" class="earth-sticker sticker-1">
-            <img src="assets/stickers/aug sticker 2.png" alt="" class="earth-sticker sticker-2">
-            <img src="assets/stickers/aug sticker 3.png" alt="" class="earth-sticker sticker-3">
-            <img src="assets/stickers/aug sticker 4.png" alt="" class="earth-sticker sticker-4">
-            <img src="assets/stickers/aug sticker 5.png" alt="" class="earth-sticker sticker-5">
-            <img src="assets/stickers/aug sticker 6.png" alt="" class="earth-sticker sticker-6">
-            <img src="assets/stickers/aug sticker 7.png" alt="" class="earth-sticker sticker-7">
-            <img src="assets/stickers/aug sticker 8.png" alt="" class="earth-sticker sticker-8">
-            <img src="assets/stickers/aug sticker 9.png" alt="" class="earth-sticker sticker-9">
-            <img src="assets/stickers/aug sticker 10.png" alt="" class="earth-sticker sticker-10">
-            <img src="assets/stickers/aug eyes sticker 1.png" alt="" class="earth-sticker sticker-11">
-            <img src="assets/stickers/Basquiat sticker 1.png" alt="" class="earth-sticker basquiat sticker-12">
-            <img src="assets/stickers/Basquiat sticker 2.png" alt="" class="earth-sticker basquiat sticker-13">
-            <img src="assets/stickers/pbd sticker 1.png" alt="" class="earth-sticker sticker-14">
-            <img src="assets/stickers/pbd sticker 2.png" alt="" class="earth-sticker sticker-15">
-            <img src="assets/stickers/pbd sticker 4.png" alt="" class="earth-sticker sticker-16">
-            <img src="assets/stickers/pbd sticker 6.png" alt="" class="earth-sticker sticker-17">
+            <img src="assets/stickers/aug sticker 1.png" alt="" class="earth-sticker sticker-1" onclick="scrollToApps()">
+            <img src="assets/stickers/aug sticker 2.png" alt="" class="earth-sticker sticker-2" onclick="scrollToApps()">
+            <img src="assets/stickers/aug sticker 3.png" alt="" class="earth-sticker sticker-3" onclick="scrollToApps()">
+            <img src="assets/stickers/aug sticker 4.png" alt="" class="earth-sticker sticker-4" onclick="scrollToApps()">
+            <img src="assets/stickers/aug sticker 5.png" alt="" class="earth-sticker sticker-5" onclick="scrollToApps()">
+            <img src="assets/stickers/aug sticker 6.png" alt="" class="earth-sticker sticker-6" onclick="scrollToApps()">
+            <img src="assets/stickers/aug sticker 7.png" alt="" class="earth-sticker sticker-7" onclick="scrollToApps()">
+            <img src="assets/stickers/aug sticker 8.png" alt="" class="earth-sticker sticker-8" onclick="scrollToApps()">
+            <img src="assets/stickers/aug sticker 9.png" alt="" class="earth-sticker sticker-9" onclick="scrollToApps()">
+            <img src="assets/stickers/aug sticker 10.png" alt="" class="earth-sticker sticker-10" onclick="scrollToApps()">
+            <img src="assets/stickers/aug eyes sticker 1.png" alt="" class="earth-sticker sticker-11" onclick="scrollToApps()">
+            <img src="assets/stickers/Basquiat sticker 1.png" alt="" class="earth-sticker basquiat sticker-12" onclick="scrollToApps()">
+            <img src="assets/stickers/Basquiat sticker 2.png" alt="" class="earth-sticker basquiat sticker-13" onclick="scrollToApps()">
+            <img src="assets/stickers/pbd sticker 1.png" alt="" class="earth-sticker sticker-14" onclick="scrollToApps()">
+            <img src="assets/stickers/pbd sticker 2.png" alt="" class="earth-sticker sticker-15" onclick="scrollToApps()">
+            <img src="assets/stickers/pbd sticker 4.png" alt="" class="earth-sticker sticker-16" onclick="scrollToApps()">
+            <img src="assets/stickers/pbd sticker 6.png" alt="" class="earth-sticker sticker-17" onclick="scrollToApps()">
         </div>
 
     </section>
@@ -806,7 +807,7 @@
     </div>
 
     <!-- Apps Section -->
-    <section class="apps-section">
+    <section class="apps-section" id="apps-section">
         <!-- aug App Card -->
         <a href="/aug/" class="app-card">
             <div class="app-card-header">
@@ -923,6 +924,14 @@
                 });
             });
         });
+
+        // Scroll to apps section when sticker is clicked
+        function scrollToApps() {
+            document.getElementById('apps-section').scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+        }
 
     </script>
 </body>
