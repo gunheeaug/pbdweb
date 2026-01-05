@@ -678,13 +678,20 @@
             padding: 3rem 2rem;
             position: relative;
             z-index: 5;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .nvidia-section.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .nvidia-logo {
             max-width: 140px;
             height: auto;
             filter: invert(1) hue-rotate(180deg) brightness(1.5);
-            opacity: 1;
         }
 
         /* Footer */
@@ -995,6 +1002,7 @@
 
         const taglineSection = document.getElementById('tagline-section');
         const appCards = document.querySelectorAll('.app-card');
+        const nvidiaSection = document.querySelector('.nvidia-section');
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -1006,6 +1014,10 @@
                                 card.classList.add('visible');
                             }, index * 250); // 250ms delay between each card
                         });
+                        // Show NVIDIA logo after all cards are visible (cards animation + 500ms)
+                        setTimeout(() => {
+                            nvidiaSection.classList.add('visible');
+                        }, appCards.length * 250 + 500);
                     }, 1500);
                     cardsRevealed = true;
                 }
