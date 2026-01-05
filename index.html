@@ -475,7 +475,7 @@
         }
 
         .app-card {
-            background: linear-gradient(145deg, #F6F3F0 0%, #ebe8e5 100%);
+            background: linear-gradient(160deg, #FDFCFB 0%, #F6F3F0 40%, #e8e5e2 100%);
             border-radius: 16px;
             padding: 20px;
             width: 340px;
@@ -483,13 +483,16 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             opacity: 1;
             box-shadow: 
-                0 1px 1px rgba(0,0,0,0.04),
-                0 2px 4px rgba(0,0,0,0.04),
-                0 4px 8px rgba(0,0,0,0.06),
-                0 8px 16px rgba(0,0,0,0.06),
-                0 -1px 0 rgba(255,255,255,0.8) inset,
-                0 1px 0 rgba(0,0,0,0.05);
-            border: 1px solid rgba(0,0,0,0.06);
+                0 2px 4px rgba(0,0,0,0.08),
+                0 6px 12px rgba(0,0,0,0.1),
+                0 12px 24px rgba(0,0,0,0.12),
+                0 20px 40px rgba(0,0,0,0.15),
+                inset 0 2px 0 rgba(255,255,255,1),
+                inset 0 -2px 4px rgba(0,0,0,0.05);
+            border-top: 2px solid rgba(255,255,255,0.9);
+            border-left: 1px solid rgba(255,255,255,0.6);
+            border-right: 1px solid rgba(0,0,0,0.08);
+            border-bottom: 2px solid rgba(0,0,0,0.12);
             position: relative;
         }
 
@@ -497,22 +500,34 @@
             content: '';
             position: absolute;
             top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,1), transparent);
             border-radius: 16px 16px 0 0;
         }
 
+        .app-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 5%;
+            right: 5%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.15), transparent);
+            border-radius: 0 0 16px 16px;
+            filter: blur(2px);
+        }
+
         .app-card:hover {
-            transform: translateY(-6px) rotateX(2deg);
+            transform: translateY(-8px) rotateX(3deg);
             box-shadow: 
-                0 2px 2px rgba(0,0,0,0.03),
-                0 4px 8px rgba(0,0,0,0.04),
-                0 8px 16px rgba(0,0,0,0.06),
-                0 16px 32px rgba(0,0,0,0.08),
-                0 24px 48px rgba(0,0,0,0.1),
-                0 -1px 0 rgba(255,255,255,0.8) inset;
+                0 4px 8px rgba(0,0,0,0.06),
+                0 10px 20px rgba(0,0,0,0.1),
+                0 20px 40px rgba(0,0,0,0.12),
+                0 30px 60px rgba(0,0,0,0.18),
+                0 40px 80px rgba(0,0,0,0.12),
+                inset 0 2px 0 rgba(255,255,255,1);
         }
 
         .app-card-header {
