@@ -738,6 +738,83 @@
             display: block;
         }
 
+        /* QR Code Popup - Desktop Only */
+        .qr-popup {
+            display: none;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .qr-popup.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .qr-popup-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .qr-popup img {
+            width: 150px;
+            height: 150px;
+            border-radius: 8px;
+        }
+
+        .qr-popup-text {
+            font-family: 'Cal Sans', -apple-system, sans-serif;
+            font-size: 14px;
+            color: #1d1d1f;
+            text-align: center;
+        }
+
+        .qr-popup-subtext {
+            font-family: -apple-system, sans-serif;
+            font-size: 11px;
+            color: #6e6e73;
+            text-align: center;
+        }
+
+        .qr-popup-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 24px;
+            height: 24px;
+            border: none;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #666;
+            transition: background 0.2s ease;
+        }
+
+        .qr-popup-close:hover {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        @media (min-width: 769px) {
+            .qr-popup {
+                display: block;
+            }
+        }
+
         /* NVIDIA Inception Logo */
         .nvidia-section {
             display: flex;
@@ -949,9 +1026,9 @@
                 </div>
             </div>
             <div class="app-card-badges">
-                <span class="app-card-badge"><span class="app-card-badge-emoji">🌐</span><span class="app-card-badge-text">Spatial / AR</span></span>
+                <span class="app-card-badge"><span class="app-card-badge-emoji">🌐</span><span class="app-card-badge-text">Spatial/ AR</span></span>
                 <span class="app-card-badge"><span class="app-card-badge-emoji">📍</span><span class="app-card-badge-text">Social Map</span></span>
-                <span class="app-card-badge"><span class="app-card-badge-emoji">🤝</span><span class="app-card-badge-text">IRL Interactions</span></span>
+                <span class="app-card-badge"><span class="app-card-badge-emoji">🤝</span><span class="app-card-badge-text">IRL</span></span>
             </div>
             <div class="app-card-previews">
                 <div class="app-card-preview"><img src="assets/App Previews/aug/aug 1.png" alt="aug preview"></div>
@@ -1019,6 +1096,16 @@
             <div class="footer-text">© pbd llc</div>
             <a href="mailto:hello@pbd.team" class="footer-link">hello@pbd.team</a>
         </footer>
+    </div>
+
+    <!-- QR Code Popup - Desktop Only -->
+    <div class="qr-popup" id="qrPopup">
+        <button class="qr-popup-close" onclick="closeQrPopup()">✕</button>
+        <div class="qr-popup-content">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://share.aug.ooo/qr?id=oGfqJtRj" alt="Scan to view in AR">
+            <div class="qr-popup-text">Scan to view in AR</div>
+            <div class="qr-popup-subtext">Experience aug on your phone</div>
+        </div>
     </div>
 
     <script>
@@ -1107,6 +1194,38 @@
         });
 
         observer.observe(taglineSection);
+
+        // QR Code Popup - Desktop Only
+        let qrPopupShown = false;
+        let qrPopupClosed = false;
+        const qrPopup = document.getElementById('qrPopup');
+        const earthForQr = document.querySelector('.earth-container');
+
+        function closeQrPopup() {
+            qrPopup.classList.remove('visible');
+            qrPopupClosed = true;
+        }
+
+        // Only show on desktop (width > 768px)
+        if (window.innerWidth > 768) {
+            const earthObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    // Check if Earth is roughly centered (50% visible means it's near center)
+                    if (entry.isIntersecting && entry.intersectionRatio > 0.5 && !qrPopupShown && !qrPopupClosed) {
+                        setTimeout(() => {
+                            qrPopup.classList.add('visible');
+                            qrPopupShown = true;
+                        }, 500);
+                    }
+                });
+            }, {
+                threshold: [0.5] // Trigger when 50% of Earth is visible
+            });
+
+            if (earthForQr) {
+                earthObserver.observe(earthForQr);
+            }
+        }
 
     </script>
 </body>
