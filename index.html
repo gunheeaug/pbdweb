@@ -535,18 +535,21 @@
         }
 
         .app-card {
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(40px) saturate(180%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            border-radius: 20px;
             padding: 20px;
             width: 340px;
             flex-shrink: 0;
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, opacity 0.6s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.6s ease;
             opacity: 0;
             transform: translateY(40px);
-            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 
+                0 0.5px 0 0 rgba(255,255,255,0.6) inset,
+                0 1px 3px rgba(0,0,0,0.06),
+                0 4px 12px rgba(0,0,0,0.06);
+            border: 0.5px solid rgba(0, 0, 0, 0.04);
             position: relative;
             overflow: visible;
         }
@@ -584,8 +587,11 @@
         }
 
         .app-card.visible:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+            transform: scale(1.02);
+            box-shadow: 
+                0 0.5px 0 0 rgba(255,255,255,0.6) inset,
+                0 2px 6px rgba(0,0,0,0.08),
+                0 8px 24px rgba(0,0,0,0.1);
         }
 
         .app-card-header {
