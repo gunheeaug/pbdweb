@@ -139,12 +139,17 @@
             letter-spacing: -0.03em;
             z-index: 10;
             overflow: hidden;
-            border-right: 2px solid rgba(255,255,255,0.7);
+            border-right: 2px solid transparent;
             white-space: nowrap;
             display: inline-block;
             max-width: 0;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            /* Animation starts paused, triggered by JS after loading */
+        }
+
+        .hero-title.animate {
+            border-right: 2px solid rgba(255,255,255,0.7);
             animation: 
                 typing 2s steps(13) 0.5s forwards, 
                 blink 0.7s step-end 4,
@@ -853,12 +858,16 @@
             setTimeout(function() {
                 loadingScreen.classList.add('hidden');
                 
-                // Reset and start typing animation after loading screen fades
-                if (heroTitle) {
-                    heroTitle.style.animation = 'none';
-                    heroTitle.offsetHeight; // Trigger reflow
-                    heroTitle.style.animation = null;
-                }
+                // Start typing animation AFTER loading screen starts fading (600ms fade)
+                setTimeout(function() {
+                    if (heroTitle) {
+                        // Remove any existing animation class first
+                        heroTitle.classList.remove('animate');
+                        heroTitle.offsetHeight; // Trigger reflow
+                        // Add animate class to start fresh animation
+                        heroTitle.classList.add('animate');
+                    }
+                }, 100); // Small delay after fade starts
             }, 500);
         });
 
