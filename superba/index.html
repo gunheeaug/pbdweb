@@ -472,10 +472,17 @@
 
             .preview-carousel {
                 padding-left: 22px;
+                padding-right: 22px;
             }
 
-            .preview-image {
+            .preview-image, .preview-video {
                 height: 420px;
+                width: auto;
+            }
+
+            .preview-video {
+                object-fit: contain;
+                max-width: none;
             }
         }
 
@@ -502,16 +509,6 @@
 
             .preview-section .section-title {
                 padding-left: 0;
-            }
-
-            .preview-image, .preview-video {
-                height: 350px;
-            }
-
-            .preview-video {
-                width: auto;
-                max-width: none;
-                object-fit: contain;
             }
         }
     </style>
