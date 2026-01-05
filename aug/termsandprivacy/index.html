@@ -55,6 +55,12 @@
             height: 20px;
         }
 
+        .back-link .back-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+        }
+
         /* App Header */
         .app-header {
             padding: 20px 22px;
@@ -225,7 +231,8 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M15 18l-6-6 6-6"/>
             </svg>
-            aug spatial
+            <img src="../../assets/images/aug-icon.png" alt="aug" class="back-icon">
+            aug - Spatial Snap with Friends
         </a>
     </header>
 
@@ -233,20 +240,20 @@
         <div class="app-header">
             <img src="../../assets/images/aug-icon.png" alt="aug" class="app-icon">
             <div class="app-info">
-                <h1 class="app-name">aug spatial</h1>
+                <h1 class="app-name">aug - Spatial Snap with Friends</h1>
                 <p class="page-title">Terms & Privacy</p>
             </div>
         </div>
 
         <section class="legal-section">
             <div class="legal-tabs">
-                <button class="legal-tab active" onclick="showTab('about')">About</button>
-                <button class="legal-tab" onclick="showTab('terms')">Terms</button>
+                <button class="legal-tab" onclick="showTab('about')">About</button>
+                <button class="legal-tab active" onclick="showTab('terms')">Terms</button>
                 <button class="legal-tab" onclick="showTab('privacy')">Privacy</button>
             </div>
 
             <!-- About Tab -->
-            <div id="about" class="legal-tab-content active">
+            <div id="about" class="legal-tab-content">
                 <div class="legal-content">
                     <h3>🌍 Make the world your feed.</h3>
                     <p>aug is a mobile-first spatial AR platform that turns real places into shareable canvases. Create and pin AR content—photos, stickers, text, and animated moments—so it lives in the real world and can be discovered by anyone nearby.</p>
@@ -260,7 +267,7 @@
             </div>
 
             <!-- Terms Tab -->
-            <div id="terms" class="legal-tab-content">
+            <div id="terms" class="legal-tab-content active">
                 <div class="legal-content">
                     <p class="legal-intro"><strong>AUG TERMS OF SERVICE</strong></p>
                     <p class="legal-meta"><strong>Last Updated:</strong> January 4, 2026</p>
