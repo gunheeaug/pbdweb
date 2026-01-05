@@ -582,28 +582,22 @@
 
         .app-card-previews {
             display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            scrollbar-width: none;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .app-card-previews::-webkit-scrollbar {
-            display: none;
+            gap: 8px;
         }
 
         .app-card-preview {
-            flex-shrink: 0;
-            height: 220px;
-            border-radius: 12px;
+            flex: 1;
+            height: auto;
+            border-radius: 10px;
             background: #2c2c2e;
             overflow: hidden;
         }
 
         .app-card-preview img {
-            height: 100%;
-            width: auto;
+            width: 100%;
+            height: auto;
             object-fit: cover;
+            display: block;
         }
 
         /* NVIDIA Inception Logo */
@@ -709,7 +703,7 @@
             }
 
             .app-card-preview {
-                height: 180px;
+                height: auto;
             }
 
         }
