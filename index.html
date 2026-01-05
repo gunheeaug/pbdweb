@@ -100,6 +100,13 @@
             cursor: default;
         }
 
+        .bottom-section {
+            position: relative;
+            background: 
+                linear-gradient(to bottom, #000 0%, rgba(0,0,0,0.7) 20%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.2) 100%),
+                url('/assets/images/basquiat bg.jpg') center bottom / cover no-repeat;
+        }
+
         a {
             text-decoration: none;
             color: inherit;
@@ -806,13 +813,15 @@
 
     </section>
 
-    <!-- Tagline -->
-    <div class="tagline-section" id="tagline-section">
-        <p class="tagline-text">We make Earth more interesting.</p>
-    </div>
+    <!-- Bottom Section with Basquiat Background -->
+    <div class="bottom-section">
+        <!-- Tagline -->
+        <div class="tagline-section" id="tagline-section">
+            <p class="tagline-text">We make Earth more interesting.</p>
+        </div>
 
-    <!-- Apps Section -->
-    <section class="apps-section" id="apps-section">
+        <!-- Apps Section -->
+        <section class="apps-section" id="apps-section">
         <!-- aug App Card -->
         <a href="/aug/" class="app-card">
             <div class="app-card-header">
@@ -886,16 +895,17 @@
         </a>
     </section>
 
-    <!-- NVIDIA Inception Logo -->
-    <div class="nvidia-section">
-        <img src="assets/Logos/nvidia-inception-logo.webp" alt="NVIDIA Inception" class="nvidia-logo">
-    </div>
+        <!-- NVIDIA Inception Logo -->
+        <div class="nvidia-section">
+            <img src="assets/Logos/nvidia-inception-logo.webp" alt="NVIDIA Inception" class="nvidia-logo">
+        </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-text">© pbd llc</div>
-        <a href="mailto:hello@pbd.team" class="footer-link">hello@pbd.team</a>
-    </footer>
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-text">© pbd llc</div>
+            <a href="mailto:hello@pbd.team" class="footer-link">hello@pbd.team</a>
+        </footer>
+    </div>
 
     <script>
         // Hide loading screen when page is fully loaded
