@@ -475,24 +475,23 @@
         }
 
         .app-card {
-            background: linear-gradient(160deg, #FDFCFB 0%, #F6F3F0 40%, #e8e5e2 100%);
-            border-radius: 16px;
+            background: linear-gradient(165deg, #FFFFFF 0%, #F8F6F4 30%, #F0EDEA 70%, #E5E2DF 100%);
+            border-radius: 20px;
             padding: 20px;
             width: 340px;
             flex-shrink: 0;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             opacity: 1;
             box-shadow: 
-                0 2px 4px rgba(0,0,0,0.08),
-                0 6px 12px rgba(0,0,0,0.1),
-                0 12px 24px rgba(0,0,0,0.12),
-                0 20px 40px rgba(0,0,0,0.15),
-                inset 0 2px 0 rgba(255,255,255,1),
-                inset 0 -2px 4px rgba(0,0,0,0.05);
-            border-top: 2px solid rgba(255,255,255,0.9);
-            border-left: 1px solid rgba(255,255,255,0.6);
-            border-right: 1px solid rgba(0,0,0,0.08);
-            border-bottom: 2px solid rgba(0,0,0,0.12);
+                0 2px 4px rgba(0,0,0,0.06),
+                0 8px 16px rgba(0,0,0,0.08),
+                0 16px 32px rgba(0,0,0,0.1),
+                0 24px 48px rgba(0,0,0,0.12),
+                inset 0 4px 8px rgba(255,255,255,0.9),
+                inset 0 -4px 8px rgba(0,0,0,0.06),
+                inset 4px 0 8px rgba(255,255,255,0.5),
+                inset -4px 0 8px rgba(0,0,0,0.04);
+            border: none;
             position: relative;
         }
 
@@ -500,34 +499,44 @@
             content: '';
             position: absolute;
             top: 0;
-            left: 10%;
-            right: 10%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,1), transparent);
-            border-radius: 16px 16px 0 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 20px;
+            padding: 3px;
+            background: linear-gradient(165deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.6) 40%, rgba(0,0,0,0.1) 80%, rgba(0,0,0,0.2) 100%);
+            -webkit-mask: 
+                linear-gradient(#fff 0 0) content-box, 
+                linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
         }
 
         .app-card::after {
             content: '';
             position: absolute;
-            bottom: 0;
-            left: 5%;
-            right: 5%;
-            height: 4px;
-            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.15), transparent);
-            border-radius: 0 0 16px 16px;
-            filter: blur(2px);
+            bottom: -6px;
+            left: 8%;
+            right: 8%;
+            height: 12px;
+            background: radial-gradient(ellipse at center, rgba(0,0,0,0.2) 0%, transparent 70%);
+            filter: blur(4px);
+            border-radius: 50%;
         }
 
         .app-card:hover {
-            transform: translateY(-8px) rotateX(3deg);
+            transform: translateY(-10px) rotateX(4deg);
             box-shadow: 
-                0 4px 8px rgba(0,0,0,0.06),
-                0 10px 20px rgba(0,0,0,0.1),
-                0 20px 40px rgba(0,0,0,0.12),
-                0 30px 60px rgba(0,0,0,0.18),
-                0 40px 80px rgba(0,0,0,0.12),
-                inset 0 2px 0 rgba(255,255,255,1);
+                0 4px 8px rgba(0,0,0,0.04),
+                0 12px 24px rgba(0,0,0,0.08),
+                0 24px 48px rgba(0,0,0,0.1),
+                0 36px 72px rgba(0,0,0,0.14),
+                0 48px 96px rgba(0,0,0,0.1),
+                inset 0 4px 8px rgba(255,255,255,0.9),
+                inset 0 -4px 8px rgba(0,0,0,0.06),
+                inset 4px 0 8px rgba(255,255,255,0.5),
+                inset -4px 0 8px rgba(0,0,0,0.04);
         }
 
         .app-card-header {
