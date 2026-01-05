@@ -438,9 +438,27 @@
             display: none;
         }
 
+        /* Tagline Section */
+        .tagline-section {
+            margin-top: 75vh;
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            z-index: 5;
+        }
+
+        .tagline-text {
+            font-family: 'Cal Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+            font-weight: 600;
+            color: #fff;
+            letter-spacing: -0.02em;
+            opacity: 0.9;
+        }
+
         /* Apps Section - App Cards */
         .apps-section {
-            margin-top: 80vh;
+            margin-top: 2rem;
             padding: 4rem 2rem 8rem;
             display: flex;
             flex-direction: row;
@@ -741,6 +759,11 @@
         </div>
 
     </section>
+
+    <!-- Tagline -->
+    <div class="tagline-section">
+        <p class="tagline-text">We make Earth more interesting.</p>
+    </div>
 
     <!-- Apps Section -->
     <section class="apps-section">
