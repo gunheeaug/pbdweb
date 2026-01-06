@@ -29,6 +29,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;500;600;700;800;900&family=Google+Sans+Flex:wght@400;500&display=swap" rel="stylesheet">
     <link href="/assets/fonts/CalSans-Regular.ttf" rel="preload" as="font" type="font/ttf">
     <script src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
         @font-face {
             font-family: 'Cal Sans';
@@ -1019,7 +1020,7 @@
         <!-- Apps Section -->
         <section class="apps-section" id="apps-section">
         <!-- aug App Card -->
-        <a href="/aug/" class="app-card">
+        <a href="/aug/" class="app-card" id="aug-card">
             <div class="app-card-header">
                 <img src="assets/images/aug-icon.png" alt="aug" class="app-card-icon">
                 <div class="app-card-info">
@@ -1043,7 +1044,7 @@
         </a>
 
         <!-- Shotup AI App Card -->
-        <a href="/shotupai/" class="app-card">
+        <a href="/shotupai/" class="app-card" id="shotupai-card">
             <div class="app-card-header">
                 <img src="assets/images/Shotupai-Icon.png" alt="Shotup AI" class="app-card-icon">
                 <div class="app-card-info">
@@ -1067,7 +1068,7 @@
         </a>
 
         <!-- Superba App Card -->
-        <a href="/superba/" class="app-card">
+        <a href="/superba/" class="app-card" id="superba-card">
             <div class="app-card-header">
                 <img src="assets/images/Superba-icon.png" alt="Superba" class="app-card-icon">
                 <div class="app-card-info">
@@ -1160,6 +1161,31 @@
                 });
             });
         });
+
+        // Download app card as image
+        function downloadAppCard(cardId, filename) {
+            const card = document.getElementById(cardId);
+            if (card && typeof html2canvas !== 'undefined') {
+                html2canvas(card, {
+                    backgroundColor: null,
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: true
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = filename + '.png';
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                });
+            }
+        }
+
+        // Download all app cards - call from browser console: downloadAllCards()
+        function downloadAllCards() {
+            downloadAppCard('aug-card', 'aug-app-card');
+            setTimeout(() => downloadAppCard('shotupai-card', 'shotupai-app-card'), 500);
+            setTimeout(() => downloadAppCard('superba-card', 'superba-app-card'), 1000);
+        }
 
         // Scroll to tagline and apps section when sticker is clicked
         function scrollToApps() {
