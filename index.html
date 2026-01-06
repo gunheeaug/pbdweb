@@ -1214,23 +1214,28 @@
                 type: "canvas",
                 data: "https://share.aug.ooo/qr?id=oGfqJtRj",
                 image: "assets/images/aug-icon.png",
+                qrOptions: {
+                    errorCorrectionLevel: "H"
+                },
                 dotsOptions: {
                     color: "#000000",
-                    type: "rounded"
+                    type: "dots"
                 },
                 cornersSquareOptions: {
-                    type: "extra-rounded"
+                    type: "extra-rounded",
+                    color: "#000000"
                 },
                 cornersDotOptions: {
-                    type: "dot"
+                    type: "dot",
+                    color: "#000000"
                 },
                 backgroundOptions: {
                     color: "#ffffff",
                 },
                 imageOptions: {
                     crossOrigin: "anonymous",
-                    margin: 5,
-                    imageSize: 0.4
+                    margin: 8,
+                    imageSize: 0.45
                 }
             });
             qrCode.append(document.getElementById("qrCodeContainer"));
