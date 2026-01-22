@@ -58,6 +58,14 @@
             .hero-layout, .section-layout {
                 grid-template-columns: 1fr;
             }
+
+            .section-layout .video-item {
+                order: 2; /* Move video below the text in the grid */
+            }
+
+            .section-layout .content-section {
+                order: 1; /* Keep text at the top */
+            }
         }
 
         .header {
