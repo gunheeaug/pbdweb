@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>aug spatial - AR for OOH Ads</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="/assets/fonts/CalSans-Regular.ttf" rel="preload" as="font" type="font/ttf" crossorigin="anonymous">
+    <style>
+        @font-face {
+            font-family: 'Cal Sans';
+            src: url('/assets/fonts/CalSans-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #ffffff;
+            color: #1a1a1a;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .header img {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+        }
+
+        .header span {
+            font-family: 'Cal Sans', sans-serif;
+            font-size: 24px;
+        }
+
+        h1 {
+            font-family: 'Cal Sans', sans-serif;
+            font-size: clamp(32px, 5vw, 48px);
+            line-height: 1.1;
+            margin-bottom: 24px;
+        }
+
+        .intro-text {
+            font-size: 20px;
+            color: #444;
+            margin-bottom: 40px;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+
+        @media (max-width: 768px) {
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .video-item {
+            width: 100%;
+        }
+
+        .video-item video {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .content-section {
+            margin-bottom: 60px;
+        }
+
+        h2 {
+            font-family: 'Cal Sans', sans-serif;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            font-family: 'Cal Sans', sans-serif;
+            font-size: 22px;
+            margin: 32px 0 16px;
+        }
+
+        p {
+            margin-bottom: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        ul {
+            margin-bottom: 32px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        strong {
+            color: #000;
+        }
+
+        .footer {
+            padding: 60px 0;
+            border-top: 1px solid #eee;
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #007AFF;
+            text-decoration: none;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/aug/" class="back-link">← Back to aug</a>
+        
+        <header class="header">
+            <img src="/assets/images/aug-icon.png" alt="aug">
+            <span>aug spatial</span>
+        </header>
+
+        <h1>aug OOH (Out-of-Home) = billboards that come alive</h1>
+
+        <div class="intro-text">
+            <p>For aug, we’ve made a big shift and just launched a B2B service for Out-of-Home (OOH) billboard ads — watch our demo here: [aug] AR for OOH Ads.</p>
+            <p>aug turns any static OOH placement—billboards, bus stops, posters, building wraps—into an interactive AR experience with one simple addition: an aug QR code. When someone scans and points their phone camera, the ad “activates” with a digital layer on top of the real world.</p>
+        </div>
+
+        <div class="video-grid">
+            <div class="video-item">
+                <video autoplay loop muted playsinline>
+                    <source src="/assets/videos/aug/aug billboard ads.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="video-item">
+                <video autoplay loop muted playsinline>
+                    <source src="/assets/videos/aug/aug find my idol.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>What brands can do with aug OOH</h2>
+            
+            <p><strong>AR reveal:</strong> When users scan the QR and point their camera, the billboard “comes alive” with 3D, animated content, and interactive overlays.</p>
+            
+            <p><strong>Engagement + actions:</strong> Users can tap to explore, unlock offers, save/collect the experience, and share it.</p>
+
+            <ul>
+                <li><strong>Media overlays:</strong> YouTube clips, trailers, background music, behind-the-scenes content</li>
+                <li><strong>Tap-to-action:</strong> website links, app installs, ticketing, RSVP, store locator</li>
+                <li><strong>Offers & unlocks:</strong> coupons, promo codes, giveaways, scavenger hunts</li>
+                <li><strong>Social sharing:</strong> save/record the AR moment and repost instantly</li>
+            </ul>
+
+            <h3>Why aug AR OOH: turning any space into a destination</h3>
+            <p>Traditionally, OOH has often been an “extra” channel—great for brand presence, but rarely expected to drive meaningful buzz or conversion on its own. By layering AR content with compelling IP and interactive experiences, aug nudges people to come to the location, unlock digital perks, record the AR moment, and share it on social—creating viral lift beyond the street.</p>
+            <p>The best part: this turns a wall (or any empty real estate) into an immersive, interactive destination without any additional physical buildout, and without hard-cost budget beyond the existing placement—ideal for concerts, sports games, retail stores, and shopping malls.</p>
+
+            <h3>How it’s deployed</h3>
+            <ul>
+                <li>Keep your existing billboard/poster creative</li>
+                <li>Add an aug QR code (small corner placement)</li>
+                <li>We build the AR layer you want (3D, video, audio, interactions, offers)</li>
+                <li>Launch, track engagement, iterate fast</li>
+            </ul>
+        </div>
+
+        <footer class="footer">
+            © 2025 PBD LLC · aug spatial
+        </footer>
+    </div>
+</body>
+</html>
