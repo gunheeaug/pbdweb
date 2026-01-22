@@ -653,7 +653,7 @@
 
             /* Carousel Mobile Adjustments */
             .preview-section {
-                padding: 40px 10px; /* Reduced side padding from 80px/20px to 10px */
+                padding: 40px 10px;
             }
 
             .carousel-nav.prev {
@@ -664,8 +664,23 @@
                 right: 0;
             }
 
+            .preview-carousel {
+                gap: 10px;
+            }
+
+            .preview-item {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                scroll-snap-align: center;
+            }
+
             .preview-image, .preview-video {
-                height: 400px; /* Slightly shorter for mobile to fit better */
+                height: auto;
+                max-height: 70vh;
+                width: 100%;
+                max-width: 320px; /* Constrain to phone width */
+                object-fit: contain;
             }
         }
     </style>
