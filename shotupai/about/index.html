@@ -677,13 +677,16 @@
 
             .preview-item {
                 scroll-snap-align: center;
+                display: flex;
+                justify-content: center;
+                width: auto; /* Allow item to be as wide as its content */
             }
 
             .preview-image, .preview-video {
                 height: auto;
-                max-height: 80vh;
-                width: calc(100vw - 40px); /* Fill screen width minus some margin */
-                max-width: none; /* Remove desktop constraint */
+                max-height: 75vh;
+                width: auto; /* Allow exact width of the asset */
+                max-width: calc(100vw - 40px); /* But don't exceed screen width */
                 object-fit: contain;
             }
 
