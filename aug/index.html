@@ -68,6 +68,7 @@
         .website-button-style {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 6px;
             padding: 6px 10px;
             background: linear-gradient(135deg, #007AFF 0%, #5856D6 100%);
@@ -78,6 +79,17 @@
             text-decoration: none;
             transition: all 0.2s ease;
             border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .store-button-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            line-height: 1.1;
+        }
+
+        .store-button-text span {
+            white-space: nowrap;
         }
 
         .website-button-style img {
@@ -178,6 +190,7 @@
                 width: 130px !important;
                 min-width: 130px !important;
                 min-height: 44px !important; /* Increased height */
+                justify-content: center !important;
             }
         }
 
