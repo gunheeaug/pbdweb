@@ -170,6 +170,30 @@
             flex-shrink: 0;
         }
 
+        @media (max-width: 768px) {
+            .store-buttons {
+                width: calc(100% + 44px);
+                margin: 10px -22px 0 -22px;
+                padding: 0 22px;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                justify-content: flex-start;
+                gap: 8px;
+            }
+
+            .store-buttons::-webkit-scrollbar {
+                display: none;
+            }
+
+            .store-button, .website-button-style {
+                flex: 0 0 auto;
+                scroll-snap-align: start;
+                min-width: 140px;
+            }
+        }
+
         .store-button {
             display: inline-flex;
             align-items: center;
@@ -516,21 +540,10 @@
                 font-size: 13px;
             }
 
-            .store-buttons {
-                width: 100%;
-                margin-top: 10px;
-                justify-content: flex-start;
-                gap: 8px;
-            }
-
             .store-button {
                 min-width: 0;
                 flex: 1;
                 padding: 6px 8px;
-            }
-
-            .website-button-style {
-                flex: 1;
             }
 
             .info-bar {
