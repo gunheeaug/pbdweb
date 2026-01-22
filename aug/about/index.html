@@ -117,6 +117,7 @@
             color: #007AFF;
             margin-top: 8px;
             font-weight: 500;
+            cursor: pointer;
         }
 
         .content-section {
@@ -267,14 +268,23 @@
         videos.forEach(video => {
             if (video) {
                 observer.observe(video);
-                // Individual video tap to unlock all audio
-                video.addEventListener('click', () => {
+                
+                const unlockFunc = () => {
                     audioUnlocked = true;
                     video.muted = false;
                     video.play();
                     // Hide hints once unlocked
                     document.querySelectorAll('.audio-hint').forEach(h => h.style.display = 'none');
-                });
+                };
+
+                // Individual video tap to unlock all audio
+                video.addEventListener('click', unlockFunc);
+                
+                // Also allow clicking the hint text to unlock
+                const hint = video.nextElementSibling;
+                if (hint && hint.classList.contains('audio-hint')) {
+                    hint.addEventListener('click', unlockFunc);
+                }
             }
         });
 
