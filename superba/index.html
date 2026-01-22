@@ -310,10 +310,17 @@
             overflow-x: auto;
             overflow-y: visible;
             padding: 20px 22px;
-            margin: -20px 0;
+            margin: -20px -22px;
+            width: calc(100% + 44px);
             scroll-snap-type: x mandatory;
+            scroll-padding: 0 22px;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
+        }
+
+        .preview-carousel::after {
+            content: '';
+            flex: 0 0 22px;
         }
 
         .preview-carousel::-webkit-scrollbar {
@@ -504,7 +511,9 @@
 
             .preview-carousel {
                 padding: 20px 22px !important;
-                margin: -20px 0;
+                margin: -20px -22px !important;
+                width: calc(100% + 44px) !important;
+                scroll-padding: 0 22px !important;
             }
 
             .preview-image, .preview-video {
