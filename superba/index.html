@@ -131,6 +131,11 @@
                 flex-wrap: nowrap !important;
             }
 
+            .store-buttons::after {
+                content: '';
+                flex: 0 0 22px; /* Matches the padding-left to provide space at the end */
+            }
+
             .store-buttons::-webkit-scrollbar {
                 display: none;
             }
