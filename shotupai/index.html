@@ -29,12 +29,12 @@
             line-height: 1.47059;
             -webkit-font-smoothing: antialiased;
         }
-
+        
         a {
             text-decoration: none;
             color: #0066cc;
         }
-
+        
         a:hover {
             text-decoration: underline;
         }
@@ -49,7 +49,7 @@
             top: 0;
             z-index: 100;
         }
-
+        
         .back-link {
             display: inline-flex;
             align-items: center;
@@ -58,11 +58,42 @@
             color: #0066cc;
         }
 
+        .website-button-style {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            background: linear-gradient(135deg, #007AFF 0%, #5856D6 100%);
+            color: #fff !important;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .website-button-style img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        .website-button-style:hover {
+            opacity: 0.9;
+            text-decoration: none;
+            transform: translateY(-1px);
+        }
+
+        .website-button-style:active {
+            transform: translateY(0);
+        }
+
         .back-link svg {
             width: 20px;
             height: 20px;
         }
-
+        
         /* App Header */
         .app-header {
             padding: 20px 22px;
@@ -71,19 +102,26 @@
             align-items: center;
             border-bottom: 1px solid #d2d2d7;
         }
-
+        
         .app-icon {
             width: 120px;
             height: 120px;
             border-radius: 26px;
             flex-shrink: 0;
         }
-
+        
         .app-info {
             flex: 1;
             min-width: 0;
             display: flex;
             flex-direction: column;
+        }
+
+        .app-url {
+            font-size: 13px;
+            color: #6e6e73;
+            margin-bottom: 2px;
+            font-weight: 400;
         }
 
         .app-name {
@@ -99,13 +137,13 @@
             color: #6e6e73;
             margin-bottom: 0;
         }
-
+        
         .app-subtitle {
             font-size: 13px;
             color: #6e6e73;
             margin-bottom: 12px;
         }
-
+        
         .store-buttons {
             display: flex;
             flex-direction: row;
@@ -143,7 +181,7 @@
             width: 18px;
             height: 18px;
         }
-
+        
         .store-button-text {
             display: flex;
             flex-direction: column;
@@ -160,7 +198,7 @@
             font-size: 11px;
             font-weight: 600;
         }
-
+        
         /* Info Bar */
         .info-bar {
             display: flex;
@@ -176,21 +214,21 @@
             min-width: 80px;
             flex-shrink: 0;
         }
-
+        
         .info-label {
             font-size: 11px;
             color: #6e6e73;
             text-transform: uppercase;
             letter-spacing: 0.02em;
             margin-bottom: 4px;
-        }
+            }
 
         .info-value {
             font-size: 20px;
             font-weight: 600;
             color: #6e6e73;
         }
-
+        
         .info-value-small {
             font-size: 13px;
             color: #6e6e73;
@@ -252,7 +290,7 @@
             color: #2997ff;
             font-size: 15px;
         }
-
+        
         /* Preview Section */
         .preview-section {
             padding: 20px 0;
@@ -276,7 +314,7 @@
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
         }
-
+        
         .preview-carousel::-webkit-scrollbar {
             display: none;
         }
@@ -304,7 +342,7 @@
             line-height: 1.6;
             white-space: pre-line;
         }
-
+        
         /* Legal Section - Tabs */
         .legal-section {
             border-top: 1px solid #d2d2d7;
@@ -358,7 +396,7 @@
         .legal-content h3:first-child {
             margin-top: 0;
         }
-
+        
         .legal-content h4 {
             font-size: 14px;
             font-weight: 600;
@@ -393,7 +431,7 @@
         .legal-content a:hover {
             text-decoration: underline;
         }
-
+        
         .legal-content strong {
             color: #1d1d1f;
             font-weight: 600;
@@ -525,8 +563,15 @@
             <img src="../assets/images/Shotupai-Icon.png" alt="Shotup AI" class="app-icon">
             <div class="app-info">
                 <h1 class="app-name">Shotup AI</h1>
-                <p class="app-tagline">Instant AI Screenshots</p>
+                <p class="app-tagline">AI Learns and Remembers Your Screenshots</p>
                 <div class="store-buttons">
+                    <a href="/shotupai/about/" class="website-button-style">
+                        <img src="../assets/images/shotupai logo white.png" alt="Shotup AI">
+                        <div class="store-button-text">
+                            <small>shotup.ai/</small>
+                            <span>Go to Website</span>
+                        </div>
+                    </a>
                     <a href="https://apps.apple.com/us/app/shotup-ai/id6738339711" class="store-button" target="_blank">
                         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
                         <div class="store-button-text">
@@ -567,8 +612,8 @@
                 <div class="info-emoji">🔍</div>
                 <div class="info-value-small">Web Search</div>
             </div>
-        </div>
-
+            </div>
+            
         <!-- What's Shotup AI -->
         <section class="section">
             <div class="section-header">
@@ -596,16 +641,16 @@
                 </div>
                 <div class="preview-item">
                     <img src="../assets/App Previews/Shotup AI/Shotup AI 2.png" alt="Shotup AI preview 2" class="preview-image">
-                </div>
+                    </div>
                 <div class="preview-item">
                     <img src="../assets/App Previews/Shotup AI/Shotup AI 3.png" alt="Shotup AI preview 3" class="preview-image">
-                </div>
+                        </div>
                 <div class="preview-item">
                     <img src="../assets/App Previews/Shotup AI/Shotup AI 4.png" alt="Shotup AI preview 4" class="preview-image">
-                </div>
+                        </div>
                 <div class="preview-item">
                     <img src="../assets/App Previews/Shotup AI/Shotup AI 5.png" alt="Shotup AI preview 5" class="preview-image">
-                </div>
+                    </div>
                 <div class="preview-item">
                     <img src="../assets/App Previews/Shotup AI/Shotup AI 6.png" alt="Shotup AI preview 6" class="preview-image">
                 </div>
@@ -635,7 +680,7 @@ Every screenshot becomes useful with Shotup AI.</p>
                 <button class="legal-tab" onclick="showTab('terms')">Terms</button>
                 <button class="legal-tab" onclick="showTab('privacy')">Privacy</button>
             </div>
-
+            
             <!-- About Tab -->
             <div id="about" class="legal-tab-content active">
                 <div class="legal-content">
@@ -648,8 +693,8 @@ Every screenshot becomes useful with Shotup AI.</p>
                     <h3>💬 Ask like a human. Get answers fast.</h3>
                     <p>Use chat-style retrieval when you can't remember where something was: "what was that restaurant recommendation?" or "find the workout plan screenshot." Shotup AI helps you go from "I saved it somewhere" to "I can actually use it," with privacy-conscious controls built in.</p>
                 </div>
-            </div>
-
+                </div>
+                
             <!-- Terms Tab -->
             <div id="terms" class="legal-tab-content">
                 <div class="legal-content">
