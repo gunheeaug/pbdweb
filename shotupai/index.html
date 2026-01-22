@@ -181,6 +181,8 @@
                 scrollbar-width: none;
                 justify-content: flex-start;
                 gap: 8px;
+                display: flex !important; /* Ensure it stays a row for carousel */
+                flex-wrap: nowrap !important;
             }
 
             .store-buttons::-webkit-scrollbar {
@@ -188,10 +190,10 @@
             }
 
             .store-button, .website-button-style {
-                flex: 0 0 auto;
+                flex: 0 0 160px !important; /* Force fixed width for carousel items */
                 scroll-snap-align: start;
-                width: 160px;
-                min-width: 160px;
+                width: 160px !important;
+                min-width: 160px !important;
             }
         }
 
