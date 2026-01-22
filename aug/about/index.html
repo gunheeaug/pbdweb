@@ -25,6 +25,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="/assets/fonts/CalSans-Regular.ttf" rel="preload" as="font" type="font/ttf" crossorigin="anonymous">
+    <script src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
     <style>
         @font-face {
             font-family: 'Cal Sans';
@@ -189,6 +190,89 @@
             margin-bottom: 20px;
             font-weight: 500;
         }
+
+        /* QR Code Popup - Desktop Only */
+        .qr-popup {
+            display: none;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .qr-popup.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .qr-popup-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .qr-popup-image-container {
+            width: 150px;
+            height: 150px;
+            margin-top: 15px;
+        }
+
+        .qr-popup-image-container canvas {
+            width: 150px !important;
+            height: 150px !important;
+        }
+
+        .qr-popup-text {
+            font-family: 'Cal Sans', -apple-system, sans-serif;
+            font-size: 18px;
+            color: #1d1d1f;
+            text-align: center;
+            margin-bottom: 4px;
+        }
+
+        .qr-popup-subtext {
+            font-family: -apple-system, sans-serif;
+            font-size: 12px;
+            color: #6e6e73;
+            text-align: center;
+        }
+
+        .qr-popup-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 24px;
+            height: 24px;
+            border: none;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #666;
+            transition: background 0.2s ease;
+        }
+
+        .qr-popup-close:hover {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        @media (min-width: 769px) {
+            .qr-popup {
+                display: block;
+            }
+        }
     </style>
 </head>
 <body>
@@ -258,6 +342,15 @@
         </footer>
     </div>
 
+    <!-- QR Code Popup - Desktop Only -->
+    <div class="qr-popup" id="qrPopup">
+        <button class="qr-popup-close" onclick="closeQrPopup()">✕</button>
+        <div class="qr-popup-content">
+            <div class="qr-popup-image-container" id="qrCodeContainer"></div>
+            <div class="qr-popup-text">Scan to view in AR</div>
+        </div>
+    </div>
+
     <script>
         const videos = [document.getElementById('video1'), document.getElementById('video2')];
         let audioUnlocked = false;
@@ -302,6 +395,59 @@
                 }
             }
         });
+
+        // QR Code Popup - Desktop Only
+        let qrPopupShown = false;
+        let qrPopupClosed = false;
+        const qrPopup = document.getElementById('qrPopup');
+
+        // Generate styled QR code with rounded modules
+        if (window.innerWidth > 768) {
+            const qrCode = new QRCodeStyling({
+                width: 300,
+                height: 300,
+                type: "canvas",
+                margin: 5,
+                data: "https://share.aug.ooo/qr?id=oGfqJtRj",
+                image: "/assets/images/aug-icon.png",
+                qrOptions: {
+                    errorCorrectionLevel: "M"
+                },
+                dotsOptions: {
+                    color: "#000000",
+                    type: "rounded",
+                    roundSize: true
+                },
+                cornersSquareOptions: {
+                    type: "extra-rounded"
+                },
+                cornersDotOptions: {
+                    type: "rounded"
+                },
+                backgroundOptions: {
+                    color: "transparent",
+                },
+                imageOptions: {
+                    crossOrigin: "anonymous",
+                    margin: 5,
+                    imageSize: 0.4
+                }
+            });
+            qrCode.append(document.getElementById("qrCodeContainer"));
+            
+            // Show popup after 2 seconds on desktop
+            setTimeout(() => {
+                if (!qrPopupClosed) {
+                    qrPopup.classList.add('visible');
+                    qrPopupShown = true;
+                }
+            }, 2000);
+        }
+
+        function closeQrPopup() {
+            qrPopup.classList.remove('visible');
+            qrPopupClosed = true;
+        }
 
         // Global click to unlock
         document.body.addEventListener('click', (e) => {
