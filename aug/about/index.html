@@ -178,7 +178,7 @@
                 </div>
             </div>
             <div class="video-item">
-                <video autoplay loop muted playsinline>
+                <video id="video1" autoplay loop muted playsinline>
                     <source src="/assets/videos/aug/aug billboard ads.mp4" type="video/mp4">
                 </video>
             </div>
@@ -186,7 +186,7 @@
 
         <div class="section-layout">
             <div class="video-item">
-                <video autoplay loop muted playsinline>
+                <video id="video2" autoplay loop muted playsinline>
                     <source src="/assets/videos/aug/aug find my idol.mp4" type="video/mp4">
                 </video>
             </div>
@@ -220,5 +220,42 @@
             © 2026 PBD LLC · aug spatial
         </footer>
     </div>
+
+    <script>
+        const videos = [document.getElementById('video1'), document.getElementById('video2')];
+        
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.6 // Video must be 60% visible to unmute
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const video = entry.target;
+                if (entry.isIntersecting) {
+                    // When video is in focus, unmute it
+                    video.muted = false;
+                    // Some browsers require a user interaction before unmuting with sound.
+                    // We attempt to play just in case it was paused.
+                    video.play().catch(e => console.log("Autoplay with sound blocked until user interacts with page."));
+                } else {
+                    // When video is out of focus, mute it
+                    video.muted = true;
+                }
+            });
+        }, observerOptions);
+
+        videos.forEach(video => {
+            if (video) observer.observe(video);
+        });
+
+        // Add a one-time click listener to the body to "unlock" audio for browsers with strict autoplay policies
+        document.body.addEventListener('click', () => {
+            videos.forEach(video => {
+                if (video && video.paused) video.play();
+            });
+        }, { once: true });
+    </script>
 </body>
 </html>
