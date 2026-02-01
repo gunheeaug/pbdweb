@@ -88,6 +88,12 @@ html {
     margin-bottom: 60px;
 }
 
+.logo-img {
+    height: 60px;
+    width: auto;
+    margin-bottom: 60px;
+}
+
 /* Titles */
 .title {
     font-family: 'ArianeCoachella', 'Cormorant Garamond', serif;
