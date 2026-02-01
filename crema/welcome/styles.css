@@ -449,10 +449,32 @@ html {
     padding-bottom: 20px;
 }
 
-/* Success step centering */
+/* Success step layout */
 .success-step {
-    justify-content: center !important;
+    justify-content: space-between !important;
     padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.success-top {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.success-bottom {
+    padding: 24px;
+    padding-bottom: max(24px, env(safe-area-inset-bottom));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.success-bottom .success-message {
+    margin-bottom: 16px;
 }
 
 /* Buttons */
