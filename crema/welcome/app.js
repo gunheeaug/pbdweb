@@ -88,7 +88,11 @@ function init() {
     continueNameBtn.addEventListener('click', handleContinueName);
     resendBtn.addEventListener('click', handleResendCode);
     
-    countryPicker.addEventListener('click', () => countryModal.classList.add('active'));
+    countryPicker.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        countryModal.classList.add('active');
+    });
     countryModal.addEventListener('click', (e) => {
         if (e.target === countryModal) countryModal.classList.remove('active');
     });
