@@ -2,7 +2,7 @@
 const SUPABASE_URL = 'https://jantbnwrzeyvfblschct.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphbnRibndyemV5dmZibHNjaGN0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkxOTk3OTEsImV4cCI6MjA4NDc3NTc5MX0.qGMiXRyBusIdmf-CSx8ohVWLFXFi7tVYY91rzmsMfrI';
 
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+let supabase = null;
 
 // Country codes
 const countries = [
@@ -40,66 +40,97 @@ let countryPicker, countryModal, countryList;
 
 // Initialize
 function init() {
-    // Get DOM elements
-    phoneStep = document.getElementById('phone-step');
-    otpStep = document.getElementById('otp-step');
-    nameStep = document.getElementById('name-step');
-    successStep = document.getElementById('success-step');
+    console.log('Crema: Initializing...');
     
-    phoneInput = document.getElementById('phone-input');
-    otpInput = document.getElementById('otp-input');
-    firstNameInput = document.getElementById('first-name-input');
-    lastNameInput = document.getElementById('last-name-input');
-    
-    requestCodeBtn = document.getElementById('request-code-btn');
-    verifyCodeBtn = document.getElementById('verify-code-btn');
-    continueNameBtn = document.getElementById('continue-name-btn');
-    
-    phoneError = document.getElementById('phone-error');
-    otpError = document.getElementById('otp-error');
-    nameError = document.getElementById('name-error');
-    
-    dialCodeEl = document.getElementById('dial-code');
-    phoneDisplayEl = document.getElementById('phone-display');
-    countdownEl = document.getElementById('countdown');
-    resendText = document.getElementById('resend-text');
-    resendBtn = document.getElementById('resend-btn');
-    userNameEl = document.getElementById('user-name');
-    
-    countryPicker = document.getElementById('country-picker');
-    countryModal = document.getElementById('country-modal');
-    countryList = document.getElementById('country-list');
-    
-    // Get referral code from URL
-    const urlParams = new URLSearchParams(window.location.search);
-    referralCode = urlParams.get('ref') || '';
-    
-    // Build country list
-    buildCountryList();
-    
-    // Event listeners
-    phoneInput.addEventListener('input', handlePhoneInput);
-    otpInput.addEventListener('input', handleOtpInput);
-    firstNameInput.addEventListener('input', handleNameInput);
-    lastNameInput.addEventListener('input', handleNameInput);
-    
-    requestCodeBtn.addEventListener('click', handleRequestCode);
-    verifyCodeBtn.addEventListener('click', handleVerifyCode);
-    continueNameBtn.addEventListener('click', handleContinueName);
-    resendBtn.addEventListener('click', handleResendCode);
-    
-    countryPicker.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        countryModal.classList.add('active');
-    });
-    countryModal.addEventListener('click', (e) => {
-        if (e.target === countryModal) countryModal.classList.remove('active');
-    });
-    
-    document.getElementById('android-waitlist-btn').addEventListener('click', () => {
-        window.open('https://forms.gle/crema-android-waitlist', '_blank');
-    });
+    try {
+        // Initialize Supabase
+        if (window.supabase) {
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            console.log('Crema: Supabase initialized');
+        } else {
+            console.error('Crema: Supabase library not loaded');
+        }
+        
+        // Get DOM elements
+        phoneStep = document.getElementById('phone-step');
+        otpStep = document.getElementById('otp-step');
+        nameStep = document.getElementById('name-step');
+        successStep = document.getElementById('success-step');
+        
+        phoneInput = document.getElementById('phone-input');
+        otpInput = document.getElementById('otp-input');
+        firstNameInput = document.getElementById('first-name-input');
+        lastNameInput = document.getElementById('last-name-input');
+        
+        requestCodeBtn = document.getElementById('request-code-btn');
+        verifyCodeBtn = document.getElementById('verify-code-btn');
+        continueNameBtn = document.getElementById('continue-name-btn');
+        
+        phoneError = document.getElementById('phone-error');
+        otpError = document.getElementById('otp-error');
+        nameError = document.getElementById('name-error');
+        
+        dialCodeEl = document.getElementById('dial-code');
+        phoneDisplayEl = document.getElementById('phone-display');
+        countdownEl = document.getElementById('countdown');
+        resendText = document.getElementById('resend-text');
+        resendBtn = document.getElementById('resend-btn');
+        userNameEl = document.getElementById('user-name');
+        
+        countryPicker = document.getElementById('country-picker');
+        countryModal = document.getElementById('country-modal');
+        countryList = document.getElementById('country-list');
+        
+        console.log('Crema: DOM elements loaded', { phoneInput, requestCodeBtn, countryPicker });
+        
+        // Get referral code from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        referralCode = urlParams.get('ref') || '';
+        
+        // Build country list
+        buildCountryList();
+        
+        // Event listeners
+        if (phoneInput) {
+            phoneInput.addEventListener('input', handlePhoneInput);
+            console.log('Crema: Phone input listener added');
+        }
+        if (otpInput) otpInput.addEventListener('input', handleOtpInput);
+        if (firstNameInput) firstNameInput.addEventListener('input', handleNameInput);
+        if (lastNameInput) lastNameInput.addEventListener('input', handleNameInput);
+        
+        if (requestCodeBtn) requestCodeBtn.addEventListener('click', handleRequestCode);
+        if (verifyCodeBtn) verifyCodeBtn.addEventListener('click', handleVerifyCode);
+        if (continueNameBtn) continueNameBtn.addEventListener('click', handleContinueName);
+        if (resendBtn) resendBtn.addEventListener('click', handleResendCode);
+        
+        if (countryPicker) {
+            countryPicker.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Crema: Country picker clicked');
+                countryModal.classList.add('active');
+            });
+            console.log('Crema: Country picker listener added');
+        }
+        
+        if (countryModal) {
+            countryModal.addEventListener('click', (e) => {
+                if (e.target === countryModal) countryModal.classList.remove('active');
+            });
+        }
+        
+        const androidBtn = document.getElementById('android-waitlist-btn');
+        if (androidBtn) {
+            androidBtn.addEventListener('click', () => {
+                window.open('https://forms.gle/crema-android-waitlist', '_blank');
+            });
+        }
+        
+        console.log('Crema: Initialization complete');
+    } catch (error) {
+        console.error('Crema: Initialization error', error);
+    }
 }
 
 function buildCountryList() {
@@ -136,8 +167,15 @@ function handlePhoneInput(e) {
     phoneNumber = formatted;
     
     const digits = formatted.replace(/\D/g, '');
-    requestCodeBtn.disabled = digits.length < 10;
-    phoneError.textContent = '';
+    const shouldEnable = digits.length >= 10;
+    console.log('Crema: Phone input', { digits: digits.length, shouldEnable });
+    
+    if (requestCodeBtn) {
+        requestCodeBtn.disabled = !shouldEnable;
+    }
+    if (phoneError) {
+        phoneError.textContent = '';
+    }
 }
 
 function handleOtpInput(e) {
