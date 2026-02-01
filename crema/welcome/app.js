@@ -48,11 +48,11 @@ let selectedInterests = [];
 let userFirstName = '';
 
 // DOM Elements (initialized in init())
-let phoneStep, otpStep, interestsStep, nameStep, bioStep, successStep;
-let phoneInput, otpInput, firstNameInput, lastNameInput, bioInput;
-let requestCodeBtn, verifyCodeBtn, continueInterestsBtn, skipInterestsBtn, continueNameBtn, continueBioBtn, skipBioBtn;
-let phoneError, otpError, nameError;
-let dialCodeEl, phoneDisplayEl, countdownEl, resendText, resendBtn, userNameEl;
+let phoneStep, otpStep, referralStep, interestsStep, nameStep, bioStep, successStep;
+let phoneInput, otpInput, referralInput, firstNameInput, lastNameInput, bioInput;
+let requestCodeBtn, verifyCodeBtn, continueReferralBtn, continueInterestsBtn, skipInterestsBtn, continueNameBtn, continueBioBtn, skipBioBtn;
+let phoneError, otpError, referralError, nameError;
+let dialCodeEl, phoneDisplayEl, countdownEl, resendText, resendBtn, userNameEl, waitlistLink;
 let countryPicker, countryModal, countryList, interestsGrid;
 
 // Initialize
@@ -71,6 +71,7 @@ function init() {
         // Get DOM elements
         phoneStep = document.getElementById('phone-step');
         otpStep = document.getElementById('otp-step');
+        referralStep = document.getElementById('referral-step');
         interestsStep = document.getElementById('interests-step');
         nameStep = document.getElementById('name-step');
         bioStep = document.getElementById('bio-step');
@@ -78,12 +79,14 @@ function init() {
         
         phoneInput = document.getElementById('phone-input');
         otpInput = document.getElementById('otp-input');
+        referralInput = document.getElementById('referral-input');
         firstNameInput = document.getElementById('first-name-input');
         lastNameInput = document.getElementById('last-name-input');
         bioInput = document.getElementById('bio-input');
         
         requestCodeBtn = document.getElementById('request-code-btn');
         verifyCodeBtn = document.getElementById('verify-code-btn');
+        continueReferralBtn = document.getElementById('continue-referral-btn');
         continueInterestsBtn = document.getElementById('continue-interests-btn');
         skipInterestsBtn = document.getElementById('skip-interests-btn');
         continueNameBtn = document.getElementById('continue-name-btn');
@@ -92,6 +95,7 @@ function init() {
         
         phoneError = document.getElementById('phone-error');
         otpError = document.getElementById('otp-error');
+        referralError = document.getElementById('referral-error');
         nameError = document.getElementById('name-error');
         
         dialCodeEl = document.getElementById('dial-code');
@@ -100,6 +104,7 @@ function init() {
         resendText = document.getElementById('resend-text');
         resendBtn = document.getElementById('resend-btn');
         userNameEl = document.getElementById('user-name');
+        waitlistLink = document.getElementById('waitlist-link');
         
         countryPicker = document.getElementById('country-picker');
         countryModal = document.getElementById('country-modal');
@@ -122,17 +127,20 @@ function init() {
             console.log('Crema: Phone input listener added');
         }
         if (otpInput) otpInput.addEventListener('input', handleOtpInput);
+        if (referralInput) referralInput.addEventListener('input', handleReferralInput);
         if (firstNameInput) firstNameInput.addEventListener('input', handleNameInput);
         if (lastNameInput) lastNameInput.addEventListener('input', handleNameInput);
         
         if (requestCodeBtn) requestCodeBtn.addEventListener('click', handleRequestCode);
         if (verifyCodeBtn) verifyCodeBtn.addEventListener('click', handleVerifyCode);
+        if (continueReferralBtn) continueReferralBtn.addEventListener('click', handleContinueReferral);
         if (continueInterestsBtn) continueInterestsBtn.addEventListener('click', handleContinueInterests);
         if (skipInterestsBtn) skipInterestsBtn.addEventListener('click', () => showStep('name'));
         if (continueNameBtn) continueNameBtn.addEventListener('click', handleContinueName);
         if (continueBioBtn) continueBioBtn.addEventListener('click', handleContinueBio);
         if (skipBioBtn) skipBioBtn.addEventListener('click', handleSkipBio);
         if (resendBtn) resendBtn.addEventListener('click', handleResendCode);
+        if (waitlistLink) waitlistLink.addEventListener('click', () => window.open('https://forms.gle/crema-waitlist', '_blank'));
         
         if (countryPicker) {
             countryPicker.addEventListener('click', (e) => {
@@ -254,6 +262,51 @@ function handleNameInput() {
     nameError.textContent = '';
 }
 
+function handleReferralInput(e) {
+    // Uppercase and limit to 4 characters
+    const value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 4);
+    e.target.value = value;
+    continueReferralBtn.disabled = value.length < 4;
+    referralError.textContent = '';
+}
+
+async function handleContinueReferral() {
+    const code = referralInput.value.toUpperCase();
+    
+    continueReferralBtn.classList.add('loading');
+    continueReferralBtn.disabled = true;
+    referralError.textContent = '';
+    
+    try {
+        // Validate the referral code
+        const { data, error } = await supabaseClient.rpc('validate_referral_code', {
+            p_referral_code: code
+        });
+        
+        if (error) throw error;
+        
+        if (!data || !data.valid) {
+            referralError.textContent = data?.message || 'Invalid referral code';
+            continueReferralBtn.disabled = false;
+            continueReferralBtn.classList.remove('loading');
+            return;
+        }
+        
+        // Use the referral code
+        referralCode = code;
+        await useReferralCode();
+        
+        // Continue to interests
+        showStep('interests');
+        
+    } catch (error) {
+        referralError.textContent = error.message || 'Invalid referral code. Please try again.';
+    } finally {
+        continueReferralBtn.classList.remove('loading');
+        continueReferralBtn.disabled = false;
+    }
+}
+
 async function handleRequestCode() {
     const digits = phoneNumber.replace(/\D/g, '');
     fullPhoneNumber = selectedCountry.dialCode + digits;
@@ -313,11 +366,16 @@ async function handleVerifyCode() {
             userNameEl.textContent = profile.first_name || 'Friend';
             showStep('success');
         } else {
-            // New user - use referral code and start onboarding
+            // New user - check if we have a referral code from URL
             if (referralCode) {
+                // Use the URL referral code and skip referral step
                 await useReferralCode();
+                showStep('interests');
+            } else {
+                // No URL referral code - show referral step
+                showStep('referral');
+                referralInput.focus();
             }
-            showStep('interests');
         }
         
     } catch (error) {
@@ -473,7 +531,7 @@ function startCountdown() {
 }
 
 function showStep(step) {
-    [phoneStep, otpStep, interestsStep, nameStep, bioStep, successStep].forEach(el => {
+    [phoneStep, otpStep, referralStep, interestsStep, nameStep, bioStep, successStep].forEach(el => {
         if (el) el.classList.remove('active');
     });
     
@@ -483,6 +541,9 @@ function showStep(step) {
             break;
         case 'otp':
             otpStep.classList.add('active');
+            break;
+        case 'referral':
+            referralStep.classList.add('active');
             break;
         case 'interests':
             interestsStep.classList.add('active');

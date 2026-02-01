@@ -70,7 +70,23 @@
             </div>
         </div>
         
-        <!-- Step 3: Interests (for new users) -->
+        <!-- Step 3: Referral Code (for new users without URL ref) -->
+        <div id="referral-step" class="step">
+            <div class="step-content">
+                <h2 class="title referral-title"><span class="logo-text">Crèma</span> is currently referral-only</h2>
+                <p class="referral-subtitle">Enter a referral code or join our <button class="waitlist-link" id="waitlist-link">Waitlist</button></p>
+                
+                <input type="text" id="referral-input" class="referral-input" placeholder="PB26" maxlength="4">
+                
+                <p class="error-message" id="referral-error"></p>
+            </div>
+            
+            <div class="bottom-button">
+                <button class="btn btn-primary" id="continue-referral-btn" disabled>Continue</button>
+            </div>
+        </div>
+        
+        <!-- Step 4: Interests (for new users) -->
         <div id="interests-step" class="step">
             <div class="step-content scrollable">
                 <h2 class="title">Hi, what can we <em>get started</em> for you?</h2>
