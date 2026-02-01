@@ -1,4 +1,4 @@
-/* ArianeCoachella Font */
+/* ArianeCoachella Font - for headings */
 @font-face {
     font-family: 'ArianeCoachella';
     src: url('../assets/ac-thin.otf') format('opentype');
@@ -16,6 +16,14 @@
 @font-face {
     font-family: 'ArianeCoachella';
     src: url('../assets/ac-regular.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Times New Roman - for body/sub text */
+@font-face {
+    font-family: 'TimesNewRoman';
+    src: url('../assets/times-new-roman.ttf') format('truetype');
     font-weight: 400;
     font-style: normal;
 }
@@ -121,9 +129,9 @@ html {
     gap: 4px;
     background: none;
     border: none;
-    font-family: 'ArianeCoachella', 'Cormorant Garamond', serif;
+    font-family: 'TimesNewRoman', 'Times New Roman', serif;
     font-size: 32px;
-    font-weight: 300;
+    font-weight: 400;
     color: var(--crema-espresso);
     cursor: pointer;
     padding: 0;
@@ -140,9 +148,9 @@ html {
 }
 
 #phone-input {
-    font-family: 'ArianeCoachella', 'Cormorant Garamond', serif;
+    font-family: 'TimesNewRoman', 'Times New Roman', serif;
     font-size: 32px;
-    font-weight: 300;
+    font-weight: 400;
     color: var(--crema-espresso);
     background: none;
     border: none;
@@ -156,9 +164,9 @@ html {
 
 /* OTP Input */
 .otp-input {
-    font-family: 'ArianeCoachella', 'Cormorant Garamond', serif;
+    font-family: 'TimesNewRoman', 'Times New Roman', serif;
     font-size: 48px;
-    font-weight: 300;
+    font-weight: 400;
     color: var(--crema-espresso);
     background: none;
     border: none;
@@ -175,12 +183,14 @@ html {
 }
 
 .resend-text {
+    font-family: 'TimesNewRoman', 'Times New Roman', serif;
     font-size: 15px;
     color: var(--crema-steam);
     margin-bottom: 40px;
 }
 
 .resend-btn {
+    font-family: 'TimesNewRoman', 'Times New Roman', serif;
     font-size: 15px;
     font-weight: 500;
     color: var(--crema-roast);
@@ -201,9 +211,9 @@ html {
 }
 
 .name-input {
-    font-family: 'ArianeCoachella', 'Cormorant Garamond', serif;
+    font-family: 'TimesNewRoman', 'Times New Roman', serif;
     font-size: 24px;
-    font-weight: 300;
+    font-weight: 400;
     color: var(--crema-espresso);
     background: none;
     border: none;
@@ -232,8 +242,8 @@ html {
     padding: 18px 24px;
     border-radius: 22px;
     font-size: 18px;
-    font-family: 'ArianeCoachella', 'Cormorant Garamond', serif;
-    font-weight: 300;
+    font-family: 'TimesNewRoman', 'Times New Roman', serif;
+    font-weight: 400;
     cursor: pointer;
     transition: all 0.2s ease;
     text-decoration: none;
@@ -259,6 +269,7 @@ html {
 
 /* Error Message */
 .error-message {
+    font-family: 'TimesNewRoman', 'Times New Roman', serif;
     font-size: 14px;
     color: #c44;
     margin-bottom: 16px;
@@ -272,6 +283,7 @@ html {
 }
 
 .success-message {
+    font-family: 'TimesNewRoman', 'Times New Roman', serif;
     font-size: 16px;
     color: rgba(61, 41, 32, 0.7);
     margin-bottom: 40px;
@@ -336,6 +348,7 @@ html {
 }
 
 .country-item .name {
+    font-family: 'TimesNewRoman', 'Times New Roman', serif;
     font-size: 17px;
     color: var(--crema-espresso);
 }
