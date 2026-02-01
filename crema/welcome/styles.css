@@ -473,6 +473,10 @@ html {
     width: 100%;
 }
 
+.success-bottom .coffee-bean {
+    margin-bottom: 8px;
+}
+
 .success-bottom .success-message {
     margin-bottom: 16px;
 }
