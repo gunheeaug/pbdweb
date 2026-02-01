@@ -183,6 +183,11 @@ function handleOtpInput(e) {
     e.target.value = digits;
     verifyCodeBtn.disabled = digits.length < 6;
     otpError.textContent = '';
+    
+    // Auto-verify when 6 digits entered
+    if (digits.length === 6) {
+        handleVerifyCode();
+    }
 }
 
 function handleNameInput() {
