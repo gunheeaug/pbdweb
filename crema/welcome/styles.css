@@ -250,13 +250,12 @@ html {
 }
 
 .name-input {
-    font-family: 'TimesNewRoman', 'Times New Roman', serif;
-    font-size: 24px;
-    font-weight: 400;
+    font-family: 'ArianeCoachella', 'Cormorant Garamond', serif;
+    font-size: 36px;
+    font-weight: 300;
     color: var(--crema-espresso);
     background: none;
     border: none;
-    border-bottom: 1px solid var(--crema-steam);
     outline: none;
     padding: 12px 0;
     text-align: center;
@@ -266,8 +265,144 @@ html {
     color: var(--crema-steam);
 }
 
-.name-input:focus {
-    border-bottom-color: var(--crema-espresso);
+/* Subtitle */
+.subtitle {
+    font-family: 'TimesNewRoman', 'Times New Roman', serif;
+    font-size: 15px;
+    color: rgba(61, 41, 32, 0.7);
+    margin-top: -24px;
+    margin-bottom: 24px;
+}
+
+/* Interests Grid */
+.interests-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.interest-tag {
+    font-family: 'TimesNewRoman', 'Times New Roman', serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--crema-espresso);
+    padding: 12px 20px;
+    border-radius: 50px;
+    border: 1px solid rgba(61, 41, 32, 0.3);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.interest-tag:hover {
+    border-color: var(--crema-espresso);
+}
+
+.interest-tag.selected {
+    background: var(--crema-espresso);
+    color: white;
+    border-color: var(--crema-espresso);
+}
+
+.interest-tag.matcha.selected {
+    background: rgb(26, 89, 38);
+    border-color: rgb(26, 89, 38);
+}
+
+.interest-tag.light-roast.selected {
+    background: rgb(166, 115, 77);
+    border-color: rgb(166, 115, 77);
+}
+
+.interest-tag.dark-roast.selected {
+    background: rgb(38, 20, 13);
+    border-color: rgb(38, 20, 13);
+}
+
+/* Bio Section */
+.bio-section {
+    width: 100%;
+    max-width: 340px;
+    text-align: left;
+}
+
+.field-label {
+    font-family: 'ArianeCoachella', 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--crema-espresso);
+    display: block;
+    margin-bottom: 12px;
+}
+
+.bio-input {
+    font-family: 'TimesNewRoman', 'Times New Roman', serif;
+    font-size: 16px;
+    color: var(--crema-espresso);
+    background: rgba(61, 41, 32, 0.05);
+    border: none;
+    outline: none;
+    border-radius: 12px;
+    padding: 16px;
+    width: 100%;
+    resize: none;
+}
+
+.bio-input::placeholder {
+    color: var(--crema-steam);
+}
+
+/* Helper Text */
+.helper-text {
+    font-family: 'TimesNewRoman', 'Times New Roman', serif;
+    font-size: 12px;
+    color: rgba(61, 41, 32, 0.6);
+    margin-bottom: 12px;
+}
+
+/* Bottom buttons stack (for steps with skip) */
+.bottom-buttons-stack {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 16px 24px;
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+    background: linear-gradient(to top, var(--crema-cream) 80%, transparent);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.bottom-buttons-stack .btn {
+    max-width: 372px;
+}
+
+/* Link button (skip) */
+.btn-link {
+    font-family: 'TimesNewRoman', 'Times New Roman', serif;
+    font-size: 15px;
+    color: var(--crema-steam);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+}
+
+/* Scrollable content */
+.step-content.scrollable {
+    overflow-y: auto;
+    max-height: calc(100vh - 200px);
+    padding-bottom: 20px;
+}
+
+/* Success step centering */
+.success-step {
+    justify-content: center !important;
+    padding-top: 0 !important;
 }
 
 /* Buttons */

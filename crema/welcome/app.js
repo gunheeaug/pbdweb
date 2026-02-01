@@ -22,6 +22,21 @@ const countries = [
     { name: 'India', flag: '🇮🇳', dialCode: '+91', code: 'IN' },
 ].sort((a, b) => a.name.localeCompare(b.name));
 
+// Interest tags (same as app)
+const interestTags = [
+    // Profession
+    'Barista', 'Roaster', 'Pastry chef', 'Regular',
+    // Coffee style
+    'Espresso only', 'Pour-over fan', 'Cappuccino person', 'Specialty explorer',
+    'Matcha lover', 'Tea person', 'Single-origin seeker', 'Cold brew addict',
+    'Americano drinker', 'Light roast', 'Dark roast', 'Decaf',
+    // Brew method
+    'Aeropress fan', 'French press', 'V60 / Chemex',
+    // Lifestyle
+    'Weekend ritual', 'Morning person', 'Night owl', 'Team iced', 'Team hot',
+    'Quiet corner seeker'
+];
+
 // State
 let selectedCountry = countries.find(c => c.code === 'US');
 let phoneNumber = '';
@@ -29,14 +44,16 @@ let fullPhoneNumber = '';
 let referralCode = '';
 let countdownInterval = null;
 let userId = null;
+let selectedInterests = [];
+let userFirstName = '';
 
 // DOM Elements (initialized in init())
-let phoneStep, otpStep, nameStep, successStep;
-let phoneInput, otpInput, firstNameInput, lastNameInput;
-let requestCodeBtn, verifyCodeBtn, continueNameBtn;
+let phoneStep, otpStep, interestsStep, nameStep, bioStep, successStep;
+let phoneInput, otpInput, firstNameInput, lastNameInput, bioInput;
+let requestCodeBtn, verifyCodeBtn, continueInterestsBtn, skipInterestsBtn, continueNameBtn, continueBioBtn, skipBioBtn;
 let phoneError, otpError, nameError;
 let dialCodeEl, phoneDisplayEl, countdownEl, resendText, resendBtn, userNameEl;
-let countryPicker, countryModal, countryList;
+let countryPicker, countryModal, countryList, interestsGrid;
 
 // Initialize
 function init() {
@@ -54,17 +71,24 @@ function init() {
         // Get DOM elements
         phoneStep = document.getElementById('phone-step');
         otpStep = document.getElementById('otp-step');
+        interestsStep = document.getElementById('interests-step');
         nameStep = document.getElementById('name-step');
+        bioStep = document.getElementById('bio-step');
         successStep = document.getElementById('success-step');
         
         phoneInput = document.getElementById('phone-input');
         otpInput = document.getElementById('otp-input');
         firstNameInput = document.getElementById('first-name-input');
         lastNameInput = document.getElementById('last-name-input');
+        bioInput = document.getElementById('bio-input');
         
         requestCodeBtn = document.getElementById('request-code-btn');
         verifyCodeBtn = document.getElementById('verify-code-btn');
+        continueInterestsBtn = document.getElementById('continue-interests-btn');
+        skipInterestsBtn = document.getElementById('skip-interests-btn');
         continueNameBtn = document.getElementById('continue-name-btn');
+        continueBioBtn = document.getElementById('continue-bio-btn');
+        skipBioBtn = document.getElementById('skip-bio-btn');
         
         phoneError = document.getElementById('phone-error');
         otpError = document.getElementById('otp-error');
@@ -80,6 +104,7 @@ function init() {
         countryPicker = document.getElementById('country-picker');
         countryModal = document.getElementById('country-modal');
         countryList = document.getElementById('country-list');
+        interestsGrid = document.getElementById('interests-grid');
         
         console.log('Crema: DOM elements loaded', { phoneInput, requestCodeBtn, countryPicker });
         
@@ -87,8 +112,9 @@ function init() {
         const urlParams = new URLSearchParams(window.location.search);
         referralCode = urlParams.get('ref') || '';
         
-        // Build country list
+        // Build country list and interests grid
         buildCountryList();
+        buildInterestsGrid();
         
         // Event listeners
         if (phoneInput) {
@@ -101,7 +127,11 @@ function init() {
         
         if (requestCodeBtn) requestCodeBtn.addEventListener('click', handleRequestCode);
         if (verifyCodeBtn) verifyCodeBtn.addEventListener('click', handleVerifyCode);
+        if (continueInterestsBtn) continueInterestsBtn.addEventListener('click', handleContinueInterests);
+        if (skipInterestsBtn) skipInterestsBtn.addEventListener('click', () => showStep('name'));
         if (continueNameBtn) continueNameBtn.addEventListener('click', handleContinueName);
+        if (continueBioBtn) continueBioBtn.addEventListener('click', handleContinueBio);
+        if (skipBioBtn) skipBioBtn.addEventListener('click', handleSkipBio);
         if (resendBtn) resendBtn.addEventListener('click', handleResendCode);
         
         if (countryPicker) {
@@ -147,6 +177,33 @@ function buildCountryList() {
             selectedCountry = countries.find(c => c.code === code);
             dialCodeEl.textContent = selectedCountry.dialCode;
             countryModal.classList.remove('active');
+        });
+    });
+}
+
+function buildInterestsGrid() {
+    if (!interestsGrid) return;
+    
+    interestsGrid.innerHTML = interestTags.map(tag => {
+        // Add special class for colored tags
+        let specialClass = '';
+        if (tag === 'Matcha lover') specialClass = 'matcha';
+        else if (tag === 'Light roast') specialClass = 'light-roast';
+        else if (tag === 'Dark roast') specialClass = 'dark-roast';
+        
+        return `<button class="interest-tag ${specialClass}" data-tag="${tag}">${tag}</button>`;
+    }).join('');
+    
+    interestsGrid.querySelectorAll('.interest-tag').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const tag = btn.dataset.tag;
+            if (selectedInterests.includes(tag)) {
+                selectedInterests = selectedInterests.filter(t => t !== tag);
+                btn.classList.remove('selected');
+            } else {
+                selectedInterests.push(tag);
+                btn.classList.add('selected');
+            }
         });
     });
 }
@@ -256,12 +313,11 @@ async function handleVerifyCode() {
             userNameEl.textContent = profile.first_name || 'Friend';
             showStep('success');
         } else {
-            // New user - need name and use referral code
+            // New user - use referral code and start onboarding
             if (referralCode) {
                 await useReferralCode();
             }
-            showStep('name');
-            firstNameInput.focus();
+            showStep('interests');
         }
         
     } catch (error) {
@@ -286,6 +342,32 @@ async function useReferralCode() {
     }
 }
 
+async function handleContinueInterests() {
+    continueInterestsBtn.classList.add('loading');
+    continueInterestsBtn.disabled = true;
+    
+    try {
+        // Save interests to profile
+        if (selectedInterests.length > 0) {
+            await supabaseClient
+                .from('profiles')
+                .update({ interests: selectedInterests })
+                .eq('id', userId);
+        }
+        
+        showStep('name');
+        firstNameInput.focus();
+        
+    } catch (error) {
+        console.error('Failed to save interests:', error);
+        showStep('name');
+        firstNameInput.focus();
+    } finally {
+        continueInterestsBtn.classList.remove('loading');
+        continueInterestsBtn.disabled = false;
+    }
+}
+
 async function handleContinueName() {
     const firstName = firstNameInput.value.trim();
     const lastName = lastNameInput.value.trim();
@@ -306,8 +388,8 @@ async function handleContinueName() {
         
         if (error) throw error;
         
-        userNameEl.textContent = firstName;
-        showStep('success');
+        userFirstName = firstName;
+        showStep('bio');
         
     } catch (error) {
         nameError.textContent = error.message || 'Failed to save. Please try again.';
@@ -315,6 +397,39 @@ async function handleContinueName() {
         continueNameBtn.classList.remove('loading');
         continueNameBtn.disabled = false;
     }
+}
+
+async function handleContinueBio() {
+    const bio = bioInput.value.trim();
+    
+    continueBioBtn.classList.add('loading');
+    continueBioBtn.disabled = true;
+    
+    try {
+        // Update profile with bio
+        if (bio) {
+            await supabaseClient
+                .from('profiles')
+                .update({ bio: bio })
+                .eq('id', userId);
+        }
+        
+        userNameEl.textContent = userFirstName || 'Friend';
+        showStep('success');
+        
+    } catch (error) {
+        console.error('Failed to save bio:', error);
+        userNameEl.textContent = userFirstName || 'Friend';
+        showStep('success');
+    } finally {
+        continueBioBtn.classList.remove('loading');
+        continueBioBtn.disabled = false;
+    }
+}
+
+function handleSkipBio() {
+    userNameEl.textContent = userFirstName || 'Friend';
+    showStep('success');
 }
 
 async function handleResendCode() {
@@ -358,7 +473,9 @@ function startCountdown() {
 }
 
 function showStep(step) {
-    [phoneStep, otpStep, nameStep, successStep].forEach(el => el.classList.remove('active'));
+    [phoneStep, otpStep, interestsStep, nameStep, bioStep, successStep].forEach(el => {
+        if (el) el.classList.remove('active');
+    });
     
     switch (step) {
         case 'phone':
@@ -367,8 +484,14 @@ function showStep(step) {
         case 'otp':
             otpStep.classList.add('active');
             break;
+        case 'interests':
+            interestsStep.classList.add('active');
+            break;
         case 'name':
             nameStep.classList.add('active');
+            break;
+        case 'bio':
+            bioStep.classList.add('active');
             break;
         case 'success':
             successStep.classList.add('active');
@@ -378,10 +501,9 @@ function showStep(step) {
 
 // Handle keyboard visibility - move buttons above keyboard
 function setupKeyboardHandler() {
-    const bottomButtons = document.querySelectorAll('.bottom-button');
-    
     if (window.visualViewport) {
         window.visualViewport.addEventListener('resize', () => {
+            const bottomButtons = document.querySelectorAll('.bottom-button, .bottom-buttons-stack');
             const viewportHeight = window.visualViewport.height;
             const windowHeight = window.innerHeight;
             const keyboardHeight = windowHeight - viewportHeight;
@@ -398,7 +520,7 @@ function setupKeyboardHandler() {
         });
         
         window.visualViewport.addEventListener('scroll', () => {
-            const bottomButtons = document.querySelectorAll('.bottom-button');
+            const bottomButtons = document.querySelectorAll('.bottom-button, .bottom-buttons-stack');
             bottomButtons.forEach(btn => {
                 btn.style.bottom = `${window.innerHeight - window.visualViewport.height - window.visualViewport.offsetTop}px`;
             });

@@ -70,22 +70,62 @@
             </div>
         </div>
         
-        <!-- Step 3: Name Entry (for new users) -->
-        <div id="name-step" class="step">
-            <h2 class="title">What's your name?</h2>
-            
-            <div class="name-inputs">
-                <input type="text" id="first-name-input" placeholder="First name" class="name-input">
-                <input type="text" id="last-name-input" placeholder="Last name" class="name-input">
+        <!-- Step 3: Interests (for new users) -->
+        <div id="interests-step" class="step">
+            <div class="step-content scrollable">
+                <h2 class="title">Hi, what can we <em>get started</em> for you?</h2>
+                <p class="subtitle">Select anything that sounds like you</p>
+                
+                <div class="interests-grid" id="interests-grid">
+                    <!-- Interest tags will be populated by JS -->
+                </div>
             </div>
             
-            <p class="error-message" id="name-error"></p>
-            
-            <button class="btn btn-primary" id="continue-name-btn" disabled>Continue</button>
+            <div class="bottom-buttons-stack">
+                <button class="btn btn-primary" id="continue-interests-btn">Continue</button>
+                <button class="btn-link" id="skip-interests-btn">Skip for now</button>
+            </div>
         </div>
         
-        <!-- Step 4: Success -->
-        <div id="success-step" class="step">
+        <!-- Step 4: Name Entry -->
+        <div id="name-step" class="step">
+            <div class="step-content">
+                <h2 class="title">What was <em>your name</em> again?</h2>
+                
+                <div class="name-inputs">
+                    <input type="text" id="first-name-input" placeholder="First name" class="name-input">
+                    <input type="text" id="last-name-input" placeholder="Last name" class="name-input">
+                </div>
+                
+                <p class="error-message" id="name-error"></p>
+            </div>
+            
+            <div class="bottom-buttons-stack">
+                <p class="helper-text">You can always change this later</p>
+                <button class="btn btn-primary" id="continue-name-btn" disabled>Continue</button>
+            </div>
+        </div>
+        
+        <!-- Step 5: Bio -->
+        <div id="bio-step" class="step">
+            <div class="step-content">
+                <h2 class="title">Anything <em>else</em>?</h2>
+                <p class="subtitle">Share anything you'd like</p>
+                
+                <div class="bio-section">
+                    <label class="field-label">What do you like about coffee?</label>
+                    <textarea id="bio-input" class="bio-input" placeholder="Your thoughts on coffee..." rows="3"></textarea>
+                </div>
+            </div>
+            
+            <div class="bottom-buttons-stack">
+                <button class="btn btn-primary" id="continue-bio-btn">Complete</button>
+                <button class="btn-link" id="skip-bio-btn">Skip for now</button>
+            </div>
+        </div>
+        
+        <!-- Step 6: Success -->
+        <div id="success-step" class="step success-step">
             <h2 class="welcome-title">Welcome,</h2>
             <h1 class="user-name" id="user-name">Friend</h1>
             
