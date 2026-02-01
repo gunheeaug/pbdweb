@@ -30,38 +30,46 @@ let referralCode = '';
 let countdownInterval = null;
 let userId = null;
 
-// DOM Elements
-const phoneStep = document.getElementById('phone-step');
-const otpStep = document.getElementById('otp-step');
-const nameStep = document.getElementById('name-step');
-const successStep = document.getElementById('success-step');
-
-const phoneInput = document.getElementById('phone-input');
-const otpInput = document.getElementById('otp-input');
-const firstNameInput = document.getElementById('first-name-input');
-const lastNameInput = document.getElementById('last-name-input');
-
-const requestCodeBtn = document.getElementById('request-code-btn');
-const verifyCodeBtn = document.getElementById('verify-code-btn');
-const continueNameBtn = document.getElementById('continue-name-btn');
-
-const phoneError = document.getElementById('phone-error');
-const otpError = document.getElementById('otp-error');
-const nameError = document.getElementById('name-error');
-
-const dialCodeEl = document.getElementById('dial-code');
-const phoneDisplayEl = document.getElementById('phone-display');
-const countdownEl = document.getElementById('countdown');
-const resendText = document.getElementById('resend-text');
-const resendBtn = document.getElementById('resend-btn');
-const userNameEl = document.getElementById('user-name');
-
-const countryPicker = document.getElementById('country-picker');
-const countryModal = document.getElementById('country-modal');
-const countryList = document.getElementById('country-list');
+// DOM Elements (initialized in init())
+let phoneStep, otpStep, nameStep, successStep;
+let phoneInput, otpInput, firstNameInput, lastNameInput;
+let requestCodeBtn, verifyCodeBtn, continueNameBtn;
+let phoneError, otpError, nameError;
+let dialCodeEl, phoneDisplayEl, countdownEl, resendText, resendBtn, userNameEl;
+let countryPicker, countryModal, countryList;
 
 // Initialize
 function init() {
+    // Get DOM elements
+    phoneStep = document.getElementById('phone-step');
+    otpStep = document.getElementById('otp-step');
+    nameStep = document.getElementById('name-step');
+    successStep = document.getElementById('success-step');
+    
+    phoneInput = document.getElementById('phone-input');
+    otpInput = document.getElementById('otp-input');
+    firstNameInput = document.getElementById('first-name-input');
+    lastNameInput = document.getElementById('last-name-input');
+    
+    requestCodeBtn = document.getElementById('request-code-btn');
+    verifyCodeBtn = document.getElementById('verify-code-btn');
+    continueNameBtn = document.getElementById('continue-name-btn');
+    
+    phoneError = document.getElementById('phone-error');
+    otpError = document.getElementById('otp-error');
+    nameError = document.getElementById('name-error');
+    
+    dialCodeEl = document.getElementById('dial-code');
+    phoneDisplayEl = document.getElementById('phone-display');
+    countdownEl = document.getElementById('countdown');
+    resendText = document.getElementById('resend-text');
+    resendBtn = document.getElementById('resend-btn');
+    userNameEl = document.getElementById('user-name');
+    
+    countryPicker = document.getElementById('country-picker');
+    countryModal = document.getElementById('country-modal');
+    countryList = document.getElementById('country-list');
+    
     // Get referral code from URL
     const urlParams = new URLSearchParams(window.location.search);
     referralCode = urlParams.get('ref') || '';
