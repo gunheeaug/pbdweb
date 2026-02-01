@@ -2,7 +2,7 @@
 const SUPABASE_URL = 'https://jantbnwrzeyvfblschct.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphbnRibndyemV5dmZibHNjaGN0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkxOTk3OTEsImV4cCI6MjA4NDc3NTc5MX0.qGMiXRyBusIdmf-CSx8ohVWLFXFi7tVYY91rzmsMfrI';
 
-let supabase = null;
+let supabaseClient = null;
 
 // Country codes
 const countries = [
@@ -45,7 +45,7 @@ function init() {
     try {
         // Initialize Supabase
         if (window.supabase) {
-            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             console.log('Crema: Supabase initialized');
         } else {
             console.error('Crema: Supabase library not loaded');
@@ -201,7 +201,7 @@ async function handleRequestCode() {
     phoneError.textContent = '';
     
     try {
-        const { error } = await supabase.auth.signInWithOtp({
+        const { error } = await supabaseClient.auth.signInWithOtp({
             phone: fullPhoneNumber
         });
         
@@ -229,7 +229,7 @@ async function handleVerifyCode() {
     otpError.textContent = '';
     
     try {
-        const { data, error } = await supabase.auth.verifyOtp({
+        const { data, error } = await supabaseClient.auth.verifyOtp({
             phone: fullPhoneNumber,
             token: otp,
             type: 'sms'
@@ -240,7 +240,7 @@ async function handleVerifyCode() {
         userId = data.user.id;
         
         // Check if user already exists (has name)
-        const { data: profile } = await supabase
+        const { data: profile } = await supabaseClient
             .from('profiles')
             .select('first_name, last_name, invited_by')
             .eq('id', userId)
@@ -272,7 +272,7 @@ async function useReferralCode() {
     
     try {
         // Validate and use the referral code
-        await supabase.rpc('use_referral_code', {
+        await supabaseClient.rpc('use_referral_code', {
             p_invitee_id: userId,
             p_referral_code: referralCode.toUpperCase()
         });
@@ -291,7 +291,7 @@ async function handleContinueName() {
     
     try {
         // Update profile with name
-        const { error } = await supabase
+        const { error } = await supabaseClient
             .from('profiles')
             .update({
                 first_name: firstName,
@@ -317,7 +317,7 @@ async function handleResendCode() {
     resendText.style.display = 'block';
     
     try {
-        const { error } = await supabase.auth.signInWithOtp({
+        const { error } = await supabaseClient.auth.signInWithOtp({
             phone: fullPhoneNumber
         });
         
