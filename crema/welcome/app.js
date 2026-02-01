@@ -376,5 +376,38 @@ function showStep(step) {
     }
 }
 
+// Handle keyboard visibility - move buttons above keyboard
+function setupKeyboardHandler() {
+    const bottomButtons = document.querySelectorAll('.bottom-button');
+    
+    if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', () => {
+            const viewportHeight = window.visualViewport.height;
+            const windowHeight = window.innerHeight;
+            const keyboardHeight = windowHeight - viewportHeight;
+            
+            bottomButtons.forEach(btn => {
+                if (keyboardHeight > 100) {
+                    // Keyboard is open
+                    btn.style.bottom = `${keyboardHeight}px`;
+                } else {
+                    // Keyboard is closed
+                    btn.style.bottom = '0';
+                }
+            });
+        });
+        
+        window.visualViewport.addEventListener('scroll', () => {
+            const bottomButtons = document.querySelectorAll('.bottom-button');
+            bottomButtons.forEach(btn => {
+                btn.style.bottom = `${window.innerHeight - window.visualViewport.height - window.visualViewport.offsetTop}px`;
+            });
+        });
+    }
+}
+
 // Initialize on load
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('DOMContentLoaded', () => {
+    init();
+    setupKeyboardHandler();
+});

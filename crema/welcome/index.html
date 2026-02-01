@@ -29,37 +29,45 @@
     <div class="container">
         <!-- Step 1: Phone Entry -->
         <div id="phone-step" class="step active">
-            <img src="../assets/Crema-logo.png" alt="Crema" class="logo-img">
-            <h2 class="title">What's your<br>phone number?</h2>
-            
-            <div class="phone-input-row">
-                <button type="button" class="country-picker" id="country-picker">
-                    <span id="dial-code">+1</span>
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                        <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                    </svg>
-                </button>
-                <div class="divider"></div>
-                <input type="tel" id="phone-input" placeholder="000-000-0000" maxlength="12">
+            <div class="step-content">
+                <img src="../assets/Crema-logo.png" alt="Crema" class="logo-img">
+                <h2 class="title">What's your<br>phone number?</h2>
+                
+                <div class="phone-input-row">
+                    <button type="button" class="country-picker" id="country-picker">
+                        <span id="dial-code">+1</span>
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                            <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                    <div class="divider"></div>
+                    <input type="tel" id="phone-input" placeholder="000-000-0000" maxlength="12">
+                </div>
+                
+                <p class="error-message" id="phone-error"></p>
             </div>
             
-            <p class="error-message" id="phone-error"></p>
-            
-            <button class="btn btn-primary" id="request-code-btn" disabled>Request Code</button>
+            <div class="bottom-button" id="phone-bottom-btn">
+                <button class="btn btn-primary" id="request-code-btn" disabled>Request Code</button>
+            </div>
         </div>
         
         <!-- Step 2: OTP Verification -->
         <div id="otp-step" class="step">
-            <h2 class="title">Enter the code</h2>
+            <div class="step-content">
+                <h2 class="title">Enter the code</h2>
+                
+                <input type="tel" id="otp-input" class="otp-input" placeholder="000000" maxlength="6">
+                
+                <p class="resend-text" id="resend-text">Resend to <span id="phone-display"></span> in <span id="countdown">60</span>s</p>
+                <button class="resend-btn" id="resend-btn" style="display: none;">Resend code</button>
+                
+                <p class="error-message" id="otp-error"></p>
+            </div>
             
-            <input type="tel" id="otp-input" class="otp-input" placeholder="000000" maxlength="6">
-            
-            <p class="resend-text" id="resend-text">Resend to <span id="phone-display"></span> in <span id="countdown">60</span>s</p>
-            <button class="resend-btn" id="resend-btn" style="display: none;">Resend code</button>
-            
-            <p class="error-message" id="otp-error"></p>
-            
-            <button class="btn btn-primary" id="verify-code-btn" disabled>Verify Code</button>
+            <div class="bottom-button" id="otp-bottom-btn">
+                <button class="btn btn-primary" id="verify-code-btn" disabled>Verify Code</button>
+            </div>
         </div>
         
         <!-- Step 3: Name Entry (for new users) -->

@@ -73,14 +73,40 @@ html {
     flex: 1;
     text-align: center;
     padding-top: 80px;
+    position: relative;
 }
 
 .step.active {
     display: flex;
 }
 
-/* Push buttons to bottom */
-.step .btn {
+.step-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/* Bottom button container - pushed to bottom */
+.bottom-button {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 16px 24px;
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+    background: linear-gradient(to top, var(--crema-cream) 80%, transparent);
+    display: flex;
+    justify-content: center;
+    transition: bottom 0.1s ease-out;
+}
+
+.bottom-button .btn {
+    max-width: 372px;
+}
+
+/* Push buttons to bottom - for steps without fixed bottom */
+.step > .btn {
     margin-top: auto;
     margin-bottom: 10px;
 }
