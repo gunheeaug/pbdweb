@@ -132,6 +132,7 @@
             <button class="tab active" onclick="switchTab('aug')">aug</button>
             <button class="tab" onclick="switchTab('superba')">Superba</button>
             <button class="tab" onclick="switchTab('crema')">Crèma</button>
+            <button class="export-btn" style="margin-left: auto; margin-top: 0;" onclick="clearData()">Clear All Data</button>
         </div>
 
         <!-- aug Table -->
@@ -146,16 +147,9 @@
                     </tr>
                 </thead>
                 <tbody id="aug-data">
-                    <!-- Sample Data -->
-                    <tr>
-                        <td>hello@example.com</td>
-                        <td>Feb 3, 2026</td>
-                        <td>Android</td>
-                        <td><span style="color: #34c759;">Pending</span></td>
-                    </tr>
                 </tbody>
             </table>
-            <div id="aug-empty" class="empty-state" style="display: none;">
+            <div id="aug-empty" class="empty-state">
                 No users on the waitlist yet.
             </div>
         </div>
@@ -172,15 +166,9 @@
                     </tr>
                 </thead>
                 <tbody id="superba-data">
-                    <tr>
-                        <td>runner@pbd.team</td>
-                        <td>Feb 3, 2026</td>
-                        <td>Android</td>
-                        <td><span style="color: #34c759;">Pending</span></td>
-                    </tr>
                 </tbody>
             </table>
-            <div id="superba-empty" class="empty-state" style="display: none;">
+            <div id="superba-empty" class="empty-state">
                 No users on the waitlist yet.
             </div>
         </div>
@@ -197,15 +185,9 @@
                     </tr>
                 </thead>
                 <tbody id="crema-data">
-                    <tr>
-                        <td>barista@crema.cafe</td>
-                        <td>Feb 3, 2026</td>
-                        <td>Android</td>
-                        <td><span style="color: #34c759;">Pending</span></td>
-                    </tr>
                 </tbody>
             </table>
-            <div id="crema-empty" class="empty-state" style="display: none;">
+            <div id="crema-empty" class="empty-state">
                 No users on the waitlist yet.
             </div>
         </div>
@@ -216,10 +198,41 @@
     </div>
 
     <script>
+        function loadData() {
+            const apps = ['aug', 'superba', 'crema'];
+            
+            apps.forEach(app => {
+                const data = JSON.parse(localStorage.getItem('pbd_waitlist_' + app) || '[]');
+                const tbody = document.getElementById(app + '-data');
+                const emptyState = document.getElementById(app + '-empty');
+                
+                tbody.innerHTML = '';
+                
+                if (data.length === 0) {
+                    emptyState.style.display = 'block';
+                    tbody.parentElement.style.display = 'none';
+                } else {
+                    emptyState.style.display = 'none';
+                    tbody.parentElement.style.display = 'table';
+                    
+                    data.forEach(user => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${user.email}</td>
+                            <td>${user.date}</td>
+                            <td>${user.platform}</td>
+                            <td><span style="color: #34c759;">Pending</span></td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                }
+            });
+        }
+
         function switchTab(appId) {
             // Update tabs
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            event.target.classList.add('active');
+            event.currentTarget.classList.add('active');
 
             // Update tables
             document.querySelectorAll('.table-container').forEach(c => c.classList.remove('active'));
@@ -228,12 +241,40 @@
             window.currentApp = appId;
         }
 
-        window.currentApp = 'aug';
+        function clearData() {
+            if (confirm('Are you sure you want to clear all waitlist data? This cannot be undone.')) {
+                localStorage.removeItem('pbd_waitlist_aug');
+                localStorage.removeItem('pbd_waitlist_superba');
+                localStorage.removeItem('pbd_waitlist_crema');
+                loadData();
+            }
+        }
 
         function exportCSV() {
-            alert('Exporting ' + window.currentApp + ' waitlist data...');
-            // In a real implementation, this would fetch from a database or Formspree API
+            const data = JSON.parse(localStorage.getItem('pbd_waitlist_' + window.currentApp) || '[]');
+            if (data.length === 0) {
+                alert('No data to export.');
+                return;
+            }
+
+            let csv = 'Email,Date,Platform\n';
+            data.forEach(user => {
+                csv += `${user.email},${user.date},${user.platform}\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.setAttribute('hidden', '');
+            a.setAttribute('href', url);
+            a.setAttribute('download', `pbd_waitlist_${window.currentApp}.csv`);
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         }
+
+        window.currentApp = 'aug';
+        document.addEventListener('DOMContentLoaded', loadData);
     </script>
 </body>
 </html>

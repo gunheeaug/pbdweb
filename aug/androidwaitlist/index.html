@@ -94,14 +94,45 @@
         <h1>aug for Android</h1>
         <p>Join the waitlist to get notified when aug spatial launches on Android.</p>
         
-        <!-- Replace with your actual form submission URL (e.g., Formspree, Mailchimp, etc.) -->
-        <form action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST">
-            <input type="email" name="email" placeholder="Enter your email" required>
-            <input type="hidden" name="app" value="aug">
+        <form id="waitlistForm">
+            <input type="email" id="emailInput" placeholder="Enter your email" required>
             <button type="submit">Notify Me</button>
         </form>
         
+        <div id="successMessage" style="display: none; margin-top: 20px; color: #34c759; font-weight: 600;">
+            You've been added to the waitlist!
+        </div>
+        
         <a href="/aug/" class="back-link">← Back to aug</a>
     </div>
+
+    <script>
+        document.getElementById('waitlistForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('emailInput').value;
+            const date = new Date().toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric' 
+            });
+            
+            // Get existing waitlist
+            const waitlist = JSON.parse(localStorage.getItem('pbd_waitlist_aug') || '[]');
+            
+            // Add new entry
+            waitlist.push({
+                email: email,
+                date: date,
+                platform: 'Android'
+            });
+            
+            // Save back to localStorage
+            localStorage.setItem('pbd_waitlist_aug', JSON.stringify(waitlist));
+            
+            // Show success
+            document.getElementById('waitlistForm').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'block';
+        });
+    </script>
 </body>
 </html>
