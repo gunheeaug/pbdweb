@@ -347,6 +347,9 @@ async function handleVerifyCode() {
         
         userId = data.user.id;
         
+        // Save phone number for waitlist
+        localStorage.setItem('pbd_onboarding_phone', fullPhoneNumber);
+        
         // Check if user already exists (has name)
         const { data: profile } = await supabaseClient
             .from('profiles')

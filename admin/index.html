@@ -179,6 +179,7 @@
                 <thead>
                     <tr>
                         <th>Email Address</th>
+                        <th>Phone Number</th>
                         <th>Date Added</th>
                         <th>Platform</th>
                         <th>Status</th>
@@ -217,12 +218,22 @@
                     
                     data.forEach(user => {
                         const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${user.email}</td>
-                            <td>${user.date}</td>
-                            <td>${user.platform}</td>
-                            <td><span style="color: #34c759;">Pending</span></td>
-                        `;
+                        if (app === 'crema') {
+                            row.innerHTML = `
+                                <td>${user.email}</td>
+                                <td>${user.phone || '-'}</td>
+                                <td>${user.date}</td>
+                                <td>${user.platform}</td>
+                                <td><span style="color: #34c759;">Pending</span></td>
+                            `;
+                        } else {
+                            row.innerHTML = `
+                                <td>${user.email}</td>
+                                <td>${user.date}</td>
+                                <td>${user.platform}</td>
+                                <td><span style="color: #34c759;">Pending</span></td>
+                            `;
+                        }
                         tbody.appendChild(row);
                     });
                 }
@@ -257,9 +268,13 @@
                 return;
             }
 
-            let csv = 'Email,Date,Platform\n';
+            let csv = window.currentApp === 'crema' ? 'Email,Phone,Date,Platform\n' : 'Email,Date,Platform\n';
             data.forEach(user => {
-                csv += `${user.email},${user.date},${user.platform}\n`;
+                if (window.currentApp === 'crema') {
+                    csv += `${user.email},${user.phone || ''},${user.date},${user.platform}\n`;
+                } else {
+                    csv += `${user.email},${user.date},${user.platform}\n`;
+                }
             });
 
             const blob = new Blob([csv], { type: 'text/csv' });

@@ -96,6 +96,7 @@
         
         <form id="waitlistForm">
             <input type="email" id="emailInput" placeholder="Enter your email" required>
+            <input type="tel" id="phoneInput" placeholder="Phone number (optional)">
             <button type="submit">Notify Me</button>
         </form>
         
@@ -107,9 +108,16 @@
     </div>
 
     <script>
+        // Check for phone number from onboarding
+        const onboardingPhone = localStorage.getItem('pbd_onboarding_phone');
+        if (onboardingPhone) {
+            document.getElementById('phoneInput').value = onboardingPhone;
+        }
+
         document.getElementById('waitlistForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const email = document.getElementById('emailInput').value;
+            const phone = document.getElementById('phoneInput').value;
             const date = new Date().toLocaleDateString('en-US', { 
                 year: 'numeric', 
                 month: 'short', 
@@ -122,6 +130,7 @@
             // Add new entry
             waitlist.push({
                 email: email,
+                phone: phone,
                 date: date,
                 platform: 'Android'
             });
