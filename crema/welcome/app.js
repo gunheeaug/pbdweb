@@ -140,7 +140,7 @@ function init() {
         if (continueBioBtn) continueBioBtn.addEventListener('click', handleContinueBio);
         if (skipBioBtn) skipBioBtn.addEventListener('click', handleSkipBio);
         if (resendBtn) resendBtn.addEventListener('click', handleResendCode);
-        if (waitlistLink) waitlistLink.addEventListener('click', () => window.open('https://forms.gle/crema-waitlist', '_blank'));
+        if (waitlistLink) waitlistLink.addEventListener('click', () => window.location.href = '/crema/androidwaitlist/');
         
         if (countryPicker) {
             countryPicker.addEventListener('click', (e) => {
@@ -155,13 +155,6 @@ function init() {
         if (countryModal) {
             countryModal.addEventListener('click', (e) => {
                 if (e.target === countryModal) countryModal.classList.remove('active');
-            });
-        }
-        
-        const androidBtn = document.getElementById('android-waitlist-btn');
-        if (androidBtn) {
-            androidBtn.addEventListener('click', () => {
-                window.open('https://forms.gle/crema-android-waitlist', '_blank');
             });
         }
         
