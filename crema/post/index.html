@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Crèma - Post</title>
+    
+    <!-- Default Open Graph tags (will be dynamic when served via Edge Function) -->
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Crèma">
+    <meta property="og:title" content="Post on Crèma">
+    <meta property="og:description" content="Check out this post on Crèma - Your Coffee Community">
+    <meta property="og:image" content="https://jantbnwrzeyvfblschct.supabase.co/storage/v1/object/public/assets/crema-og-default.png">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Post on Crèma">
+    <meta name="twitter:description" content="Check out this post on Crèma - Your Coffee Community">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        @font-face {
+            font-family: 'ArianeCoachella';
+            src: url('../welcome/ac.thinitalic.otf') format('opentype');
+            font-weight: normal;
+            font-style: italic;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #FCF8F2;
+            color: #3D2920;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 24px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+        
+        .logo {
+            font-family: 'ArianeCoachella', serif;
+            font-style: italic;
+            font-size: 28px;
+            color: #3D2920;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px 0;
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(61, 41, 32, 0.1);
+            border-top-color: #3D2920;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .post-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        
+        .author-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .author-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: #3D2920;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 500;
+            font-size: 18px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        
+        .author-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .author-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .author-name {
+            font-weight: 600;
+            font-size: 17px;
+            color: #3D2920;
+        }
+        
+        .author-headline {
+            font-size: 14px;
+            color: rgba(61, 41, 32, 0.65);
+        }
+        
+        .post-content {
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 16px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .post-media {
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+        
+        .post-media img, .post-media video {
+            width: 100%;
+            display: block;
+        }
+        
+        .error-message {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .error-message h2 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+        
+        .error-message p {
+            color: rgba(61, 41, 32, 0.65);
+        }
+        
+        .cta-section {
+            margin-top: auto;
+            padding-top: 32px;
+            text-align: center;
+        }
+        
+        .cta-text {
+            font-size: 18px;
+            margin-bottom: 16px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background-color: #3D2920;
+            color: white;
+            padding: 14px 32px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+        }
+        
+        .cta-button:hover {
+            background-color: #2a1d17;
+        }
+        
+        .android-note {
+            margin-top: 12px;
+            font-size: 14px;
+            color: rgba(61, 41, 32, 0.65);
+        }
+        
+        .android-note a {
+            color: #3D2920;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">Crèma</div>
+        
+        <div id="loading" class="loading">
+            <div class="loading-spinner"></div>
+            <p>Loading post...</p>
+        </div>
+        
+        <div id="post-container" style="display: none;"></div>
+        
+        <div id="error" class="error-message" style="display: none;">
+            <h2>Post Not Found</h2>
+            <p>This post may have been deleted or is no longer available.</p>
+        </div>
+        
+        <div class="cta-section">
+            <p class="cta-text">See more on Crèma</p>
+            <a href="https://apps.apple.com/app/crema" class="cta-button" id="download-btn">Download the App</a>
+            <p class="android-note">Android? <a href="https://pbd.team/crema/waitlist">Join the waitlist</a></p>
+        </div>
+    </div>
+    
+    <script>
+        const SUPABASE_URL = 'https://jantbnwrzeyvfblschct.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphbnRibndyemV5dmZibHNjaGN0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkxOTk3OTEsImV4cCI6MjA4NDc3NTc5MX0.qGMiXRyBusIdmf-CSx8ohVWLFXFi7tVYY91rzmsMfrI';
+        
+        // Extract post ID from URL path
+        function getPostIdFromPath() {
+            const pathParts = window.location.pathname.split('/').filter(Boolean);
+            // Expected path: /crema/post/{postId} or just the postId at the end
+            const postId = pathParts[pathParts.length - 1];
+            // Check if it looks like a UUID
+            const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+            return uuidRegex.test(postId) ? postId : null;
+        }
+        
+        function getInitials(firstName, lastName) {
+            const f = firstName ? firstName[0] : '';
+            const l = lastName ? lastName[0] : '';
+            return (f + l).toUpperCase() || '?';
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        function isVideoUrl(url) {
+            return /\.(mp4|mov|m4v|webm)$/i.test(url);
+        }
+        
+        async function loadPost() {
+            const postId = getPostIdFromPath();
+            
+            if (!postId) {
+                showError();
+                return;
+            }
+            
+            // Try to deep link to app on iOS
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+            if (isIOS) {
+                window.location.href = `crema://post/${postId}`;
+                // Continue loading in case deep link fails
+            }
+            
+            try {
+                const response = await fetch(
+                    `${SUPABASE_URL}/rest/v1/posts?id=eq.${postId}&select=id,content,media_urls,user_id,created_at,profiles!posts_user_id_fkey(first_name,last_name,headline,profile_image_url)`,
+                    {
+                        headers: {
+                            'apikey': SUPABASE_ANON_KEY,
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                        }
+                    }
+                );
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch post');
+                }
+                
+                const posts = await response.json();
+                
+                if (!posts || posts.length === 0) {
+                    showError();
+                    return;
+                }
+                
+                const post = posts[0];
+                renderPost(post);
+                
+            } catch (error) {
+                console.error('Error loading post:', error);
+                showError();
+            }
+        }
+        
+        function renderPost(post) {
+            const profile = post.profiles || {};
+            const authorName = `${profile.first_name || ''} ${profile.last_name || ''}`.trim() || 'Someone';
+            const headline = profile.headline || 'Coffee Enthusiast';
+            const initials = getInitials(profile.first_name, profile.last_name);
+            
+            let avatarContent = initials;
+            if (profile.profile_image_url) {
+                avatarContent = `<img src="${escapeHtml(profile.profile_image_url)}" alt="${escapeHtml(authorName)}">`;
+            }
+            
+            let mediaHtml = '';
+            if (post.media_urls && post.media_urls.length > 0) {
+                const firstMedia = post.media_urls[0];
+                if (isVideoUrl(firstMedia)) {
+                    mediaHtml = `
+                        <div class="post-media">
+                            <video controls playsinline>
+                                <source src="${escapeHtml(firstMedia)}" type="video/mp4">
+                            </video>
+                        </div>`;
+                } else {
+                    mediaHtml = `
+                        <div class="post-media">
+                            <img src="${escapeHtml(firstMedia)}" alt="Post media">
+                        </div>`;
+                }
+            }
+            
+            const html = `
+                <div class="post-card">
+                    <div class="author-section">
+                        <div class="author-avatar">${avatarContent}</div>
+                        <div class="author-info">
+                            <div class="author-name">${escapeHtml(authorName)}</div>
+                            <div class="author-headline">${escapeHtml(headline)}</div>
+                        </div>
+                    </div>
+                    <div class="post-content">${escapeHtml(post.content)}</div>
+                    ${mediaHtml}
+                </div>`;
+            
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('post-container').innerHTML = html;
+            document.getElementById('post-container').style.display = 'block';
+            
+            // Update page title
+            document.title = `${authorName} on Crèma`;
+        }
+        
+        function showError() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('error').style.display = 'block';
+        }
+        
+        // Load post when page is ready
+        document.addEventListener('DOMContentLoaded', loadPost);
+    </script>
+</body>
+</html>
