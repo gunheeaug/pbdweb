@@ -2,30 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script>
-        (function() {
-            var path = window.location.pathname;
-            // Route /crema/post/{uuid} to the post page
-            if (/^\/crema\/post\/[0-9a-f\-]+$/i.test(path)) {
-                // Store the full path and reload the post index which will read the UUID from the URL
-                var script = document.createElement('script');
-                script.textContent = 'sessionStorage.setItem("postRedirect","' + path + '");';
-                document.head.appendChild(script);
-                // GitHub Pages serves 404.html but keeps the URL - the post page JS reads the UUID from window.location
-                // So we just need to serve the same content as the post page
-                return;
-            }
-            // Route /crema/profile/{uuid} to the profile page
-            if (/^\/crema\/profile\/[0-9a-f\-]+$/i.test(path)) {
-                return;
-            }
-            // For everything else, show a real 404
-            document.addEventListener('DOMContentLoaded', function() {
-                document.getElementById('real-404').style.display = 'flex';
-            });
-        })();
-    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Crèma</title>
     <meta property="og:site_name" content="Crèma">
     <meta property="og:title" content="Crèma - Your Coffee Community">
@@ -35,85 +12,94 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: #FCF8F2;
-            color: #3D2920;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            background-color: #FCF8F2; color: #3D2920; min-height: 100vh;
         }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 24px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-        }
-        .logo {
-            font-size: 28px;
-            font-style: italic;
-            color: #3D2920;
-            text-align: center;
-            margin-bottom: 32px;
-        }
-        .loading { text-align: center; padding: 40px 0; }
-        .loading-spinner {
-            width: 40px; height: 40px;
-            border: 3px solid rgba(61,41,32,0.1);
-            border-top-color: #3D2920;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 16px;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .post-card {
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-        }
-        .author-section { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-        .author-avatar {
-            width: 48px; height: 48px; border-radius: 50%; background-color: #3D2920;
+        .header {
             display: flex; align-items: center; justify-content: center;
-            color: white; font-weight: 500; font-size: 18px; overflow: hidden; flex-shrink: 0;
+            padding: 16px 20px; position: sticky; top: 0;
+            background-color: #FCF8F2; z-index: 10;
+            border-bottom: 1px solid rgba(61,41,32,0.06);
         }
-        .author-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .header-logo { font-size: 26px; font-style: italic; color: #3D2920; }
+        .feed-container { max-width: 600px; margin: 0 auto; }
+        .post { padding: 16px 20px 0; }
+        .author-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+        .avatar {
+            width: 44px; height: 44px; border-radius: 50%; background-color: #3D2920;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: 500; font-size: 16px; overflow: hidden; flex-shrink: 0;
+        }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
         .author-info { flex: 1; min-width: 0; }
-        .author-name { font-weight: 600; font-size: 17px; color: #3D2920; }
-        .author-headline { font-size: 14px; color: rgba(61,41,32,0.65); }
-        .post-content { font-size: 16px; line-height: 1.5; margin-bottom: 16px; white-space: pre-wrap; word-wrap: break-word; }
-        .post-media { border-radius: 12px; overflow: hidden; margin-bottom: 16px; }
-        .post-media img, .post-media video { width: 100%; display: block; }
-        .error-message { text-align: center; padding: 40px 20px; }
-        .error-message h2 { font-size: 20px; margin-bottom: 8px; }
-        .error-message p { color: rgba(61,41,32,0.65); }
-        .cta-section { margin-top: auto; padding-top: 32px; text-align: center; }
-        .cta-text { font-size: 18px; margin-bottom: 16px; }
+        .author-name-row { display: flex; align-items: baseline; gap: 6px; }
+        .author-name { font-weight: 600; font-size: 16px; color: #3D2920; }
+        .post-time { font-size: 13px; color: rgba(61,41,32,0.4); }
+        .author-headline { font-size: 13px; color: rgba(61,41,32,0.55); margin-top: 1px; }
+        .post-content { font-size: 15px; line-height: 1.45; margin-bottom: 10px; white-space: pre-wrap; word-wrap: break-word; }
+        .media-container { margin: 0 -20px; overflow: hidden; }
+        .media-container img, .media-container video { width: 100%; display: block; }
+        .media-scroll {
+            display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch; scrollbar-width: none;
+        }
+        .media-scroll::-webkit-scrollbar { display: none; }
+        .media-scroll .media-item { flex: 0 0 85%; scroll-snap-align: start; margin-right: 4px; }
+        .media-scroll .media-item img, .media-scroll .media-item video { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .single-media img, .single-media video { width: 100%; display: block; }
+        .place-card {
+            display: flex; align-items: center; gap: 12px;
+            margin: 12px 0; padding: 12px 14px;
+            background: rgba(61,41,32,0.04); border-radius: 14px;
+        }
+        .place-icon {
+            width: 44px; height: 44px; border-radius: 12px;
+            background: rgba(61,41,32,0.08); display: flex;
+            align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0;
+        }
+        .place-info { flex: 1; min-width: 0; }
+        .place-name { font-weight: 600; font-size: 14px; color: #3D2920; }
+        .actions-row { display: flex; align-items: center; gap: 16px; padding: 12px 0; }
+        .action-item { display: flex; align-items: center; gap: 5px; color: #3D2920; }
+        .action-icon { width: 22px; height: 22px; }
+        .action-count { font-size: 14px; font-weight: 500; }
+        .heart-icon { fill: #C0392B; }
+        .post-divider { height: 1px; background: rgba(61,41,32,0.08); margin: 0 20px; }
+        .cta-section { text-align: center; padding: 32px 20px 40px; }
+        .cta-text { font-size: 17px; margin-bottom: 16px; color: rgba(61,41,32,0.7); }
         .cta-button {
             display: inline-block; background-color: #3D2920; color: white;
-            padding: 14px 32px; border-radius: 30px; text-decoration: none; font-weight: 500; font-size: 16px;
+            padding: 14px 36px; border-radius: 30px; text-decoration: none; font-weight: 500; font-size: 16px;
         }
         .cta-button:hover { background-color: #2a1d17; }
-        .android-note { margin-top: 12px; font-size: 14px; color: rgba(61,41,32,0.65); }
+        .android-note { margin-top: 12px; font-size: 13px; color: rgba(61,41,32,0.45); }
         .android-note a { color: #3D2920; }
-        #real-404 { display: none; align-items: center; justify-content: center; min-height: 100vh; text-align: center; }
+        .loading { text-align: center; padding: 60px 20px; }
+        .loading-spinner {
+            width: 36px; height: 36px; border: 2.5px solid rgba(61,41,32,0.1);
+            border-top-color: #3D2920; border-radius: 50%;
+            animation: spin 0.8s linear infinite; margin: 0 auto 14px;
+        }
+        .loading p { font-size: 14px; color: rgba(61,41,32,0.5); }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .error-message { text-align: center; padding: 60px 20px; }
+        .error-message h2 { font-size: 18px; margin-bottom: 6px; }
+        .error-message p { color: rgba(61,41,32,0.5); font-size: 14px; }
+        #real-404 { display: none; align-items: center; justify-content: center; min-height: 80vh; text-align: center; }
     </style>
 </head>
 <body>
+    <div class="header"><span class="header-logo">Crèma</span></div>
+
     <div id="real-404">
         <div>
-            <div class="logo">Crèma</div>
-            <h2 style="margin-bottom:8px;">Page Not Found</h2>
-            <p style="color:rgba(61,41,32,0.65);">The page you're looking for doesn't exist.</p>
+            <h2>Page Not Found</h2>
+            <p style="color:rgba(61,41,32,0.5); margin-top:6px;">The page you're looking for doesn't exist.</p>
             <p style="margin-top:20px;"><a href="/crema/" style="color:#3D2920;">Go to Crèma</a></p>
         </div>
     </div>
 
     <div id="post-app" style="display:none;">
-        <div class="container">
-            <div class="logo">Crèma</div>
+        <div class="feed-container">
             <div id="loading" class="loading">
                 <div class="loading-spinner"></div>
                 <p>Loading post...</p>
@@ -134,6 +120,13 @@
     <script>
         var path = window.location.pathname;
         var isPostPage = /^\/crema\/post\/[0-9a-f\-]+$/i.test(path);
+        var isProfilePage = /^\/crema\/profile\/[0-9a-f\-]+$/i.test(path);
+
+        if (!isPostPage && !isProfilePage) {
+            document.addEventListener('DOMContentLoaded', function() {
+                document.getElementById('real-404').style.display = 'flex';
+            });
+        }
 
         if (isPostPage) {
             document.getElementById('post-app').style.display = 'block';
@@ -141,22 +134,25 @@
             var SUPABASE_URL = 'https://jantbnwrzeyvfblschct.supabase.co';
             var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphbnRibndyemV5dmZibHNjaGN0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkxOTk3OTEsImV4cCI6MjA4NDc3NTc5MX0.qGMiXRyBusIdmf-CSx8ohVWLFXFi7tVYY91rzmsMfrI';
 
-            function getPostIdFromPath() {
-                var parts = window.location.pathname.split('/').filter(Boolean);
-                var postId = parts[parts.length - 1];
-                var re = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-                return re.test(postId) ? postId : null;
-            }
-
             function escapeHtml(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
             function isVideoUrl(u) { return /\.(mp4|mov|m4v|webm)$/i.test(u); }
+            function timeAgo(ds) {
+                var s = Math.floor((new Date() - new Date(ds)) / 1000);
+                if (s < 60) return 'now';
+                var m = Math.floor(s/60); if (m < 60) return m+'m';
+                var h = Math.floor(m/60); if (h < 24) return h+'h';
+                var d = Math.floor(h/24); if (d < 30) return d+'d';
+                var mo = Math.floor(d/30); if (mo < 12) return mo+'mo';
+                return Math.floor(mo/12)+'y';
+            }
 
+            var parts = path.split('/').filter(Boolean);
+            var postId = parts[parts.length - 1];
             var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-            var postId = getPostIdFromPath();
-            if (isIOS && postId) { window.location.href = 'crema://post/' + postId; }
+            if (isIOS) { window.location.href = 'crema://post/' + postId; }
 
             fetch(
-                SUPABASE_URL + '/rest/v1/posts?id=eq.' + postId + '&select=id,content,media_urls,user_id,created_at,profiles!posts_user_id_fkey(first_name,last_name,headline,profile_image_url)',
+                SUPABASE_URL + '/rest/v1/posts?id=eq.' + postId + '&select=id,content,media_urls,location,likes_count,comments_count,created_at,profiles!posts_user_id_fkey(first_name,last_name,headline,profile_image_url)',
                 { headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY } }
             ).then(function(r) { return r.json(); }).then(function(posts) {
                 if (!posts || posts.length === 0) { showErr(); return; }
@@ -164,18 +160,36 @@
                 var p = post.profiles || {};
                 var name = ((p.first_name||'') + ' ' + (p.last_name||'')).trim() || 'Someone';
                 var hl = p.headline || 'Coffee Enthusiast';
-                var initials = ((p.first_name||'')[0]||'') + ((p.last_name||'')[0]||'');
-                var av = p.profile_image_url ? '<img src="'+escapeHtml(p.profile_image_url)+'">' : initials.toUpperCase();
+                var ini = (((p.first_name||'')[0]||'') + ((p.last_name||'')[0]||'')).toUpperCase() || '?';
+                var av = p.profile_image_url ? '<img src="'+escapeHtml(p.profile_image_url)+'">' : escapeHtml(ini);
+                var time = timeAgo(post.created_at);
+
                 var media = '';
                 if (post.media_urls && post.media_urls.length > 0) {
-                    var m = post.media_urls[0];
-                    media = isVideoUrl(m)
-                        ? '<div class="post-media"><video controls playsinline><source src="'+escapeHtml(m)+'" type="video/mp4"></video></div>'
-                        : '<div class="post-media"><img src="'+escapeHtml(m)+'" alt="Post"></div>';
+                    if (post.media_urls.length === 1) {
+                        var m0 = post.media_urls[0];
+                        media = '<div class="media-container single-media">' +
+                            (isVideoUrl(m0) ? '<video controls playsinline><source src="'+escapeHtml(m0)+'" type="video/mp4"></video>' : '<img src="'+escapeHtml(m0)+'" alt="">') + '</div>';
+                    } else {
+                        media = '<div class="media-container"><div class="media-scroll">';
+                        post.media_urls.forEach(function(m) {
+                            media += '<div class="media-item">' +
+                                (isVideoUrl(m) ? '<video controls playsinline><source src="'+escapeHtml(m)+'" type="video/mp4"></video>' : '<img src="'+escapeHtml(m)+'" alt="">') + '</div>';
+                        });
+                        media += '</div></div>';
+                    }
                 }
+
+                var place = post.location ? '<div class="place-card"><div class="place-icon">☕</div><div class="place-info"><div class="place-name">'+escapeHtml(post.location)+'</div></div></div>' : '';
+
+                var lc = post.likes_count || 0;
+                var cc = post.comments_count || 0;
+                var heartSvg = '<svg class="action-icon heart-icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>';
+                var commentSvg = '<svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="#3D2920" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>';
+
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('post-container').innerHTML =
-                    '<div class="post-card"><div class="author-section"><div class="author-avatar">'+av+'</div><div class="author-info"><div class="author-name">'+escapeHtml(name)+'</div><div class="author-headline">'+escapeHtml(hl)+'</div></div></div><div class="post-content">'+escapeHtml(post.content)+'</div>'+media+'</div>';
+                    '<div class="post"><div class="author-row"><div class="avatar">'+av+'</div><div class="author-info"><div class="author-name-row"><span class="author-name">'+escapeHtml(name)+'</span><span class="post-time">'+escapeHtml(time)+'</span></div><div class="author-headline">'+escapeHtml(hl)+'</div></div></div><div class="post-content">'+escapeHtml(post.content)+'</div>'+media+place+'<div class="actions-row"><div class="action-item">'+heartSvg+(lc>0?'<span class="action-count">'+lc+'</span>':'')+'</div><div class="action-item">'+commentSvg+(cc>0?'<span class="action-count">'+cc+'</span>':'')+'</div></div></div><div class="post-divider"></div>';
                 document.getElementById('post-container').style.display = 'block';
                 document.title = name + ' on Crèma';
             }).catch(function() { showErr(); });
