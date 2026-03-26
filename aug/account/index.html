@@ -570,7 +570,7 @@
             const nameEl = document.getElementById(prefix + "user-name");
             const emailEl = document.getElementById(prefix + "user-email");
 
-            const profileImg = myInfo?.profileImageUrl || myInfo?.profileGifUrl || user.photoURL;
+            const profileImg = myInfo?.runProfileUrl || myInfo?.thumbnailUrl || myInfo?.profileUrl || user.photoURL;
             if (profileImg) {
                 const url = profileImg.startsWith("http") ? profileImg : "https://" + profileImg;
                 avatarEl.innerHTML = '<img src="' + url + '" alt="">';
