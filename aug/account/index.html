@@ -236,29 +236,61 @@
             padding: 14px 22px;
             background: #fff;
             border-bottom: 1px solid #d2d2d7;
+            overflow: visible;
         }
 
         .user-bar-avatar {
+            position: relative;
+            width: 44px;
+            height: 44px;
+            flex-shrink: 0;
+        }
+
+        .pulse-circle {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
             width: 40px;
             height: 40px;
             border-radius: 50%;
             background: linear-gradient(180deg, #A9E4FF 0%, #1191E6 100%);
             border: 2.5px solid #B0F600;
             box-shadow: 0 2px 6px rgba(0,0,0,0.22);
+        }
+
+        .pulse-sticker {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 72px;
+            overflow: hidden;
+            clip-path: path('M4,0 L36,0 Q40,0 40,8 L40,52 Q40,72 20,72 Q0,72 0,52 L0,8 Q0,0 4,0 Z');
+        }
+
+        .pulse-sticker img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center bottom;
+        }
+
+        .pulse-initial {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 15px;
             font-weight: 600;
             color: #fff;
-            flex-shrink: 0;
-            overflow: hidden;
-        }
-
-        .user-bar-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
         }
 
         .user-bar-info { flex: 1; min-width: 0; }
@@ -589,10 +621,12 @@
             const profileImg = myInfo?.thumbnailUrl || myInfo?.profileUrl || user.photoURL;
             if (profileImg) {
                 const url = profileImg.startsWith("http") ? profileImg : "https://" + profileImg;
-                avatarEl.innerHTML = '<img src="' + url + '" alt="">';
+                avatarEl.innerHTML = '<div class="pulse-circle"></div>' +
+                    '<div class="pulse-sticker"><img src="' + url + '" alt=""></div>';
             } else {
                 const initial = (myInfo?.username || user.displayName || user.email || "?").charAt(0).toUpperCase();
-                avatarEl.textContent = initial;
+                avatarEl.innerHTML = '<div class="pulse-circle"></div>' +
+                    '<div class="pulse-initial">' + initial + '</div>';
             }
             nameEl.textContent = myInfo?.username || user.displayName || user.uid;
 
