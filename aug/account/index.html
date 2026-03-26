@@ -565,16 +565,20 @@
             return d.toLocaleDateString();
         }
 
-        function renderUserBar(user, prefix) {
+        function renderUserBar(user, prefix, myInfo) {
             const avatarEl = document.getElementById(prefix + "user-avatar");
             const nameEl = document.getElementById(prefix + "user-name");
             const emailEl = document.getElementById(prefix + "user-email");
-            if (user.photoURL) {
-                avatarEl.innerHTML = '<img src="' + user.photoURL + '" alt="">';
+
+            const profileImg = myInfo?.profileImageUrl || myInfo?.profileGifUrl || user.photoURL;
+            if (profileImg) {
+                const url = profileImg.startsWith("http") ? profileImg : "https://" + profileImg;
+                avatarEl.innerHTML = '<img src="' + url + '" alt="">';
             } else {
-                avatarEl.textContent = (user.displayName || user.email || "?").charAt(0).toUpperCase();
+                const initial = (myInfo?.username || user.displayName || user.email || "?").charAt(0).toUpperCase();
+                avatarEl.textContent = initial;
             }
-            nameEl.textContent = user.displayName || "aug user";
+            nameEl.textContent = myInfo?.username || user.displayName || user.uid;
             emailEl.textContent = user.email || user.uid;
         }
 
@@ -606,25 +610,44 @@
 
             if (!leafletMap) {
                 leafletMap = L.map("map", { zoomControl: true });
-                L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-                    attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap</a>',
+                const _mb = ["pk.eyJ1IjoiYXVnLWFkbWl","uIiwiYSI6ImNsdG1obGNxYjF","tZmQya3Q5a2xyajM2NG8ifQ",".tgIobGO2UyR8Z5UlBf2Zcg"];
+                L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+                    attribution: '&copy; <a href="https://www.mapbox.com/">Mapbox</a>',
                     maxZoom: 19,
+                    id: "mapbox/light-v11",
+                    tileSize: 512,
+                    zoomOffset: -1,
+                    accessToken: _mb.join(""),
                 }).addTo(leafletMap);
             }
 
-            const latestIcon = L.divIcon({
-                className: "",
-                html: '<div style="width:20px;height:20px;background:#007AFF;border:3px solid #fff;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.3);"></div>',
-                iconSize: [20, 20],
-                iconAnchor: [10, 10],
-            });
+            function makeMarkerIcon(post, isLatest) {
+                const thumb = post.thumbnailUrl ? "https://" + post.thumbnailUrl : null;
+                const size = isLatest ? 56 : 44;
+                const border = isLatest ? "3px solid #007AFF" : "2px solid #fff";
+                const shadow = isLatest
+                    ? "0 2px 10px rgba(0,122,255,0.4)"
+                    : "0 2px 6px rgba(0,0,0,0.25)";
 
-            const normalIcon = L.divIcon({
-                className: "",
-                html: '<div style="width:14px;height:14px;background:#5856D6;border:2px solid #fff;border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,0.25);"></div>',
-                iconSize: [14, 14],
-                iconAnchor: [7, 7],
-            });
+                if (thumb) {
+                    return L.divIcon({
+                        className: "",
+                        html: `<div style="width:${size}px;height:${size}px;border-radius:12px;border:${border};box-shadow:${shadow};overflow:hidden;background:#f5f5f7;">` +
+                              `<img src="${thumb}" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML='📍'"></div>`,
+                        iconSize: [size, size],
+                        iconAnchor: [size / 2, size / 2],
+                    });
+                }
+
+                const text = post.arText?.text || post.address || "📍";
+                const label = text.length > 12 ? text.slice(0, 12) + "…" : text;
+                return L.divIcon({
+                    className: "",
+                    html: `<div style="padding:4px 8px;background:#fff;border:${border};border-radius:10px;box-shadow:${shadow};font-size:11px;font-weight:600;color:#1d1d1f;white-space:nowrap;max-width:120px;overflow:hidden;text-overflow:ellipsis;">${label}</div>`,
+                    iconSize: [null, null],
+                    iconAnchor: [0, 14],
+                });
+            }
 
             const bounds = [];
             located.forEach((post, idx) => {
@@ -634,13 +657,11 @@
 
                 const isLatest = idx === 0;
                 const marker = L.marker([lat, lng], {
-                    icon: isLatest ? latestIcon : normalIcon,
+                    icon: makeMarkerIcon(post, isLatest),
                     zIndexOffset: isLatest ? 1000 : 0,
                 }).addTo(leafletMap);
 
-                const thumbnailUrl = post.thumbnailUrl
-                    ? "https://" + post.thumbnailUrl
-                    : null;
+                const thumbnailUrl = post.thumbnailUrl ? "https://" + post.thumbnailUrl : null;
                 const address = post.address || "Unknown location";
                 const date = post.createdAt ? timeAgo(post.createdAt) : "";
 
@@ -735,16 +756,16 @@
                 const locatedPosts = posts.filter(p => p.locationExists && p.geoLocation);
 
                 if (locatedPosts.length === 0) {
-                    renderUserBar(user, "empty-");
+                    renderUserBar(user, "empty-", myInfo);
                     showState(stateEmpty);
                 } else {
-                    renderUserBar(user, "");
+                    renderUserBar(user, "", myInfo);
                     showState(stateMap);
                     renderMap(posts);
                 }
             } catch (err) {
                 console.error("Failed to load posts:", err);
-                renderUserBar(user, "empty-");
+                renderUserBar(user, "empty-", null);
                 document.querySelector(".empty-title").textContent = "Couldn't load posts";
                 document.querySelector(".empty-text").textContent =
                     "There was a problem loading your posts. Please try again later.";
