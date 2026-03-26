@@ -378,39 +378,70 @@
         @keyframes spin { to { transform: rotate(360deg); } }
 
         /* Leaflet popup customization */
-        .post-popup {
-            text-align: center;
-            min-width: 160px;
+        .leaflet-popup-content-wrapper {
+            border-radius: 14px !important;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15) !important;
+            padding: 0 !important;
+            overflow: hidden;
         }
 
-        .post-popup img, .post-popup video {
-            width: 180px;
+        .leaflet-popup-content {
+            margin: 0 !important;
+            min-width: 180px;
+        }
+
+        .leaflet-popup-tip {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15) !important;
+        }
+
+        .leaflet-popup-close-button {
+            z-index: 10 !important;
+            color: #fff !important;
+            font-size: 22px !important;
+            font-weight: 700 !important;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+            right: 6px !important;
+            top: 6px !important;
+            width: 28px !important;
+            height: 28px !important;
+            line-height: 28px !important;
+            text-align: center;
+        }
+
+        .post-popup {
+            text-align: center;
+        }
+
+        .post-popup-media {
+            position: relative;
+            background: #000;
+            line-height: 0;
+        }
+
+        .post-popup-media video,
+        .post-popup-media img {
+            width: 100%;
             max-height: 320px;
             object-fit: contain;
-            border-radius: 10px;
-            margin-bottom: 8px;
+            display: block;
             background: #000;
+        }
+
+        .post-popup-info {
+            padding: 10px 14px 12px;
+            text-align: center;
         }
 
         .post-popup-address {
             font-size: 12px;
             color: #6e6e73;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
             line-height: 1.3;
         }
 
         .post-popup-date {
             font-size: 11px;
             color: #86868b;
-        }
-
-        .leaflet-popup-content-wrapper {
-            border-radius: 14px !important;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15) !important;
-        }
-
-        .leaflet-popup-tip {
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15) !important;
         }
 
         /* State visibility */
@@ -779,16 +810,16 @@
 
                 let popupHtml = '<div class="post-popup">';
                 if (videoUrl) {
-                    popupHtml += `<video autoplay loop muted playsinline${posterUrl ? ' poster="' + posterUrl + '"' : ''}>` +
-                        `<source src="${videoUrl}" type="video/mp4"></video>`;
+                    popupHtml += `<div class="post-popup-media"><video autoplay loop muted playsinline${posterUrl ? ' poster="' + posterUrl + '"' : ''}>` +
+                        `<source src="${videoUrl}" type="video/mp4"></video></div>`;
                 } else if (popupAssetURL) {
-                    popupHtml += `<img src="${popupAssetURL}" alt="post" onerror="this.style.display='none'">`;
+                    popupHtml += `<div class="post-popup-media"><img src="${popupAssetURL}" alt="post" onerror="this.style.display='none'"></div>`;
                 } else if (popupText) {
-                    popupHtml += `<div style="font-size:14px;font-weight:600;padding:8px 4px;word-break:break-word;">${escapeHtml(popupText)}</div>`;
+                    popupHtml += `<div style="font-size:14px;font-weight:600;padding:12px 14px;word-break:break-word;">${escapeHtml(popupText)}</div>`;
                 }
-                popupHtml += `<div class="post-popup-address">${address}</div>`;
+                popupHtml += `<div class="post-popup-info"><div class="post-popup-address">${address}</div>`;
                 if (date) popupHtml += `<div class="post-popup-date">${date}</div>`;
-                popupHtml += "</div>";
+                popupHtml += "</div></div>";
                 marker.bindPopup(popupHtml, { maxWidth: 220 });
             });
 
