@@ -396,6 +396,14 @@
                 </svg>
             </button>
             <div class="settings-dropdown" id="settings-dropdown">
+                <button class="settings-item" id="btn-signout" style="border:none;background:none;width:100%;font-family:inherit;color:#1d1d1f;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                        <polyline points="16 17 21 12 16 7"/>
+                        <line x1="21" y1="12" x2="9" y2="12"/>
+                    </svg>
+                    Sign Out
+                </button>
                 <a href="/aug/delete-account/" class="settings-item">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polyline points="3 6 5 6 21 6"/>
@@ -665,6 +673,12 @@
 
         document.addEventListener("click", () => {
             settingsDropdown.classList.remove("show");
+        });
+
+        document.getElementById("btn-signout").addEventListener("click", async () => {
+            await signOut(auth);
+            history.replaceState({}, "", "/aug/account/");
+            document.title = "Account — aug spatial | PBD";
         });
 
         // Auth handlers
