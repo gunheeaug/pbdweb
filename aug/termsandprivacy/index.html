@@ -249,9 +249,10 @@
 
         <section class="legal-section">
             <div class="legal-tabs">
-                <button class="legal-tab" onclick="showTab('about')">About</button>
-                <button class="legal-tab active" onclick="showTab('terms')">Terms</button>
-                <button class="legal-tab" onclick="showTab('privacy')">Privacy</button>
+                <button class="legal-tab" data-tab="about">About</button>
+                <button class="legal-tab active" data-tab="terms">Terms</button>
+                <button class="legal-tab" data-tab="privacy">Privacy</button>
+                <button class="legal-tab" data-tab="child-safety-standards">Child Safety</button>
             </div>
 
             <!-- About Tab -->
@@ -610,6 +611,28 @@
                     <strong>Mail:</strong> PBD LLC, 3150 Wilshire Blvd., Los Angeles, CA 90010</p>
                 </div>
             </div>
+            <!-- Child Safety Standards Tab -->
+            <div id="child-safety-standards" class="legal-tab-content">
+                <div class="legal-content">
+                    <p class="legal-intro"><strong>CHILD SAFETY STANDARDS</strong></p>
+
+                    <h3>Policy</h3>
+                    <p>aug prohibits child sexual abuse and exploitation (CSAE), including child sexual abuse material (CSAM), grooming, sextortion, trafficking, and any sexualization or exploitation of minors. Content or conduct that violates this policy is strictly forbidden on the Services and will result in immediate action.</p>
+
+                    <h3>Reporting</h3>
+                    <p>Users who encounter child safety concerns or suspected CSAM on aug may report them through the in-app reporting flow and/or by contacting the designated child safety point of contact listed below.</p>
+
+                    <h3>Enforcement</h3>
+                    <p>aug reviews reports, removes violating content and accounts, and takes additional action as appropriate under applicable law, including reporting confirmed CSAM to relevant authorities (such as NCMEC) where required.</p>
+
+                    <h3>Child Safety Point of Contact</h3>
+                    <p><strong>Email:</strong> <a href="mailto:aug@aug.ooo">aug@aug.ooo</a></p>
+
+                    <h3>App / Operator</h3>
+                    <p><strong>App:</strong> aug<br>
+                    <strong>Operator:</strong> PBD LLC</p>
+                </div>
+            </div>
         </section>
     </div>
 
@@ -620,15 +643,22 @@
 
     <script>
         function showTab(tabId) {
-            document.querySelectorAll('.legal-tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            document.querySelectorAll('.legal-tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.getElementById(tabId).classList.add('active');
-            event.target.classList.add('active');
+            document.querySelectorAll('.legal-tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.legal-tab').forEach(t => t.classList.remove('active'));
+            var panel = document.getElementById(tabId);
+            if (panel) panel.classList.add('active');
+            var btn = document.querySelector('.legal-tab[data-tab="' + tabId + '"]');
+            if (btn) btn.classList.add('active');
         }
+
+        document.querySelectorAll('.legal-tab').forEach(function(btn) {
+            btn.addEventListener('click', function() { showTab(this.dataset.tab); });
+        });
+
+        (function() {
+            var hash = window.location.hash.replace('#', '');
+            if (hash && document.getElementById(hash)) showTab(hash);
+        })();
     </script>
 </body>
 </html>
