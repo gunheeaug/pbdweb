@@ -252,7 +252,6 @@
                 <button class="legal-tab" data-tab="about">About</button>
                 <button class="legal-tab active" data-tab="terms">Terms</button>
                 <button class="legal-tab" data-tab="privacy">Privacy</button>
-                <button class="legal-tab" data-tab="child-safety-standards">Child Safety</button>
             </div>
 
             <!-- About Tab -->
@@ -415,6 +414,18 @@
                     <p><strong>Support:</strong> <a href="mailto:hello@aug.ooo">hello@aug.ooo</a><br>
                     <strong>Legal / Privacy:</strong> <a href="mailto:hello@pbd.team">hello@pbd.team</a><br>
                     <strong>Mail:</strong> PBD LLC, 3150 Wilshire Blvd., Los Angeles, CA 90010</p>
+
+                    <h3 id="child-safety-standards">18. Child Safety Standards</h3>
+                    <p>aug prohibits child sexual abuse and exploitation (CSAE), including child sexual abuse material (CSAM), grooming, sextortion, trafficking, and any sexualization or exploitation of minors. Content or conduct that violates this policy is strictly forbidden on the Services and will result in immediate action.</p>
+                    <h4>Reporting</h4>
+                    <p>Users who encounter child safety concerns or suspected CSAM on aug may report them through the in-app reporting flow and/or by contacting the designated child safety point of contact listed below.</p>
+                    <h4>Enforcement</h4>
+                    <p>aug reviews reports, removes violating content and accounts, and takes additional action as appropriate under applicable law, including reporting confirmed CSAM to relevant authorities (such as NCMEC) where required.</p>
+                    <h4>Child Safety Point of Contact</h4>
+                    <p><strong>Email:</strong> <a href="mailto:aug@aug.ooo">aug@aug.ooo</a></p>
+                    <h4>App / Operator</h4>
+                    <p><strong>App:</strong> aug<br>
+                    <strong>Operator:</strong> PBD LLC</p>
                 </div>
             </div>
 
@@ -611,28 +622,6 @@
                     <strong>Mail:</strong> PBD LLC, 3150 Wilshire Blvd., Los Angeles, CA 90010</p>
                 </div>
             </div>
-            <!-- Child Safety Standards Tab -->
-            <div id="child-safety-standards" class="legal-tab-content">
-                <div class="legal-content">
-                    <p class="legal-intro"><strong>CHILD SAFETY STANDARDS</strong></p>
-
-                    <h3>Policy</h3>
-                    <p>aug prohibits child sexual abuse and exploitation (CSAE), including child sexual abuse material (CSAM), grooming, sextortion, trafficking, and any sexualization or exploitation of minors. Content or conduct that violates this policy is strictly forbidden on the Services and will result in immediate action.</p>
-
-                    <h3>Reporting</h3>
-                    <p>Users who encounter child safety concerns or suspected CSAM on aug may report them through the in-app reporting flow and/or by contacting the designated child safety point of contact listed below.</p>
-
-                    <h3>Enforcement</h3>
-                    <p>aug reviews reports, removes violating content and accounts, and takes additional action as appropriate under applicable law, including reporting confirmed CSAM to relevant authorities (such as NCMEC) where required.</p>
-
-                    <h3>Child Safety Point of Contact</h3>
-                    <p><strong>Email:</strong> <a href="mailto:aug@aug.ooo">aug@aug.ooo</a></p>
-
-                    <h3>App / Operator</h3>
-                    <p><strong>App:</strong> aug<br>
-                    <strong>Operator:</strong> PBD LLC</p>
-                </div>
-            </div>
         </section>
     </div>
 
@@ -657,7 +646,18 @@
 
         (function() {
             var hash = window.location.hash.replace('#', '');
-            if (hash && document.getElementById(hash)) showTab(hash);
+            if (!hash) return;
+            var tabPanel = document.getElementById(hash);
+            if (tabPanel && tabPanel.classList.contains('legal-tab-content')) {
+                showTab(hash);
+            } else {
+                var anchor = document.getElementById(hash);
+                if (anchor) {
+                    var parent = anchor.closest('.legal-tab-content');
+                    if (parent) showTab(parent.id);
+                    setTimeout(function() { anchor.scrollIntoView({ behavior: 'smooth' }); }, 100);
+                }
+            }
         })();
     </script>
 </body>
