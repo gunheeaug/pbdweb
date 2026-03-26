@@ -682,17 +682,17 @@
                     (pos) => {
                         const lat = pos.coords.latitude.toFixed(4);
                         const lng = pos.coords.longitude.toFixed(4);
-                        emailEl.textContent = `📍 ${lat}, ${lng}`;
+                        emailEl.textContent = `${lat}, ${lng}`;
                         fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json&zoom=14&addressdetails=1`)
                             .then(r => r.json())
                             .then(data => {
                                 const a = data.address || {};
                                 const parts = [a.neighbourhood || a.suburb || a.quarter, a.city || a.town || a.village].filter(Boolean);
-                                if (parts.length) emailEl.textContent = "📍 " + parts.join(", ");
+                                if (parts.length) emailEl.textContent = parts.join(", ");
                             })
                             .catch(() => {});
                     },
-                    () => { emailEl.textContent = "📍 Location unavailable"; }
+                    () => { emailEl.textContent = "Location unavailable"; }
                 );
             } else {
                 emailEl.textContent = "";
