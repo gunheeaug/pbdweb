@@ -227,16 +227,18 @@
         }
 
         .user-bar-avatar {
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            background: #d2d2d7;
+            background: linear-gradient(180deg, #A9E4FF 0%, #1191E6 100%);
+            border: 2.5px solid #B0F600;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.22);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 15px;
             font-weight: 600;
-            color: #6e6e73;
+            color: #fff;
             flex-shrink: 0;
             overflow: hidden;
         }
@@ -570,7 +572,7 @@
             const nameEl = document.getElementById(prefix + "user-name");
             const emailEl = document.getElementById(prefix + "user-email");
 
-            const profileImg = myInfo?.runProfileUrl || myInfo?.thumbnailUrl || myInfo?.profileUrl || user.photoURL;
+            const profileImg = myInfo?.thumbnailUrl || myInfo?.profileUrl || user.photoURL;
             if (profileImg) {
                 const url = profileImg.startsWith("http") ? profileImg : "https://" + profileImg;
                 avatarEl.innerHTML = '<img src="' + url + '" alt="">';
