@@ -339,12 +339,13 @@
             min-width: 160px;
         }
 
-        .post-popup img {
-            width: 140px;
-            height: 140px;
-            object-fit: cover;
+        .post-popup img, .post-popup video {
+            width: 180px;
+            max-height: 320px;
+            object-fit: contain;
             border-radius: 10px;
             margin-bottom: 8px;
+            background: #000;
         }
 
         .post-popup-address {
@@ -699,13 +700,18 @@
                     icon: makeMarkerIcon(post),
                 }).addTo(leafletMap);
 
+                const videoUrl = (post.mediaUrl || post.mediaURL || "").trim();
+                const posterUrl = post.thumbnailUrl ? (post.thumbnailUrl.startsWith("http") ? post.thumbnailUrl : "https://" + post.thumbnailUrl) : "";
                 const popupAssetURL = resolveAssetURL(post);
                 const popupText = post.arText?.content?.trim();
                 const address = post.address || "Unknown location";
                 const date = post.createdAt ? timeAgo(post.createdAt) : "";
 
                 let popupHtml = '<div class="post-popup">';
-                if (popupAssetURL) {
+                if (videoUrl) {
+                    popupHtml += `<video autoplay loop muted playsinline${posterUrl ? ' poster="' + posterUrl + '"' : ''}>` +
+                        `<source src="${videoUrl}" type="video/mp4"></video>`;
+                } else if (popupAssetURL) {
                     popupHtml += `<img src="${popupAssetURL}" alt="post" onerror="this.style.display='none'">`;
                 } else if (popupText) {
                     popupHtml += `<div style="font-size:14px;font-weight:600;padding:8px 4px;word-break:break-word;">${escapeHtml(popupText)}</div>`;
@@ -713,7 +719,7 @@
                 popupHtml += `<div class="post-popup-address">${address}</div>`;
                 if (date) popupHtml += `<div class="post-popup-date">${date}</div>`;
                 popupHtml += "</div>";
-                marker.bindPopup(popupHtml, { maxWidth: 200 });
+                marker.bindPopup(popupHtml, { maxWidth: 220 });
             });
 
             if (bounds.length > 0) {
