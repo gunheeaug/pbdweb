@@ -614,39 +614,77 @@
                 L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
                     attribution: '&copy; <a href="https://www.mapbox.com/">Mapbox</a>',
                     maxZoom: 19,
-                    id: "mapbox/light-v11",
+                    id: "mapbox/streets-v12",
                     tileSize: 512,
                     zoomOffset: -1,
                     accessToken: _mb.join(""),
                 }).addTo(leafletMap);
             }
 
-            function makeMarkerIcon(post, isLatest) {
-                const thumb = post.thumbnailUrl ? "https://" + post.thumbnailUrl : null;
-                const size = isLatest ? 56 : 44;
-                const border = isLatest ? "3px solid #007AFF" : "2px solid #fff";
-                const shadow = isLatest
-                    ? "0 2px 10px rgba(0,122,255,0.4)"
-                    : "0 2px 6px rgba(0,0,0,0.25)";
+            function resolveAssetURL(post) {
+                const asset = post.arText?.assets?.[0];
+                if (!asset) return null;
+                const raw = (asset.thumbnailUrl || asset.url || asset.assetUrl || "").trim();
+                if (!raw) return null;
+                if (asset.type?.toLowerCase() === "meme" && raw.includes("giphy.com")) {
+                    return raw.replace(/(\d+)\.(gif|webp)/, "200.gif");
+                }
+                return raw.startsWith("http") ? raw : "https://" + raw;
+            }
 
-                if (thumb) {
+            function resolveTextColor(colorName) {
+                if (!colorName) return "#000";
+                const s = colorName.trim();
+                if (s.toLowerCase() === "white") return "#fff";
+                if (s.toLowerCase() === "black") return "#000";
+                return s.startsWith("#") ? s : "#" + s;
+            }
+
+            function makeMarkerIcon(post) {
+                const assetURL = resolveAssetURL(post);
+                const textContent = post.arText?.content?.trim();
+                const size = 50;
+
+                if (assetURL) {
                     return L.divIcon({
                         className: "",
-                        html: `<div style="width:${size}px;height:${size}px;border-radius:12px;border:${border};box-shadow:${shadow};overflow:hidden;background:#f5f5f7;">` +
-                              `<img src="${thumb}" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML='📍'"></div>`,
+                        html: `<img src="${assetURL}" style="width:${size}px;height:${size}px;object-fit:contain;display:block;" onerror="this.style.display='none'">`,
                         iconSize: [size, size],
                         iconAnchor: [size / 2, size / 2],
                     });
                 }
 
-                const text = post.arText?.text || post.address || "📍";
-                const label = text.length > 12 ? text.slice(0, 12) + "…" : text;
+                if (textContent) {
+                    const color = resolveTextColor(post.arText?.colorName);
+                    const contrast = isLightColor(color) ? "#000" : "#fff";
+                    return L.divIcon({
+                        className: "",
+                        html: `<div style="max-width:100px;font-size:13px;font-weight:600;color:${color};text-shadow:-1px -1px 0 ${contrast},1px -1px 0 ${contrast},-1px 1px 0 ${contrast},1px 1px 0 ${contrast},0 0 4px ${contrast};white-space:pre-wrap;word-break:break-word;line-height:1.2;text-align:center;-webkit-line-clamp:3;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden;">${escapeHtml(textContent)}</div>`,
+                        iconSize: [null, null],
+                        iconAnchor: [50, 10],
+                    });
+                }
+
                 return L.divIcon({
                     className: "",
-                    html: `<div style="padding:4px 8px;background:#fff;border:${border};border-radius:10px;box-shadow:${shadow};font-size:11px;font-weight:600;color:#1d1d1f;white-space:nowrap;max-width:120px;overflow:hidden;text-overflow:ellipsis;">${label}</div>`,
-                    iconSize: [null, null],
-                    iconAnchor: [0, 14],
+                    html: `<div style="width:14px;height:14px;border-radius:50%;background:#007AFF;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.3);"></div>`,
+                    iconSize: [14, 14],
+                    iconAnchor: [7, 7],
                 });
+            }
+
+            function isLightColor(hex) {
+                const c = hex.replace("#", "");
+                const r = parseInt(c.substr(0, 2), 16) || 0;
+                const g = parseInt(c.substr(2, 2), 16) || 0;
+                const b = parseInt(c.substr(4, 2), 16) || 0;
+                return (r * 299 + g * 587 + b * 114) / 1000 > 180;
+            }
+
+            function escapeHtml(s) {
+                const d = document.createElement("div");
+                d.textContent = s.replace(/\\n/g, "\n");
+                return d.innerHTML.replace(/\n/g, "<br>");
             }
 
             const bounds = [];
@@ -655,19 +693,20 @@
                 const lng = post.geoLocation.longitude;
                 bounds.push([lat, lng]);
 
-                const isLatest = idx === 0;
                 const marker = L.marker([lat, lng], {
-                    icon: makeMarkerIcon(post, isLatest),
-                    zIndexOffset: isLatest ? 1000 : 0,
+                    icon: makeMarkerIcon(post),
                 }).addTo(leafletMap);
 
-                const thumbnailUrl = post.thumbnailUrl ? "https://" + post.thumbnailUrl : null;
+                const popupAssetURL = resolveAssetURL(post);
+                const popupText = post.arText?.content?.trim();
                 const address = post.address || "Unknown location";
                 const date = post.createdAt ? timeAgo(post.createdAt) : "";
 
                 let popupHtml = '<div class="post-popup">';
-                if (thumbnailUrl) {
-                    popupHtml += `<img src="${thumbnailUrl}" alt="post" onerror="this.style.display='none'">`;
+                if (popupAssetURL) {
+                    popupHtml += `<img src="${popupAssetURL}" alt="post" onerror="this.style.display='none'">`;
+                } else if (popupText) {
+                    popupHtml += `<div style="font-size:14px;font-weight:600;padding:8px 4px;word-break:break-word;">${escapeHtml(popupText)}</div>`;
                 }
                 popupHtml += `<div class="post-popup-address">${address}</div>`;
                 if (date) popupHtml += `<div class="post-popup-date">${date}</div>`;
