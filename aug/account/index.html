@@ -414,17 +414,17 @@
 
         .post-popup-media {
             position: relative;
-            background: #000;
             line-height: 0;
+            overflow: hidden;
+            max-height: 240px;
         }
 
         .post-popup-media video,
         .post-popup-media img {
             width: 100%;
-            max-height: 320px;
-            object-fit: contain;
+            height: 240px;
+            object-fit: cover;
             display: block;
-            background: #000;
         }
 
         .post-popup-info {
