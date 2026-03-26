@@ -122,7 +122,15 @@
         var isPostPage = /^\/crema\/post\/[0-9a-f\-]+$/i.test(path);
         var isProfilePage = /^\/crema\/profile\/[0-9a-f\-]+$/i.test(path);
 
-        if (!isPostPage && !isProfilePage) {
+        var augKnownDirs = ['about', 'account', 'androidwaitlist', 'delete-account', 'termsandprivacy'];
+        var augUserMatch = path.match(/^\/aug\/([^\/]+)\/?$/);
+        var isAugUserPage = augUserMatch && augKnownDirs.indexOf(augUserMatch[1]) === -1;
+
+        if (isAugUserPage) {
+            window.location.replace('/aug/account/?u=' + encodeURIComponent(augUserMatch[1]));
+        }
+
+        if (!isPostPage && !isProfilePage && !isAugUserPage) {
             document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('real-404').style.display = 'flex';
             });

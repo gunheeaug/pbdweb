@@ -512,6 +512,12 @@
 
         const API_BASE = "https://dev-api.aug.ooo/firebase";
 
+        const urlParams = new URLSearchParams(window.location.search);
+        const usernameFromUrl = urlParams.get("u");
+        if (usernameFromUrl) {
+            history.replaceState({}, "", `/aug/${usernameFromUrl}`);
+        }
+
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
@@ -562,6 +568,15 @@
             }
             nameEl.textContent = user.displayName || "aug user";
             emailEl.textContent = user.email || user.uid;
+        }
+
+        async function fetchMyInfo(token) {
+            const resp = await fetch(`${API_BASE}/my`, {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            if (!resp.ok) return null;
+            const json = await resp.json();
+            return json.data?.Item || null;
         }
 
         async function fetchUserPosts(user) {
@@ -689,7 +704,20 @@
             showState(stateLoading);
 
             try {
-                const posts = await fetchUserPosts(user);
+                const token = await user.getIdToken();
+                const [myInfo, posts] = await Promise.all([
+                    fetchMyInfo(token),
+                    fetchUserPosts(user),
+                ]);
+
+                if (myInfo?.username) {
+                    const cleanUsername = myInfo.username.replace(/[^a-zA-Z0-9._-]/g, "");
+                    if (cleanUsername) {
+                        history.replaceState({}, "", `/aug/${cleanUsername}`);
+                        document.title = `${cleanUsername} — aug spatial`;
+                    }
+                }
+
                 const locatedPosts = posts.filter(p => p.locationExists && p.geoLocation);
 
                 if (locatedPosts.length === 0) {
