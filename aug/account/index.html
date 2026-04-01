@@ -674,8 +674,10 @@
         const API_BASE = "https://dev-api.aug.ooo/firebase";
         const NEARBY_ZOOM = 14;
         const IS_WIDE = window.innerWidth >= 768;
+        let _locationPromise = null;
         function getLocation() {
-            return new Promise((resolve) => {
+            if (_locationPromise) return _locationPromise;
+            _locationPromise = new Promise((resolve) => {
                 if (!navigator.geolocation) { resolve(null); return; }
                 navigator.geolocation.getCurrentPosition(
                     resolve,
@@ -844,7 +846,7 @@
                     if (!pos) {
                         emailEl.textContent = "Location unavailable";
                         emailEl.style.cursor = "pointer";
-                        emailEl.onclick = requestLocation;
+                        emailEl.onclick = () => { _locationPromise = null; requestLocation(); };
                         return;
                     }
                     const lat = pos.coords.latitude.toFixed(4);
