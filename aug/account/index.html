@@ -885,6 +885,7 @@
 
                 const marker = L.marker([lat, lng], {
                     icon: makeMarkerIcon(post),
+                    opacity: showUsername ? 0.55 : 1,
                 }).addTo(leafletMap);
 
                 const videoUrl = (post.mediaUrl || post.mediaURL || "").trim();
