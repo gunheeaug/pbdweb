@@ -673,7 +673,7 @@
 
         const API_BASE = "https://dev-api.aug.ooo/firebase";
         const NEARBY_ZOOM = 14;
-        const NEARBY_LIMIT = 50;
+        const IS_WIDE = window.innerWidth >= 768;
 
         function tileX(lon, zoom) {
             const n = Math.pow(2, zoom);
@@ -704,15 +704,17 @@
             const cx = tileX(lng, zoom);
             const cy = tileY(lat, zoom);
 
-            const tiles = [{ x: cx, y: cy, limit: 10 }];
-            for (let dy = -1; dy <= 1; dy++) {
-                for (let dx = -1; dx <= 1; dx++) {
-                    if (dx === 0 && dy === 0) continue;
-                    tiles.push({
-                        x: ((cx + dx) % n + n) % n,
-                        y: Math.max(0, Math.min(n - 1, cy + dy)),
-                        limit: 5,
-                    });
+            const tiles = [{ x: cx, y: cy, limit: IS_WIDE ? 10 : 20 }];
+            if (IS_WIDE) {
+                for (let dy = -1; dy <= 1; dy++) {
+                    for (let dx = -1; dx <= 1; dx++) {
+                        if (dx === 0 && dy === 0) continue;
+                        tiles.push({
+                            x: ((cx + dx) % n + n) % n,
+                            y: Math.max(0, Math.min(n - 1, cy + dy)),
+                            limit: 5,
+                        });
+                    }
                 }
             }
 
@@ -1051,10 +1053,12 @@
             });
 
             if (bounds.length > 0) {
+                const mapZoom = IS_WIDE ? 14 : 15;
+                const mapPad = IS_WIDE ? 60 : 40;
                 if (bounds.length === 1) {
-                    leafletMap.setView(bounds[0], 14);
+                    leafletMap.setView(bounds[0], mapZoom);
                 } else {
-                    leafletMap.fitBounds(bounds, { padding: [60, 60], maxZoom: 14 });
+                    leafletMap.fitBounds(bounds, { padding: [mapPad, mapPad], maxZoom: mapZoom });
                 }
             }
 
@@ -1084,7 +1088,7 @@
                             const uidPrefixed = "u#" + userId;
                             nearby
                                 .filter(p => p.userId !== uidPrefixed && p.userId !== userId && !(p.SK && ownKeys.has(p.SK)))
-                                .slice(0, NEARBY_LIMIT)
+                                .slice(0, IS_WIDE ? 50 : 20)
                                 .forEach(post => addPostMarker(post, true));
                         } catch (e) {
                             console.error("Nearby posts:", e);
