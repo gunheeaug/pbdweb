@@ -676,8 +676,11 @@
 
             document.getElementById("menu-email").textContent = user.email || user.uid;
 
-            emailEl.textContent = "Fetching location…";
-            if (navigator.geolocation) {
+            function requestLocation() {
+                emailEl.style.cursor = "";
+                emailEl.onclick = null;
+                emailEl.textContent = "Fetching location…";
+                if (!navigator.geolocation) { emailEl.textContent = ""; return; }
                 navigator.geolocation.getCurrentPosition(
                     (pos) => {
                         const lat = pos.coords.latitude.toFixed(4);
@@ -692,11 +695,14 @@
                             })
                             .catch(() => {});
                     },
-                    () => { emailEl.textContent = "Location unavailable"; }
+                    () => {
+                        emailEl.textContent = "Location unavailable";
+                        emailEl.style.cursor = "pointer";
+                        emailEl.onclick = requestLocation;
+                    }
                 );
-            } else {
-                emailEl.textContent = "";
             }
+            requestLocation();
         }
 
         async function fetchMyInfo(token) {
