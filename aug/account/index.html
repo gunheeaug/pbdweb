@@ -674,6 +674,7 @@
         const API_BASE = "https://dev-api.aug.ooo/firebase";
         const NEARBY_ZOOM = 14;
         const IS_WIDE = window.innerWidth >= 768;
+        const geoOpts = { enableHighAccuracy: false, timeout: 15000, maximumAge: 300000 };
 
         function tileX(lon, zoom) {
             const n = Math.pow(2, zoom);
@@ -832,11 +833,12 @@
                             })
                             .catch(() => {});
                     },
-                    () => {
-                        emailEl.textContent = "Location unavailable";
+                    (err) => {
+                        emailEl.textContent = err.code === 1 ? "Location blocked" : "Location unavailable";
                         emailEl.style.cursor = "pointer";
                         emailEl.onclick = requestLocation;
-                    }
+                    },
+                    geoOpts
                 );
             }
             requestLocation();
@@ -1094,7 +1096,7 @@
                             console.error("Nearby posts:", e);
                         }
                     }
-                }, () => {});
+                }, () => {}, geoOpts);
             }
 
             setTimeout(() => leafletMap.invalidateSize(), 100);
