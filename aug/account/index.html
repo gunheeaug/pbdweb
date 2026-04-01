@@ -610,7 +610,7 @@
 
         const API_BASE = "https://dev-api.aug.ooo/firebase";
         const NEARBY_ZOOM = 14;
-        const NEARBY_LIMIT = 20;
+        const NEARBY_LIMIT = 50;
 
         function tileX(lon, zoom) {
             const n = Math.pow(2, zoom);
@@ -623,29 +623,63 @@
             return Math.floor((1 - Math.log(Math.tan(latRad) + 1 / Math.cos(latRad)) / Math.PI) / 2 * n);
         }
 
-        function computeQuadKey(lat, lng, zoom) {
-            const x = tileX(lng, zoom);
-            const y = tileY(lat, zoom);
+        function quadKeyFromTile(tx, ty, zoom) {
             let qk = "";
             for (let i = zoom; i > 0; i--) {
                 let digit = 0;
                 const mask = 1 << (i - 1);
-                if ((x & mask) !== 0) digit += 1;
-                if ((y & mask) !== 0) digit += 2;
+                if ((tx & mask) !== 0) digit += 1;
+                if ((ty & mask) !== 0) digit += 2;
                 qk += digit;
             }
             return qk;
         }
 
         async function fetchNearbyPosts(token, lat, lng) {
-            const qk = computeQuadKey(lat, lng, NEARBY_ZOOM);
-            const resp = await fetch(
-                `${API_BASE}/auglist?quadkey=${qk}&zoom=${NEARBY_ZOOM}`,
-                { headers: { "Authorization": `Bearer ${token}` } }
+            const zoom = NEARBY_ZOOM;
+            const n = Math.pow(2, zoom);
+            const cx = tileX(lng, zoom);
+            const cy = tileY(lat, zoom);
+
+            const tiles = [{ x: cx, y: cy, limit: 10 }];
+            for (let dy = -1; dy <= 1; dy++) {
+                for (let dx = -1; dx <= 1; dx++) {
+                    if (dx === 0 && dy === 0) continue;
+                    tiles.push({
+                        x: ((cx + dx) % n + n) % n,
+                        y: Math.max(0, Math.min(n - 1, cy + dy)),
+                        limit: 5,
+                    });
+                }
+            }
+
+            const results = await Promise.allSettled(
+                tiles.map(async (t) => {
+                    const qk = quadKeyFromTile(t.x, t.y, zoom);
+                    const resp = await fetch(
+                        `${API_BASE}/auglist?quadkey=${qk}&zoom=${zoom}`,
+                        { headers: { "Authorization": `Bearer ${token}` } }
+                    );
+                    if (!resp.ok) return [];
+                    const json = await resp.json();
+                    const items = json.data?.Items || [];
+                    items.sort((a, b) => (parseFloat(b.SK) || 0) - (parseFloat(a.SK) || 0));
+                    return items.slice(0, t.limit);
+                })
             );
-            if (!resp.ok) return [];
-            const json = await resp.json();
-            return json.data?.Items || [];
+
+            const seen = new Set();
+            const aggregated = [];
+            for (const r of results) {
+                if (r.status !== "fulfilled") continue;
+                for (const item of r.value) {
+                    const key = item.SK;
+                    if (key && seen.has(key)) continue;
+                    if (key) seen.add(key);
+                    aggregated.push(item);
+                }
+            }
+            return aggregated;
         }
 
         const urlParams = new URLSearchParams(window.location.search);
@@ -888,9 +922,9 @@
 
             if (bounds.length > 0) {
                 if (bounds.length === 1) {
-                    leafletMap.setView(bounds[0], 15);
+                    leafletMap.setView(bounds[0], 14);
                 } else {
-                    leafletMap.fitBounds(bounds, { padding: [40, 40], maxZoom: 15 });
+                    leafletMap.fitBounds(bounds, { padding: [60, 60], maxZoom: 14 });
                 }
             }
 
