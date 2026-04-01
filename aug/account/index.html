@@ -674,7 +674,29 @@
         const API_BASE = "https://dev-api.aug.ooo/firebase";
         const NEARBY_ZOOM = 14;
         const IS_WIDE = window.innerWidth >= 768;
-        const geoOpts = { enableHighAccuracy: false, timeout: 15000, maximumAge: 300000 };
+        function getLocation() {
+            return new Promise((resolve) => {
+                if (!navigator.geolocation) { resolve(null); return; }
+                navigator.geolocation.getCurrentPosition(
+                    resolve,
+                    () => {
+                        navigator.geolocation.getCurrentPosition(
+                            resolve,
+                            () => {
+                                fetch("https://ipapi.co/json/")
+                                    .then(r => r.json())
+                                    .then(d => (d.latitude && d.longitude)
+                                        ? resolve({ coords: { latitude: d.latitude, longitude: d.longitude } })
+                                        : resolve(null))
+                                    .catch(() => resolve(null));
+                            },
+                            { enableHighAccuracy: true, timeout: 15000, maximumAge: 600000 }
+                        );
+                    },
+                    { enableHighAccuracy: false, timeout: 10000, maximumAge: 600000 }
+                );
+            });
+        }
 
         function tileX(lon, zoom) {
             const n = Math.pow(2, zoom);
@@ -818,28 +840,25 @@
                 emailEl.style.cursor = "";
                 emailEl.onclick = null;
                 emailEl.textContent = "Fetching location…";
-                if (!navigator.geolocation) { emailEl.textContent = ""; return; }
-                navigator.geolocation.getCurrentPosition(
-                    (pos) => {
-                        const lat = pos.coords.latitude.toFixed(4);
-                        const lng = pos.coords.longitude.toFixed(4);
-                        emailEl.textContent = `${lat}, ${lng}`;
-                        fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json&zoom=14&addressdetails=1`)
-                            .then(r => r.json())
-                            .then(data => {
-                                const a = data.address || {};
-                                const parts = [a.neighbourhood || a.suburb || a.quarter, a.city || a.town || a.village].filter(Boolean);
-                                if (parts.length) emailEl.textContent = parts.join(", ");
-                            })
-                            .catch(() => {});
-                    },
-                    (err) => {
-                        emailEl.textContent = err.code === 1 ? "Location blocked" : "Location unavailable";
+                getLocation().then(pos => {
+                    if (!pos) {
+                        emailEl.textContent = "Location unavailable";
                         emailEl.style.cursor = "pointer";
                         emailEl.onclick = requestLocation;
-                    },
-                    geoOpts
-                );
+                        return;
+                    }
+                    const lat = pos.coords.latitude.toFixed(4);
+                    const lng = pos.coords.longitude.toFixed(4);
+                    emailEl.textContent = `${lat}, ${lng}`;
+                    fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json&zoom=14&addressdetails=1`)
+                        .then(r => r.json())
+                        .then(data => {
+                            const a = data.address || {};
+                            const parts = [a.neighbourhood || a.suburb || a.quarter, a.city || a.town || a.village].filter(Boolean);
+                            if (parts.length) emailEl.textContent = parts.join(", ");
+                        })
+                        .catch(() => {});
+                });
             }
             requestLocation();
         }
@@ -1064,45 +1083,44 @@
                 }
             }
 
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(async (pos) => {
-                    const lat = pos.coords.latitude;
-                    const lng = pos.coords.longitude;
-                    const stickerHtml = profileImgUrl
-                        ? `<img src="${profileImgUrl}" style="width:100%;height:100%;object-fit:contain;object-position:center bottom;">`
-                        : "";
-                    const pulseIcon = L.divIcon({
-                        className: "",
-                        html: '<div style="position:relative;width:48px;height:70px;">' +
-                            '<div style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:42px;height:42px;border-radius:50%;border:3px solid #B0F600;box-shadow:0 2px 8px rgba(0,0,0,0.25);box-sizing:border-box;"></div>' +
-                            '<div style="position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:36px;height:36px;border-radius:50%;background:linear-gradient(180deg,#A9E4FF,#1191E6);"></div>' +
-                            '<div style="position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:36px;height:65px;overflow:hidden;clip-path:path(\'M3,0 L33,0 Q36,0 36,6 L36,47 Q36,65 18,65 Q0,65 0,47 L0,6 Q0,0 3,0 Z\');">' + stickerHtml + '</div>' +
-                            '</div>',
-                        iconSize: [48, 70],
-                        iconAnchor: [24, 70],
-                    });
-                    L.marker([lat, lng], { icon: pulseIcon, zIndexOffset: 2000, interactive: false }).addTo(leafletMap);
+            getLocation().then(async (pos) => {
+                if (!pos) return;
+                const lat = pos.coords.latitude;
+                const lng = pos.coords.longitude;
+                const stickerHtml = profileImgUrl
+                    ? `<img src="${profileImgUrl}" style="width:100%;height:100%;object-fit:contain;object-position:center bottom;">`
+                    : "";
+                const pulseIcon = L.divIcon({
+                    className: "",
+                    html: '<div style="position:relative;width:48px;height:70px;">' +
+                        '<div style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:42px;height:42px;border-radius:50%;border:3px solid #B0F600;box-shadow:0 2px 8px rgba(0,0,0,0.25);box-sizing:border-box;"></div>' +
+                        '<div style="position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:36px;height:36px;border-radius:50%;background:linear-gradient(180deg,#A9E4FF,#1191E6);"></div>' +
+                        '<div style="position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:36px;height:65px;overflow:hidden;clip-path:path(\'M3,0 L33,0 Q36,0 36,6 L36,47 Q36,65 18,65 Q0,65 0,47 L0,6 Q0,0 3,0 Z\');">' + stickerHtml + '</div>' +
+                        '</div>',
+                    iconSize: [48, 70],
+                    iconAnchor: [24, 70],
+                });
+                L.marker([lat, lng], { icon: pulseIcon, zIndexOffset: 2000, interactive: false }).addTo(leafletMap);
 
-                    if (token) {
-                        try {
-                            const nearby = await fetchNearbyPosts(token, lat, lng);
-                            const ownKeys = new Set(posts.map(p => p.SK).filter(Boolean));
-                            const uidPrefixed = "u#" + userId;
-                            const others = nearby
-                                .filter(p => p.userId !== uidPrefixed && p.userId !== userId && !(p.SK && ownKeys.has(p.SK)))
-                                .slice(0, IS_WIDE ? 50 : 20);
-                            others.forEach(post => addPostMarker(post, true));
-                            const countEl = document.getElementById("post-count");
-                            if (countEl && others.length > 0) {
-                                countEl.textContent += ` · ${others.length} nearby`;
-                            }
-                            console.log(`[aug] auglist returned ${nearby.length} posts, ${others.length} from others`);
-                        } catch (e) {
-                            console.error("Nearby posts:", e);
+                if (token) {
+                    try {
+                        const nearby = await fetchNearbyPosts(token, lat, lng);
+                        const ownKeys = new Set(posts.map(p => p.SK).filter(Boolean));
+                        const uidPrefixed = "u#" + userId;
+                        const others = nearby
+                            .filter(p => p.userId !== uidPrefixed && p.userId !== userId && !(p.SK && ownKeys.has(p.SK)))
+                            .slice(0, IS_WIDE ? 50 : 20);
+                        others.forEach(post => addPostMarker(post, true));
+                        const countEl = document.getElementById("post-count");
+                        if (countEl && others.length > 0) {
+                            countEl.textContent += ` · ${others.length} nearby`;
                         }
+                        console.log(`[aug] auglist returned ${nearby.length} posts, ${others.length} from others`);
+                    } catch (e) {
+                        console.error("Nearby posts:", e);
                     }
-                }, () => {}, geoOpts);
-            }
+                }
+            });
 
             setTimeout(() => leafletMap.invalidateSize(), 100);
         }
