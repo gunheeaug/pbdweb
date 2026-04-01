@@ -609,6 +609,44 @@
         };
 
         const API_BASE = "https://dev-api.aug.ooo/firebase";
+        const NEARBY_ZOOM = 14;
+        const NEARBY_LIMIT = 20;
+
+        function tileX(lon, zoom) {
+            const n = Math.pow(2, zoom);
+            return Math.floor((lon + 180) / 360 * n);
+        }
+
+        function tileY(lat, zoom) {
+            const latRad = lat * Math.PI / 180;
+            const n = Math.pow(2, zoom);
+            return Math.floor((1 - Math.log(Math.tan(latRad) + 1 / Math.cos(latRad)) / Math.PI) / 2 * n);
+        }
+
+        function computeQuadKey(lat, lng, zoom) {
+            const x = tileX(lng, zoom);
+            const y = tileY(lat, zoom);
+            let qk = "";
+            for (let i = zoom; i > 0; i--) {
+                let digit = 0;
+                const mask = 1 << (i - 1);
+                if ((x & mask) !== 0) digit += 1;
+                if ((y & mask) !== 0) digit += 2;
+                qk += digit;
+            }
+            return qk;
+        }
+
+        async function fetchNearbyPosts(token, lat, lng) {
+            const qk = computeQuadKey(lat, lng, NEARBY_ZOOM);
+            const resp = await fetch(
+                `${API_BASE}/auglist?quadkey=${qk}&zoom=${NEARBY_ZOOM}`,
+                { headers: { "Authorization": `Bearer ${token}` } }
+            );
+            if (!resp.ok) return [];
+            const json = await resp.json();
+            return json.data?.Items || [];
+        }
 
         const urlParams = new URLSearchParams(window.location.search);
         const usernameFromUrl = urlParams.get("u");
@@ -726,7 +764,7 @@
             return json.data?.Items || [];
         }
 
-        function renderMap(posts, profileImgUrl) {
+        function renderMap(posts, profileImgUrl, token, userId) {
             const located = posts.filter(p => p.locationExists && p.geoLocation);
             const countEl = document.getElementById("post-count");
             countEl.textContent = located.length + " post" + (located.length !== 1 ? "s" : "") + " on map";
@@ -806,11 +844,10 @@
                 return d.innerHTML.replace(/\n/g, "<br>");
             }
 
-            const bounds = [];
-            located.forEach((post, idx) => {
-                const lat = post.geoLocation.latitude;
-                const lng = post.geoLocation.longitude;
-                bounds.push([lat, lng]);
+            function addPostMarker(post, showUsername) {
+                const lat = post.geoLocation?.latitude;
+                const lng = post.geoLocation?.longitude;
+                if (!lat || !lng) return null;
 
                 const marker = L.marker([lat, lng], {
                     icon: makeMarkerIcon(post),
@@ -832,10 +869,21 @@
                 } else if (popupText) {
                     popupHtml += `<div style="font-size:14px;font-weight:600;padding:12px 14px;word-break:break-word;">${escapeHtml(popupText)}</div>`;
                 }
-                popupHtml += `<div class="post-popup-info"><div class="post-popup-address">${address}</div>`;
+                popupHtml += `<div class="post-popup-info">`;
+                if (showUsername && post.userInfo?.username) {
+                    popupHtml += `<div style="font-size:12px;font-weight:600;color:#1d1d1f;margin-bottom:2px;">@${escapeHtml(post.userInfo.username)}</div>`;
+                }
+                popupHtml += `<div class="post-popup-address">${address}</div>`;
                 if (date) popupHtml += `<div class="post-popup-date">${date}</div>`;
                 popupHtml += "</div></div>";
                 marker.bindPopup(popupHtml, { maxWidth: 220 });
+                return [lat, lng];
+            }
+
+            const bounds = [];
+            located.forEach(post => {
+                const coord = addPostMarker(post, false);
+                if (coord) bounds.push(coord);
             });
 
             if (bounds.length > 0) {
@@ -847,7 +895,7 @@
             }
 
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition((pos) => {
+                navigator.geolocation.getCurrentPosition(async (pos) => {
                     const lat = pos.coords.latitude;
                     const lng = pos.coords.longitude;
                     const stickerHtml = profileImgUrl
@@ -864,6 +912,20 @@
                         iconAnchor: [24, 70],
                     });
                     L.marker([lat, lng], { icon: pulseIcon, zIndexOffset: 2000, interactive: false }).addTo(leafletMap);
+
+                    if (token) {
+                        try {
+                            const nearby = await fetchNearbyPosts(token, lat, lng);
+                            const ownKeys = new Set(posts.map(p => p.SK).filter(Boolean));
+                            const uidPrefixed = "u#" + userId;
+                            nearby
+                                .filter(p => p.userId !== uidPrefixed && p.userId !== userId && !(p.SK && ownKeys.has(p.SK)))
+                                .slice(0, NEARBY_LIMIT)
+                                .forEach(post => addPostMarker(post, true));
+                        } catch (e) {
+                            console.error("Nearby posts:", e);
+                        }
+                    }
                 }, () => {});
             }
 
@@ -947,7 +1009,7 @@
                     showState(stateMap);
                     const profileUrl = myInfo?.thumbnailUrl || myInfo?.profileUrl || user.photoURL;
                     const profileImgUrl = profileUrl ? (profileUrl.startsWith("http") ? profileUrl : "https://" + profileUrl) : null;
-                    renderMap(posts, profileImgUrl);
+                    renderMap(posts, profileImgUrl, token, user.uid);
                 }
             } catch (err) {
                 console.error("Failed to load posts:", err);
