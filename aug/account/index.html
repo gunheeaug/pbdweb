@@ -726,7 +726,7 @@
             return json.data?.Items || [];
         }
 
-        function renderMap(posts) {
+        function renderMap(posts, profileImgUrl) {
             const located = posts.filter(p => p.locationExists && p.geoLocation);
             const countEl = document.getElementById("post-count");
             countEl.textContent = located.length + " post" + (located.length !== 1 ? "s" : "") + " on map";
@@ -846,6 +846,27 @@
                 }
             }
 
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((pos) => {
+                    const lat = pos.coords.latitude;
+                    const lng = pos.coords.longitude;
+                    const stickerHtml = profileImgUrl
+                        ? `<img src="${profileImgUrl}" style="width:100%;height:100%;object-fit:contain;object-position:center bottom;">`
+                        : "";
+                    const pulseIcon = L.divIcon({
+                        className: "",
+                        html: '<div style="position:relative;width:48px;height:70px;">' +
+                            '<div style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:42px;height:42px;border-radius:50%;border:3px solid #B0F600;box-shadow:0 2px 8px rgba(0,0,0,0.25);box-sizing:border-box;"></div>' +
+                            '<div style="position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:36px;height:36px;border-radius:50%;background:linear-gradient(180deg,#A9E4FF,#1191E6);"></div>' +
+                            '<div style="position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:36px;height:65px;overflow:hidden;clip-path:path(\'M3,0 L33,0 Q36,0 36,6 L36,47 Q36,65 18,65 Q0,65 0,47 L0,6 Q0,0 3,0 Z\');">' + stickerHtml + '</div>' +
+                            '</div>',
+                        iconSize: [48, 70],
+                        iconAnchor: [24, 70],
+                    });
+                    L.marker([lat, lng], { icon: pulseIcon, zIndexOffset: 2000, interactive: false }).addTo(leafletMap);
+                }, () => {});
+            }
+
             setTimeout(() => leafletMap.invalidateSize(), 100);
         }
 
@@ -924,7 +945,9 @@
                 } else {
                     renderUserBar(user, "", myInfo);
                     showState(stateMap);
-                    renderMap(posts);
+                    const profileUrl = myInfo?.thumbnailUrl || myInfo?.profileUrl || user.photoURL;
+                    const profileImgUrl = profileUrl ? (profileUrl.startsWith("http") ? profileUrl : "https://" + profileUrl) : null;
+                    renderMap(posts, profileImgUrl);
                 }
             } catch (err) {
                 console.error("Failed to load posts:", err);
