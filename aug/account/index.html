@@ -1088,10 +1088,15 @@
                             const nearby = await fetchNearbyPosts(token, lat, lng);
                             const ownKeys = new Set(posts.map(p => p.SK).filter(Boolean));
                             const uidPrefixed = "u#" + userId;
-                            nearby
+                            const others = nearby
                                 .filter(p => p.userId !== uidPrefixed && p.userId !== userId && !(p.SK && ownKeys.has(p.SK)))
-                                .slice(0, IS_WIDE ? 50 : 20)
-                                .forEach(post => addPostMarker(post, true));
+                                .slice(0, IS_WIDE ? 50 : 20);
+                            others.forEach(post => addPostMarker(post, true));
+                            const countEl = document.getElementById("post-count");
+                            if (countEl && others.length > 0) {
+                                countEl.textContent += ` · ${others.length} nearby`;
+                            }
+                            console.log(`[aug] auglist returned ${nearby.length} posts, ${others.length} from others`);
                         } catch (e) {
                             console.error("Nearby posts:", e);
                         }
