@@ -1220,10 +1220,10 @@
                 if (showUsername) {
                     const ageMs = post.createdAt ? Date.now() - new Date(post.createdAt).getTime() : Infinity;
                     const days = ageMs / 86400000;
-                    if (days <= 1)       markerOpacity = 0.85;
-                    else if (days <= 7)  markerOpacity = 0.7;
-                    else if (days <= 30) markerOpacity = 0.55;
-                    else if (days <= 90) markerOpacity = 0.4;
+                    if (days <= 1)       markerOpacity = 1;
+                    else if (days <= 7)  markerOpacity = 0.85;
+                    else if (days <= 30) markerOpacity = 0.65;
+                    else if (days <= 90) markerOpacity = 0.45;
                     else                 markerOpacity = 0.3;
                 }
 
