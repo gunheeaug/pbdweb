@@ -946,6 +946,23 @@
         const signinError = document.getElementById("signin-error");
 
         let leafletMap = null;
+        let _authToken = null;
+
+        async function postEvent(detailType, detail) {
+            if (!_authToken) return;
+            try {
+                await fetch(`${API_BASE}/events`, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${_authToken}`,
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ DetailType: detailType, Detail: detail }),
+                });
+            } catch (e) {
+                console.error(`[aug] postEvent ${detailType} failed:`, e);
+            }
+        }
 
         function showState(state) {
             [stateSignin, stateLoading, stateEmpty].forEach(s => s.classList.remove("active"));
@@ -1127,7 +1144,13 @@
             };
             window._augLike = function(sk) {
                 const btn = document.querySelector(`[data-like="${sk}"]`);
-                if (btn) btn.classList.toggle("liked");
+                if (!btn) return;
+                const entry = markerMap.get(sk);
+                const post = entry?.post;
+                const wasLiked = btn.classList.contains("liked");
+                btn.classList.toggle("liked");
+                const detail = { postId: sk, userId: post?.userId || "" };
+                postEvent(wasLiked ? "dislikePost" : "likePost", detail);
             };
             window._augShare = function(sk) {
                 const post = markerMap.get(sk)?.post;
@@ -1173,8 +1196,15 @@
                 if (!row) return;
                 const input = row.querySelector(".pp-comment-input");
                 if (input && input.value.trim()) {
-                    console.log("[aug] comment on", sk, ":", input.value.trim());
+                    const content = input.value.trim();
                     input.value = "";
+                    postEvent("createReply", {
+                        postId: sk,
+                        isARReply: false,
+                        isReplyofReply: false,
+                        mediaType: "text",
+                        arText: { content },
+                    });
                 }
                 row.classList.remove("show");
             };
@@ -1236,7 +1266,7 @@
                             '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>' +
                         '</div>';
                     popupHtml += '<div class="post-popup-actions">' +
-                        `<button class="pp-action-btn" data-like="${sk}" onclick="window._augLike('${esk}')" title="Like">` +
+                        `<button class="pp-action-btn${post.isLiked ? ' liked' : ''}" data-like="${sk}" onclick="window._augLike('${esk}')" title="Like">` +
                             '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>' +
                         `<button class="pp-action-btn" onclick="window._augOpenComment('${esk}')" title="Comment">` +
                             '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>' +
@@ -1373,6 +1403,7 @@
             try {
                 console.log("[aug] step 1: getIdToken");
                 const token = await user.getIdToken();
+                _authToken = token;
                 console.log("[aug] step 2: fetching myInfo + posts");
                 const [myInfo, posts] = await Promise.all([
                     fetchMyInfo(token),
