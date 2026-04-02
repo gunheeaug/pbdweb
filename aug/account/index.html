@@ -604,74 +604,74 @@
         .pp-more-item:hover { background: #f5f5f7; }
         .pp-more-item.destructive { color: #FF3B30; }
 
-        .pp-comment-row {
+        .post-popup { display: flex; }
+        .post-popup-left { width: 220px; min-width: 220px; flex-shrink: 0; }
+
+        .pp-comments-panel {
             display: none;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 10px;
-            border-top: 1px solid #f0f0f0;
-        }
-
-        .pp-comment-row.show {
-            display: flex;
-        }
-
-        .pp-comment-row.show + .post-popup-actions {
-            display: none;
-        }
-
-        .pp-comment-input {
-            flex: 1;
-            min-width: 0;
-            border: 1px solid #e5e5ea;
-            border-radius: 16px;
-            padding: 6px 12px;
-            font-size: 13px;
-            outline: none;
-            font-family: inherit;
-            background: #f5f5f7;
-            transition: border-color 0.15s;
-        }
-
-        .pp-comment-input:focus {
-            border-color: #007AFF;
+            width: 210px;
+            flex-direction: column;
+            border-left: 1px solid rgba(0,0,0,0.08);
             background: #fff;
+            border-radius: 0 14px 14px 0;
+            overflow: hidden;
         }
+        .pp-comments-panel.open { display: flex; }
 
-        .pp-comment-send {
+        .pp-comments-header {
             display: flex;
             align-items: center;
-            justify-content: center;
-            width: 28px;
-            height: 28px;
-            border: none;
-            background: #007AFF;
-            border-radius: 50%;
-            cursor: pointer;
-            flex-shrink: 0;
-            color: #fff;
-            padding: 0;
+            justify-content: space-between;
+            padding: 10px 10px 8px;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            font-size: 13px;
+            font-weight: 600;
+            color: #1d1d1f;
+        }
+        .pp-comments-header button {
+            display: flex; align-items: center; justify-content: center;
+            width: 24px; height: 24px; border: none; background: none;
+            cursor: pointer; border-radius: 50%; color: #8e8e93;
             transition: background 0.12s;
         }
+        .pp-comments-header button:hover { background: rgba(0,0,0,0.06); }
 
-        .pp-comment-send:hover { background: #0055cc; }
-
-        .pp-comment-close {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 28px;
-            height: 28px;
-            border: none;
-            background: none;
-            border-radius: 50%;
-            cursor: pointer;
-            flex-shrink: 0;
-            color: #8e8e93;
-            padding: 0;
+        .pp-comments-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px 10px;
+            text-align: left;
+            max-height: 220px;
+            min-height: 60px;
         }
+        .pp-comments-empty {
+            font-size: 12px; color: #86868b;
+            text-align: center; padding: 20px 0;
+        }
+        .pp-comment-item { margin-bottom: 10px; font-size: 12px; line-height: 1.4; }
+        .pp-comment-item-user { font-weight: 600; color: #1d1d1f; margin-right: 4px; }
+        .pp-comment-item-text { color: #333; word-break: break-word; }
+        .pp-comment-item-time { font-size: 10px; color: #86868b; margin-top: 2px; }
 
-        .pp-comment-close:hover { background: rgba(0,0,0,0.06); }
+        .pp-comment-compose {
+            display: flex; align-items: center;
+            padding: 8px; border-top: 1px solid rgba(0,0,0,0.06); gap: 6px;
+        }
+        .pp-comment-compose input {
+            flex: 1; min-width: 0;
+            border: 1px solid #e5e5ea; border-radius: 16px;
+            padding: 6px 10px; font-size: 12px; font-family: inherit;
+            outline: none; background: #f5f5f7;
+            transition: border-color 0.15s, background 0.15s;
+        }
+        .pp-comment-compose input:focus { border-color: #007AFF; background: #fff; }
+        .pp-comment-compose button {
+            display: flex; align-items: center; justify-content: center;
+            width: 28px; height: 28px; border: none; border-radius: 50%;
+            background: #007AFF; color: #fff; cursor: pointer;
+            flex-shrink: 0; padding: 0; transition: background 0.12s;
+        }
+        .pp-comment-compose button:hover { background: #0055cc; }
 
         @keyframes pulse-ring {
             0%   { transform: translate(-50%, 0) scale(1); opacity: 0.6; }
@@ -1198,34 +1198,89 @@
                     window._augHidePost(sk);
                 }
             };
-            window._augOpenComment = function(sk) {
-                const row = document.getElementById("pp-comment-" + sk);
-                if (row) {
-                    row.classList.add("show");
-                    const input = row.querySelector(".pp-comment-input");
-                    if (input) setTimeout(() => input.focus(), 50);
+            function updatePopup(sk) {
+                const entry = markerMap.get(sk);
+                if (entry && entry.marker) {
+                    const popup = entry.marker.getPopup();
+                    if (popup) popup.update();
                 }
+            }
+
+            function renderReplyItem(item) {
+                const name = item.userInfo?.username || item.userInfo?.firstname || "User";
+                const text = (item.arText?.content || item.text || "").toString();
+                const time = item.createdAt ? timeAgo(item.createdAt) : "";
+                return `<div class="pp-comment-item">` +
+                    `<span class="pp-comment-item-user">${escapeHtml(name)}</span>` +
+                    `<span class="pp-comment-item-text">${escapeHtml(text)}</span>` +
+                    (time ? `<div class="pp-comment-item-time">${time}</div>` : "") +
+                    `</div>`;
+            }
+
+            window._augOpenComment = async function(sk) {
+                const panel = document.getElementById("pp-cpanel-" + sk);
+                if (!panel) return;
+                panel.classList.add("open");
+                updatePopup(sk);
+
+                const list = document.getElementById("pp-clist-" + sk);
+                if (list && !list.dataset.loaded) {
+                    list.innerHTML = '<div class="pp-comments-empty">Loading\u2026</div>';
+                    try {
+                        const resp = await fetch(`${API_BASE}/post/replylist?postId=${sk}`, {
+                            headers: { "Authorization": `Bearer ${_authToken}` }
+                        });
+                        const json = await resp.json();
+                        list.dataset.loaded = "1";
+                        const items = json.data?.Items || [];
+                        if (items.length > 0) {
+                            list.innerHTML = items.map(renderReplyItem).join("");
+                        } else {
+                            list.innerHTML = '<div class="pp-comments-empty">No comments yet</div>';
+                        }
+                    } catch (e) {
+                        list.innerHTML = '<div class="pp-comments-empty">Couldn\u2019t load comments</div>';
+                    }
+                    updatePopup(sk);
+                }
+
+                const input = panel.querySelector(".pp-comment-compose input");
+                if (input) setTimeout(() => input.focus(), 80);
             };
+
             window._augCloseComment = function(sk) {
-                const row = document.getElementById("pp-comment-" + sk);
-                if (row) row.classList.remove("show");
+                const panel = document.getElementById("pp-cpanel-" + sk);
+                if (panel) panel.classList.remove("open");
+                updatePopup(sk);
             };
+
             window._augSendComment = function(sk) {
-                const row = document.getElementById("pp-comment-" + sk);
-                if (!row) return;
-                const input = row.querySelector(".pp-comment-input");
-                if (input && input.value.trim()) {
-                    const content = input.value.trim();
-                    input.value = "";
-                    postEvent("createReply", {
-                        postId: sk,
-                        isARReply: false,
-                        isReplyofReply: false,
-                        mediaType: "text",
+                const panel = document.getElementById("pp-cpanel-" + sk);
+                if (!panel) return;
+                const input = panel.querySelector(".pp-comment-compose input");
+                if (!input || !input.value.trim()) return;
+                const content = input.value.trim();
+                input.value = "";
+                postEvent("createReply", {
+                    postId: sk,
+                    isARReply: false,
+                    isReplyofReply: false,
+                    mediaType: "text",
+                    arText: { content },
+                });
+                const list = document.getElementById("pp-clist-" + sk);
+                if (list) {
+                    const empty = list.querySelector(".pp-comments-empty");
+                    if (empty) empty.remove();
+                    const myName = document.querySelector(".user-bar-name")?.textContent || "You";
+                    list.insertAdjacentHTML("beforeend", renderReplyItem({
+                        userInfo: { username: myName },
                         arText: { content },
-                    });
+                        createdAt: new Date().toISOString(),
+                    }));
+                    list.scrollTop = list.scrollHeight;
+                    updatePopup(sk);
                 }
-                row.classList.remove("show");
             };
 
             function addPostMarker(post, showUsername) {
@@ -1292,7 +1347,7 @@
                         .catch(() => {});
                 }
 
-                let popupHtml = '<div class="post-popup">';
+                let popupHtml = '<div class="post-popup"><div class="post-popup-left">';
                 if (videoUrl) {
                     popupHtml += `<div class="post-popup-media">${authorOverlay}<video autoplay loop muted playsinline${posterUrl ? ' poster="' + posterUrl + '"' : ''}>` +
                         `<source src="${videoUrl}" type="video/mp4"></video>${footerOverlay}</div>`;
@@ -1304,14 +1359,6 @@
 
                 if (sk) {
                     const esk = sk.replace(/'/g, "\\'");
-                    popupHtml += `<div class="pp-comment-row" id="pp-comment-${sk}">` +
-                        `<button class="pp-comment-close" onclick="window._augCloseComment('${esk}')" title="Back">` +
-                            '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>' +
-                        '<input class="pp-comment-input" placeholder="Add a comment…" ' +
-                            `onkeydown="if(event.key==='Enter')window._augSendComment('${esk}')">` +
-                        `<button class="pp-comment-send" onclick="window._augSendComment('${esk}')" title="Send">` +
-                            '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>' +
-                        '</div>';
                     popupHtml += '<div class="post-popup-actions">' +
                         `<button class="pp-action-btn${post.isLiked ? ' liked' : ''}" data-like="${sk}" onclick="window._augLike('${esk}')" title="Like">` +
                             '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>' +
@@ -1330,10 +1377,26 @@
                             '</div>' +
                         '</div>' +
                     '</div>';
+                    popupHtml += '</div>';
+                    popupHtml += `<div class="pp-comments-panel" id="pp-cpanel-${sk}">` +
+                        `<div class="pp-comments-header"><span>Comments</span>` +
+                            `<button onclick="window._augCloseComment('${esk}')" title="Close">` +
+                            '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
+                        '</button></div>' +
+                        `<div class="pp-comments-list" id="pp-clist-${sk}">` +
+                            '<div class="pp-comments-empty">No comments yet</div></div>' +
+                        '<div class="pp-comment-compose">' +
+                            `<input placeholder="Add a comment\u2026" onkeydown="if(event.key==='Enter')window._augSendComment('${esk}')">` +
+                            `<button onclick="window._augSendComment('${esk}')" title="Send">` +
+                            '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>' +
+                        '</button></div>' +
+                    '</div>';
+                } else {
+                    popupHtml += '</div>';
                 }
 
                 popupHtml += "</div>";
-                marker.bindPopup(popupHtml, { maxWidth: 220 });
+                marker.bindPopup(popupHtml, { maxWidth: 460, minWidth: 220 });
                 return [lat, lng];
             }
 
