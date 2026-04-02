@@ -1200,10 +1200,11 @@
             };
             function updatePopup(sk) {
                 const entry = markerMap.get(sk);
-                if (entry && entry.marker) {
-                    const popup = entry.marker.getPopup();
-                    if (popup) popup.update();
-                }
+                if (!entry?.marker) return;
+                const popup = entry.marker.getPopup();
+                if (!popup || !popup._container) return;
+                popup._updateLayout();
+                popup._updatePosition();
             }
 
             function renderReplyItem(item) {
@@ -1217,20 +1218,20 @@
                     `</div>`;
             }
 
-            window._augOpenComment = async function(sk) {
+            window._augOpenComment = function(sk) {
                 const panel = document.getElementById("pp-cpanel-" + sk);
                 if (!panel) return;
                 panel.classList.add("open");
-                updatePopup(sk);
+                setTimeout(() => updatePopup(sk), 0);
 
                 const list = document.getElementById("pp-clist-" + sk);
                 if (list && !list.dataset.loaded) {
                     list.innerHTML = '<div class="pp-comments-empty">Loading\u2026</div>';
-                    try {
-                        const resp = await fetch(`${API_BASE}/post/replylist?postId=${sk}`, {
-                            headers: { "Authorization": `Bearer ${_authToken}` }
-                        });
-                        const json = await resp.json();
+                    fetch(`${API_BASE}/post/replylist?postId=${sk}`, {
+                        headers: { "Authorization": `Bearer ${_authToken}` }
+                    })
+                    .then(r => r.json())
+                    .then(json => {
                         list.dataset.loaded = "1";
                         const items = json.data?.Items || [];
                         if (items.length > 0) {
@@ -1238,20 +1239,23 @@
                         } else {
                             list.innerHTML = '<div class="pp-comments-empty">No comments yet</div>';
                         }
-                    } catch (e) {
+                        updatePopup(sk);
+                    })
+                    .catch(() => {
                         list.innerHTML = '<div class="pp-comments-empty">Couldn\u2019t load comments</div>';
-                    }
-                    updatePopup(sk);
+                    });
                 }
 
-                const input = panel.querySelector(".pp-comment-compose input");
-                if (input) setTimeout(() => input.focus(), 80);
+                setTimeout(() => {
+                    const input = panel.querySelector(".pp-comment-compose input");
+                    if (input) input.focus();
+                }, 120);
             };
 
             window._augCloseComment = function(sk) {
                 const panel = document.getElementById("pp-cpanel-" + sk);
                 if (panel) panel.classList.remove("open");
-                updatePopup(sk);
+                setTimeout(() => updatePopup(sk), 0);
             };
 
             window._augSendComment = function(sk) {
@@ -1362,7 +1366,7 @@
                     popupHtml += '<div class="post-popup-actions">' +
                         `<button class="pp-action-btn${post.isLiked ? ' liked' : ''}" data-like="${sk}" onclick="window._augLike('${esk}')" title="Like">` +
                             '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>' +
-                        `<button class="pp-action-btn" onclick="window._augOpenComment('${esk}')" title="Comment">` +
+                        `<button class="pp-action-btn" onclick="event.stopPropagation();window._augOpenComment('${esk}')" title="Comment">` +
                             '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>' +
                         `<button class="pp-action-btn" onclick="window._augShare('${esk}')" title="Share">` +
                             '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></button>' +
@@ -1396,7 +1400,7 @@
                 }
 
                 popupHtml += "</div>";
-                marker.bindPopup(popupHtml, { maxWidth: 460, minWidth: 220 });
+                marker.bindPopup(popupHtml, { maxWidth: 460, minWidth: 220, autoPanOnFocus: false });
                 return [lat, lng];
             }
 
