@@ -1265,8 +1265,12 @@
                     fetch(`${API_BASE}/post/replylist?postId=${sk}`, {
                         headers: { "Authorization": `Bearer ${_authToken}` }
                     })
-                    .then(r => r.json())
+                    .then(r => {
+                        if (!r.ok) console.warn("[aug] replylist HTTP", r.status);
+                        return r.json();
+                    })
                     .then(json => {
+                        if (json.status !== "success") console.warn("[aug] replylist API error:", json.message);
                         const serverItems = json.data?.Items || [];
                         const localItems = _localReplies[sk] || [];
                         const allItems = serverItems.length > 0 || localItems.length > 0
