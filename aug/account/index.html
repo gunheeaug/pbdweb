@@ -553,15 +553,19 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 32px;
+            gap: 3px;
             height: 32px;
             border: none;
             background: none;
             cursor: pointer;
-            border-radius: 50%;
+            border-radius: 16px;
             color: #8e8e93;
-            padding: 0;
+            padding: 0 6px;
             transition: background 0.12s;
+            font-size: 11px;
+            font-weight: 600;
+            font-family: inherit;
+            white-space: nowrap;
         }
 
         .pp-action-btn:hover { background: rgba(0,0,0,0.06); }
@@ -1149,6 +1153,13 @@
                 return (r * 299 + g * 587 + b * 114) / 1000 > 180;
             }
 
+            function fmtCount(n) {
+                if (n == null || n <= 0) return "";
+                if (n > 99000) return "+99K";
+                if (n >= 1000) return (n / 1000).toFixed(n % 1000 >= 100 ? 1 : 0) + "K";
+                return String(n);
+            }
+
             function escapeHtml(s) {
                 const d = document.createElement("div");
                 d.textContent = s.replace(/\\n/g, "\n");
@@ -1170,6 +1181,20 @@
                 btn.classList.toggle("liked");
                 const detail = { postId: sk, userId: post?.userId || "" };
                 postEvent(wasLiked ? "dislikePost" : "likePost", detail);
+                if (post) {
+                    post.postLikeCount = (post.postLikeCount || 0) + (wasLiked ? -1 : 1);
+                    const countEl = document.querySelector(`[data-likecount="${sk}"]`);
+                    const str = fmtCount(post.postLikeCount);
+                    if (countEl) {
+                        countEl.textContent = str;
+                        if (!str) countEl.remove();
+                    } else if (str) {
+                        const span = document.createElement("span");
+                        span.dataset.likecount = sk;
+                        span.textContent = str;
+                        btn.appendChild(span);
+                    }
+                }
             };
             window._augShare = function(sk) {
                 const post = markerMap.get(sk)?.post;
@@ -1386,11 +1411,13 @@
 
                 if (sk) {
                     const esk = sk.replace(/'/g, "\\'");
+                    const likeStr = fmtCount(post.postLikeCount);
+                    const replyStr = fmtCount(post.postReplyCount);
                     popupHtml += '<div class="post-popup-actions">' +
                         `<button class="pp-action-btn${post.isLiked ? ' liked' : ''}" data-like="${sk}" onclick="window._augLike('${esk}')" title="Like">` +
-                            '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>' +
+                            `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>${likeStr ? '<span data-likecount="' + sk + '">' + likeStr + '</span>' : ''}</button>` +
                         `<button class="pp-action-btn" onclick="event.stopPropagation();window._augOpenComment('${esk}')" title="Comment">` +
-                            '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>' +
+                            `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>${replyStr ? '<span>' + replyStr + '</span>' : ''}</button>` +
                         `<button class="pp-action-btn" onclick="window._augShare('${esk}')" title="Share">` +
                             '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></button>' +
                         '<div class="pp-more-wrap">' +
