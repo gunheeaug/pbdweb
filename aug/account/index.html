@@ -1305,14 +1305,18 @@
                 setTimeout(() => updatePopup(sk), 0);
             };
 
+            let _commentGuard = false;
             window._augSendComment = function(sk) {
+                if (_commentGuard) return;
                 const panel = document.getElementById("pp-cpanel-" + sk);
                 if (!panel) return;
                 const input = panel.querySelector(".pp-comment-compose input");
                 if (!input || !input.value.trim()) return;
+                _commentGuard = true;
                 const content = input.value.trim();
-                input.blur();
                 input.value = "";
+                input.disabled = true;
+                setTimeout(() => { input.disabled = false; input.focus(); _commentGuard = false; }, 300);
                 postEvent("createReply", {
                     postId: sk,
                     isARReply: false,
