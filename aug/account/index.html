@@ -1086,7 +1086,7 @@
                 if (showUsername) {
                     const ui = post.userInfo || {};
                     const avatarSrc = ui.thumbnailUrl || ui.profileUrl || "";
-                    const displayName = ui.username ? "@" + escapeHtml(ui.username) : (ui.firstname && ui.firstname !== "None" ? escapeHtml(ui.firstname) : "");
+                    const displayName = ui.username ? escapeHtml(ui.username) : (ui.firstname && ui.firstname !== "None" ? escapeHtml(ui.firstname) : "");
                     const avatarHtml = avatarSrc
                         ? `<img class="post-popup-author-avatar" src="${avatarSrc.startsWith("http") ? avatarSrc : "https://" + avatarSrc}" alt="" onerror="this.style.display='none'">`
                         : `<div class="post-popup-author-initial">${(displayName || "?").replace("@","").charAt(0).toUpperCase()}</div>`;
