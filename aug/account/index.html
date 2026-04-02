@@ -438,6 +438,65 @@
             display: block;
         }
 
+        .post-popup-author {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 10px;
+            background: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, transparent 100%);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .post-popup-author-avatar {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1.5px solid rgba(255,255,255,0.7);
+            flex-shrink: 0;
+        }
+
+        .post-popup-author-initial {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(255,255,255,0.7);
+            flex-shrink: 0;
+            background: linear-gradient(180deg, #A9E4FF, #1191E6);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .post-popup-author-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: #fff;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+            line-height: 1.2;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .post-popup-author-time {
+            font-size: 10px;
+            font-weight: 400;
+            color: rgba(255,255,255,0.8);
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+            margin-left: auto;
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+
         .post-popup-info {
             padding: 10px 14px 12px;
             text-align: center;
@@ -674,10 +733,8 @@
         const API_BASE = "https://dev-api.aug.ooo/firebase";
         const NEARBY_ZOOM = 14;
         const IS_WIDE = window.innerWidth >= 768;
-        let _locationPromise = null;
         function getLocation() {
-            if (_locationPromise) return _locationPromise;
-            _locationPromise = new Promise((resolve) => {
+            return new Promise((resolve) => {
                 if (!navigator.geolocation) { resolve(null); return; }
                 navigator.geolocation.getCurrentPosition(
                     resolve,
@@ -846,7 +903,7 @@
                     if (!pos) {
                         emailEl.textContent = "Location unavailable";
                         emailEl.style.cursor = "pointer";
-                        emailEl.onclick = () => { _locationPromise = null; requestLocation(); };
+                        emailEl.onclick = requestLocation;
                         return;
                     }
                     const lat = pos.coords.latitude.toFixed(4);
@@ -1025,21 +1082,36 @@
                 const address = post.address || "Unknown location";
                 const date = post.createdAt ? timeAgo(post.createdAt) : "";
 
+                let authorOverlay = "";
+                if (showUsername) {
+                    const ui = post.userInfo || {};
+                    const avatarSrc = ui.thumbnailUrl || ui.profileUrl || "";
+                    const displayName = ui.username ? "@" + escapeHtml(ui.username) : (ui.firstname && ui.firstname !== "None" ? escapeHtml(ui.firstname) : "");
+                    const avatarHtml = avatarSrc
+                        ? `<img class="post-popup-author-avatar" src="${avatarSrc.startsWith("http") ? avatarSrc : "https://" + avatarSrc}" alt="" onerror="this.style.display='none'">`
+                        : `<div class="post-popup-author-initial">${(displayName || "?").replace("@","").charAt(0).toUpperCase()}</div>`;
+                    authorOverlay = `<div class="post-popup-author">${avatarHtml}` +
+                        (displayName ? `<span class="post-popup-author-name">${displayName}</span>` : "") +
+                        (date ? `<span class="post-popup-author-time">${date}</span>` : "") +
+                        `</div>`;
+                }
+
                 let popupHtml = '<div class="post-popup">';
                 if (videoUrl) {
-                    popupHtml += `<div class="post-popup-media"><video autoplay loop muted playsinline${posterUrl ? ' poster="' + posterUrl + '"' : ''}>` +
+                    popupHtml += `<div class="post-popup-media">${authorOverlay}<video autoplay loop muted playsinline${posterUrl ? ' poster="' + posterUrl + '"' : ''}>` +
                         `<source src="${videoUrl}" type="video/mp4"></video></div>`;
                 } else if (popupAssetURL) {
-                    popupHtml += `<div class="post-popup-media"><img src="${popupAssetURL}" alt="post" onerror="this.style.display='none'"></div>`;
+                    popupHtml += `<div class="post-popup-media">${authorOverlay}<img src="${popupAssetURL}" alt="post" onerror="this.style.display='none'"></div>`;
                 } else if (popupText) {
-                    popupHtml += `<div style="font-size:14px;font-weight:600;padding:12px 14px;word-break:break-word;">${escapeHtml(popupText)}</div>`;
+                    if (authorOverlay) {
+                        popupHtml += `<div style="position:relative;padding-top:38px;">${authorOverlay.replace('transparent 100%','rgba(0,0,0,0.05) 100%').replace('color:#fff','color:#1d1d1f').replace(/rgba\(255,255,255,0\.8\)/g,'#86868b').replace(/rgba\(0,0,0,0\.5\)/g,'transparent')}<div style="font-size:14px;font-weight:600;padding:4px 14px 12px;word-break:break-word;">${escapeHtml(popupText)}</div></div>`;
+                    } else {
+                        popupHtml += `<div style="font-size:14px;font-weight:600;padding:12px 14px;word-break:break-word;">${escapeHtml(popupText)}</div>`;
+                    }
                 }
                 popupHtml += `<div class="post-popup-info">`;
-                if (showUsername && post.userInfo?.username) {
-                    popupHtml += `<div style="font-size:12px;font-weight:600;color:#1d1d1f;margin-bottom:2px;">@${escapeHtml(post.userInfo.username)}</div>`;
-                }
                 popupHtml += `<div class="post-popup-address">${address}</div>`;
-                if (date) popupHtml += `<div class="post-popup-date">${date}</div>`;
+                if (!showUsername && date) popupHtml += `<div class="post-popup-date">${date}</div>`;
                 popupHtml += "</div>";
 
                 if (sk) {
