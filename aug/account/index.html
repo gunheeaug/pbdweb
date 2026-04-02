@@ -427,15 +427,17 @@
             position: relative;
             line-height: 0;
             overflow: hidden;
-            max-height: 240px;
+            height: 240px;
         }
 
         .post-popup-media > video,
         .post-popup-media > img {
             width: 100%;
-            height: 240px;
+            height: 100%;
             object-fit: cover;
             display: block;
+            position: relative;
+            z-index: 0;
         }
 
         .post-popup-author {
@@ -968,7 +970,7 @@
             return json.data?.Items || [];
         }
 
-        function renderMap(posts, profileImgUrl, token, userId) {
+        function renderMap(posts, profileImgUrl, token, userId, myInfo) {
             const located = posts.filter(p => p.locationExists && p.geoLocation);
             const countEl = document.getElementById("post-count");
             countEl.textContent = located.length + " post" + (located.length !== 1 ? "s" : "") + " on map";
@@ -1107,18 +1109,15 @@
                 const address = post.address || "Unknown location";
                 const date = post.createdAt ? timeAgo(post.createdAt) : "";
 
-                let authorOverlay = "";
-                if (showUsername) {
-                    const ui = post.userInfo || {};
-                    const avatarSrc = ui.thumbnailUrl || ui.profileUrl || "";
-                    const displayName = ui.username ? escapeHtml(ui.username) : (ui.firstname && ui.firstname !== "None" ? escapeHtml(ui.firstname) : "");
-                    const avatarHtml = avatarSrc
-                        ? `<img class="post-popup-author-avatar" src="${avatarSrc.startsWith("http") ? avatarSrc : "https://" + avatarSrc}" alt="" onerror="this.style.display='none'">`
-                        : `<div class="post-popup-author-initial">${(displayName || "?").charAt(0).toUpperCase()}</div>`;
-                    authorOverlay = `<div class="post-popup-author">${avatarHtml}` +
-                        (displayName ? `<span class="post-popup-author-name">${displayName}</span>` : "") +
-                        `</div>`;
-                }
+                const ui = isOwn ? (myInfo || {}) : (post.userInfo || {});
+                const avatarSrc = ui.thumbnailUrl || ui.profileUrl || "";
+                const displayName = ui.username ? escapeHtml(ui.username) : (ui.firstname && ui.firstname !== "None" ? escapeHtml(ui.firstname) : "");
+                const avatarHtml = avatarSrc
+                    ? `<img class="post-popup-author-avatar" src="${avatarSrc.startsWith("http") ? avatarSrc : "https://" + avatarSrc}" alt="" onerror="this.style.display='none'">`
+                    : `<div class="post-popup-author-initial">${(displayName || "?").charAt(0).toUpperCase()}</div>`;
+                const authorOverlay = `<div class="post-popup-author">${avatarHtml}` +
+                    (displayName ? `<span class="post-popup-author-name">${displayName}</span>` : "") +
+                    `</div>`;
 
                 const footerOverlay = `<div class="post-popup-footer">` +
                     `<span class="post-popup-footer-address">${address}</span>` +
@@ -1132,7 +1131,7 @@
                 } else if (popupAssetURL) {
                     popupHtml += `<div class="post-popup-media">${authorOverlay}<img src="${popupAssetURL}" alt="post" onerror="this.style.display='none'">${footerOverlay}</div>`;
                 } else if (popupText) {
-                    popupHtml += `<div style="position:relative;${authorOverlay ? 'padding-top:38px;' : ''}padding-bottom:28px;">${authorOverlay ? authorOverlay.replace('transparent 100%','rgba(0,0,0,0.05) 100%').replace('color:#fff','color:#1d1d1f').replace(/rgba\(0,0,0,0\.5\)/g,'transparent') : ''}${footerOverlay.replace('rgba(0,0,0,0.5)','rgba(0,0,0,0.05)').replace(/rgba\(255,255,255,[\d.]+\)/g,'#86868b')}<div style="font-size:14px;font-weight:600;padding:${authorOverlay ? '4' : '12'}px 14px 12px;word-break:break-word;">${escapeHtml(popupText)}</div></div>`;
+                    popupHtml += `<div style="position:relative;padding-top:38px;padding-bottom:28px;">${authorOverlay.replace('transparent 100%','rgba(0,0,0,0.05) 100%').replace('color:#fff','color:#1d1d1f').replace(/rgba\(0,0,0,0\.5\)/g,'transparent')}${footerOverlay.replace('rgba(0,0,0,0.5)','rgba(0,0,0,0.05)').replace(/rgba\(255,255,255,[\d.]+\)/g,'#86868b')}<div style="font-size:14px;font-weight:600;padding:4px 14px 12px;word-break:break-word;">${escapeHtml(popupText)}</div></div>`;
                 }
 
                 if (sk) {
@@ -1304,7 +1303,7 @@
                     const profileUrl = myInfo?.thumbnailUrl || myInfo?.profileUrl || user.photoURL;
                     const profileImgUrl = profileUrl ? (profileUrl.startsWith("http") ? profileUrl : "https://" + profileUrl) : null;
                     console.log("[aug] step 7: renderMap");
-                    renderMap(posts, profileImgUrl, token, user.uid);
+                    renderMap(posts, profileImgUrl, token, user.uid, myInfo);
                     console.log("[aug] step 8: done");
                 }
             } catch (err) {
