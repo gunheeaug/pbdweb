@@ -1218,10 +1218,18 @@
                     `</div>`;
             }
 
+            function toggleLeafletClose(panel, hide) {
+                const popup = panel.closest(".leaflet-popup");
+                if (!popup) return;
+                const btn = popup.querySelector(".leaflet-popup-close-button");
+                if (btn) btn.style.display = hide ? "none" : "";
+            }
+
             window._augOpenComment = function(sk) {
                 const panel = document.getElementById("pp-cpanel-" + sk);
                 if (!panel) return;
                 panel.classList.add("open");
+                toggleLeafletClose(panel, true);
                 setTimeout(() => updatePopup(sk), 0);
 
                 const list = document.getElementById("pp-clist-" + sk);
@@ -1254,7 +1262,10 @@
 
             window._augCloseComment = function(sk) {
                 const panel = document.getElementById("pp-cpanel-" + sk);
-                if (panel) panel.classList.remove("open");
+                if (panel) {
+                    panel.classList.remove("open");
+                    toggleLeafletClose(panel, false);
+                }
                 setTimeout(() => updatePopup(sk), 0);
             };
 
@@ -1385,7 +1396,7 @@
                     popupHtml += `<div class="pp-comments-panel" id="pp-cpanel-${sk}">` +
                         `<div class="pp-comments-header"><span>Comments</span>` +
                             `<button onclick="window._augCloseComment('${esk}')" title="Close">` +
-                            '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
+                            '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
                         '</button></div>' +
                         `<div class="pp-comments-list" id="pp-clist-${sk}">` +
                             '<div class="pp-comments-empty">No comments yet</div></div>' +
