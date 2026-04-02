@@ -1262,7 +1262,7 @@
                 const list = document.getElementById("pp-clist-" + sk);
                 if (list) {
                     list.innerHTML = '<div class="pp-comments-empty">Loading\u2026</div>';
-                    fetch(`${API_BASE}/post/replylist?postId=${sk}`, {
+                    fetch(`${API_BASE}/post/replylist?postId=${encodeURIComponent(sk)}`, {
                         headers: { "Authorization": `Bearer ${_authToken}` }
                     })
                     .then(r => {
