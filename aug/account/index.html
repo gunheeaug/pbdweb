@@ -1252,11 +1252,14 @@
             showState(stateLoading);
 
             try {
+                console.log("[aug] step 1: getIdToken");
                 const token = await user.getIdToken();
+                console.log("[aug] step 2: fetching myInfo + posts");
                 const [myInfo, posts] = await Promise.all([
                     fetchMyInfo(token),
                     fetchUserPosts(user),
                 ]);
+                console.log("[aug] step 3: myInfo=", myInfo?.username, "posts=", posts?.length);
 
                 if (myInfo?.username) {
                     const cleanUsername = myInfo.username.replace(/[^a-zA-Z0-9._-]/g, "");
@@ -1267,24 +1270,29 @@
                 }
 
                 const locatedPosts = posts.filter(p => p.locationExists && p.geoLocation);
+                console.log("[aug] step 4: locatedPosts=", locatedPosts.length);
 
                 if (locatedPosts.length === 0) {
                     renderUserBar(user, "empty-", myInfo);
                     showState(stateEmpty);
                 } else {
+                    console.log("[aug] step 5: renderUserBar");
                     renderUserBar(user, "", myInfo);
+                    console.log("[aug] step 6: showState(stateMap)");
                     showState(stateMap);
                     const profileUrl = myInfo?.thumbnailUrl || myInfo?.profileUrl || user.photoURL;
                     const profileImgUrl = profileUrl ? (profileUrl.startsWith("http") ? profileUrl : "https://" + profileUrl) : null;
+                    console.log("[aug] step 7: renderMap");
                     renderMap(posts, profileImgUrl, token, user.uid);
+                    console.log("[aug] step 8: done");
                 }
             } catch (err) {
                 console.error("Failed to load posts:", err);
                 renderUserBar(user, "empty-", null);
                 document.querySelector(".empty-title").textContent = "Couldn't load posts";
-                const detail = (err && err.message) ? err.message : String(err);
+                const detail = (err && err.stack) ? err.stack : ((err && err.message) ? err.message : String(err));
                 document.querySelector(".empty-text").textContent =
-                    "There was a problem loading your posts. Please try again later.\n(" + detail + ")";
+                    "(" + detail + ")";
                 showState(stateEmpty);
             }
         });
