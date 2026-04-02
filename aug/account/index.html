@@ -1210,8 +1210,9 @@
                 console.error("Failed to load posts:", err);
                 renderUserBar(user, "empty-", null);
                 document.querySelector(".empty-title").textContent = "Couldn't load posts";
+                const detail = (err && err.message) ? err.message : String(err);
                 document.querySelector(".empty-text").textContent =
-                    "There was a problem loading your posts. Please try again later.";
+                    "There was a problem loading your posts. Please try again later.\n(" + detail + ")";
                 showState(stateEmpty);
             }
         });
