@@ -1227,8 +1227,10 @@
                 const posterUrl = post.thumbnailUrl ? (post.thumbnailUrl.startsWith("http") ? post.thumbnailUrl : "https://" + post.thumbnailUrl) : "";
                 const popupAssetURL = resolveAssetURL(post);
                 const popupText = post.arText?.content?.trim();
-                const address = post.address || "Unknown location";
+                const hasAddress = post.address && post.address.trim();
+                const address = hasAddress ? post.address : "";
                 const date = post.createdAt ? timeAgo(post.createdAt) : "";
+                const addrId = "pp-addr-" + (sk || Math.random().toString(36).slice(2));
 
                 const ui = isOwn ? (myInfo || {}) : (post.userInfo || {});
                 const avatarSrc = ui.thumbnailUrl || ui.profileUrl || "";
@@ -1241,9 +1243,24 @@
                     `</div>`;
 
                 const footerOverlay = `<div class="post-popup-footer">` +
-                    `<span class="post-popup-footer-address">${address}</span>` +
+                    `<span class="post-popup-footer-address" id="${addrId}">${address}</span>` +
                     (date ? `<span class="post-popup-footer-time">${date}</span>` : "") +
                     `</div>`;
+
+                if (!hasAddress && lat && lng) {
+                    fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&zoom=16&addressdetails=1`)
+                        .then(r => r.json())
+                        .then(data => {
+                            const a = data.address || {};
+                            const parts = [a.road || a.neighbourhood || a.suburb, a.city || a.town || a.village || a.county].filter(Boolean);
+                            const resolved = parts.length ? parts.join(", ") : (data.display_name || "").split(",").slice(0, 2).join(",").trim();
+                            if (resolved) {
+                                const el = document.getElementById(addrId);
+                                if (el) el.textContent = resolved;
+                            }
+                        })
+                        .catch(() => {});
+                }
 
                 let popupHtml = '<div class="post-popup">';
                 if (videoUrl) {
