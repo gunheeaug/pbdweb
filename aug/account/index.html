@@ -1216,9 +1216,20 @@
                 const isOwn = !showUsername;
                 const sk = post.SK || "";
 
+                let markerOpacity = 1;
+                if (showUsername) {
+                    const ageMs = post.createdAt ? Date.now() - new Date(post.createdAt).getTime() : Infinity;
+                    const days = ageMs / 86400000;
+                    if (days <= 1)       markerOpacity = 0.85;
+                    else if (days <= 7)  markerOpacity = 0.7;
+                    else if (days <= 30) markerOpacity = 0.55;
+                    else if (days <= 90) markerOpacity = 0.4;
+                    else                 markerOpacity = 0.3;
+                }
+
                 const marker = L.marker([lat, lng], {
                     icon: makeMarkerIcon(post),
-                    opacity: showUsername ? 0.55 : 1,
+                    opacity: markerOpacity,
                 }).addTo(leafletMap);
 
                 if (sk) markerMap.set(sk, { marker, post });
