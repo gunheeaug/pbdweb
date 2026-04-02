@@ -487,13 +487,35 @@
             white-space: nowrap;
         }
 
-        .post-popup-author-time {
-            font-size: 10px;
-            font-weight: 400;
-            color: rgba(255,255,255,0.8);
+        .post-popup-footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            align-items: baseline;
+            gap: 5px;
+            padding: 24px 10px 8px;
+            background: linear-gradient(0deg, rgba(0,0,0,0.5) 0%, transparent 100%);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .post-popup-footer-time {
+            font-size: 11px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.9);
             text-shadow: 0 1px 3px rgba(0,0,0,0.5);
-            margin-left: auto;
             flex-shrink: 0;
+            white-space: nowrap;
+        }
+
+        .post-popup-footer-address {
+            font-size: 11px;
+            color: rgba(255,255,255,0.7);
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+            overflow: hidden;
+            text-overflow: ellipsis;
             white-space: nowrap;
         }
 
@@ -1083,36 +1105,42 @@
                 const date = post.createdAt ? timeAgo(post.createdAt) : "";
 
                 let authorOverlay = "";
+                let footerOverlay = "";
                 if (showUsername) {
                     const ui = post.userInfo || {};
                     const avatarSrc = ui.thumbnailUrl || ui.profileUrl || "";
                     const displayName = ui.username ? escapeHtml(ui.username) : (ui.firstname && ui.firstname !== "None" ? escapeHtml(ui.firstname) : "");
                     const avatarHtml = avatarSrc
                         ? `<img class="post-popup-author-avatar" src="${avatarSrc.startsWith("http") ? avatarSrc : "https://" + avatarSrc}" alt="" onerror="this.style.display='none'">`
-                        : `<div class="post-popup-author-initial">${(displayName || "?").replace("@","").charAt(0).toUpperCase()}</div>`;
+                        : `<div class="post-popup-author-initial">${(displayName || "?").charAt(0).toUpperCase()}</div>`;
                     authorOverlay = `<div class="post-popup-author">${avatarHtml}` +
                         (displayName ? `<span class="post-popup-author-name">${displayName}</span>` : "") +
-                        (date ? `<span class="post-popup-author-time">${date}</span>` : "") +
                         `</div>`;
+                    footerOverlay = `<div class="post-popup-footer">` +
+                        (date ? `<span class="post-popup-footer-time">${date}</span>` : "") +
+                        `<span class="post-popup-footer-address">${address}</span></div>`;
                 }
 
                 let popupHtml = '<div class="post-popup">';
                 if (videoUrl) {
                     popupHtml += `<div class="post-popup-media">${authorOverlay}<video autoplay loop muted playsinline${posterUrl ? ' poster="' + posterUrl + '"' : ''}>` +
-                        `<source src="${videoUrl}" type="video/mp4"></video></div>`;
+                        `<source src="${videoUrl}" type="video/mp4"></video>${footerOverlay}</div>`;
                 } else if (popupAssetURL) {
-                    popupHtml += `<div class="post-popup-media">${authorOverlay}<img src="${popupAssetURL}" alt="post" onerror="this.style.display='none'"></div>`;
+                    popupHtml += `<div class="post-popup-media">${authorOverlay}<img src="${popupAssetURL}" alt="post" onerror="this.style.display='none'">${footerOverlay}</div>`;
                 } else if (popupText) {
                     if (authorOverlay) {
-                        popupHtml += `<div style="position:relative;padding-top:38px;">${authorOverlay.replace('transparent 100%','rgba(0,0,0,0.05) 100%').replace('color:#fff','color:#1d1d1f').replace(/rgba\(255,255,255,0\.8\)/g,'#86868b').replace(/rgba\(0,0,0,0\.5\)/g,'transparent')}<div style="font-size:14px;font-weight:600;padding:4px 14px 12px;word-break:break-word;">${escapeHtml(popupText)}</div></div>`;
+                        popupHtml += `<div style="position:relative;padding-top:38px;padding-bottom:28px;">${authorOverlay.replace('transparent 100%','rgba(0,0,0,0.05) 100%').replace('color:#fff','color:#1d1d1f').replace(/rgba\(0,0,0,0\.5\)/g,'transparent')}${footerOverlay.replace('rgba(0,0,0,0.5)','rgba(0,0,0,0.05)').replace(/rgba\(255,255,255,[\d.]+\)/g,'#86868b')}<div style="font-size:14px;font-weight:600;padding:4px 14px 12px;word-break:break-word;">${escapeHtml(popupText)}</div></div>`;
                     } else {
                         popupHtml += `<div style="font-size:14px;font-weight:600;padding:12px 14px;word-break:break-word;">${escapeHtml(popupText)}</div>`;
                     }
                 }
-                popupHtml += `<div class="post-popup-info">`;
-                popupHtml += `<div class="post-popup-address">${address}</div>`;
-                if (!showUsername && date) popupHtml += `<div class="post-popup-date">${date}</div>`;
-                popupHtml += "</div>";
+
+                if (!showUsername) {
+                    popupHtml += `<div class="post-popup-info">`;
+                    popupHtml += `<div class="post-popup-address">${address}</div>`;
+                    if (date) popupHtml += `<div class="post-popup-date">${date}</div>`;
+                    popupHtml += "</div>";
+                }
 
                 if (sk) {
                     const esk = sk.replace(/'/g, "\\'");
