@@ -673,6 +673,25 @@
 
         .pp-comment-close:hover { background: rgba(0,0,0,0.06); }
 
+        @keyframes pulse-ring {
+            0%   { transform: translate(-50%, 0) scale(1); opacity: 0.6; }
+            100% { transform: translate(-50%, 0) scale(2.8); opacity: 0; }
+        }
+
+        .my-pulse-ring {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 2px solid #B0F600;
+            box-sizing: border-box;
+            animation: pulse-ring 2s ease-out infinite;
+            pointer-events: none;
+        }
+
         /* State visibility */
         .state { display: none; }
         .state.active { display: block; }
@@ -1343,13 +1362,14 @@
                     : "";
                 const pulseIcon = L.divIcon({
                     className: "",
-                    html: '<div style="position:relative;width:48px;height:70px;">' +
-                        '<div style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:42px;height:42px;border-radius:50%;border:3px solid #B0F600;box-shadow:0 2px 8px rgba(0,0,0,0.25);box-sizing:border-box;"></div>' +
-                        '<div style="position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:36px;height:36px;border-radius:50%;background:linear-gradient(180deg,#A9E4FF,#1191E6);"></div>' +
-                        '<div style="position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:36px;height:65px;overflow:hidden;clip-path:path(\'M3,0 L33,0 Q36,0 36,6 L36,47 Q36,65 18,65 Q0,65 0,47 L0,6 Q0,0 3,0 Z\');">' + stickerHtml + '</div>' +
+                    html: '<div style="position:relative;width:120px;height:100px;">' +
+                        '<div class="my-pulse-ring" style="bottom:15px;"></div>' +
+                        '<div style="position:absolute;bottom:15px;left:50%;transform:translateX(-50%);width:42px;height:42px;border-radius:50%;border:3px solid #B0F600;box-shadow:0 2px 8px rgba(0,0,0,0.25);box-sizing:border-box;"></div>' +
+                        '<div style="position:absolute;bottom:18px;left:50%;transform:translateX(-50%);width:36px;height:36px;border-radius:50%;background:linear-gradient(180deg,#A9E4FF,#1191E6);"></div>' +
+                        '<div style="position:absolute;bottom:18px;left:50%;transform:translateX(-50%);width:36px;height:65px;overflow:hidden;clip-path:path(\'M3,0 L33,0 Q36,0 36,6 L36,47 Q36,65 18,65 Q0,65 0,47 L0,6 Q0,0 3,0 Z\');">' + stickerHtml + '</div>' +
                         '</div>',
-                    iconSize: [48, 70],
-                    iconAnchor: [24, 70],
+                    iconSize: [120, 100],
+                    iconAnchor: [60, 85],
                 });
                 L.marker([lat, lng], { icon: pulseIcon, zIndexOffset: 2000, interactive: false }).addTo(leafletMap);
 
