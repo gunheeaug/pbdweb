@@ -1225,6 +1225,8 @@
                 if (btn) btn.style.display = hide ? "none" : "";
             }
 
+            const _localReplies = {};
+
             window._augOpenComment = function(sk) {
                 const panel = document.getElementById("pp-cpanel-" + sk);
                 if (!panel) return;
@@ -1233,24 +1235,29 @@
                 setTimeout(() => updatePopup(sk), 0);
 
                 const list = document.getElementById("pp-clist-" + sk);
-                if (list && !list.dataset.loaded) {
+                if (list) {
                     list.innerHTML = '<div class="pp-comments-empty">Loading\u2026</div>';
                     fetch(`${API_BASE}/post/replylist?postId=${sk}`, {
                         headers: { "Authorization": `Bearer ${_authToken}` }
                     })
                     .then(r => r.json())
                     .then(json => {
-                        list.dataset.loaded = "1";
-                        const items = json.data?.Items || [];
-                        if (items.length > 0) {
-                            list.innerHTML = items.map(renderReplyItem).join("");
-                        } else {
-                            list.innerHTML = '<div class="pp-comments-empty">No comments yet</div>';
-                        }
+                        const serverItems = json.data?.Items || [];
+                        const localItems = _localReplies[sk] || [];
+                        const allItems = serverItems.length > 0 || localItems.length > 0
+                            ? serverItems.map(renderReplyItem).join("") + localItems.map(renderReplyItem).join("")
+                            : '<div class="pp-comments-empty">No comments yet</div>';
+                        list.innerHTML = allItems;
+                        list.scrollTop = list.scrollHeight;
                         updatePopup(sk);
                     })
                     .catch(() => {
-                        list.innerHTML = '<div class="pp-comments-empty">Couldn\u2019t load comments</div>';
+                        const localItems = _localReplies[sk] || [];
+                        if (localItems.length > 0) {
+                            list.innerHTML = localItems.map(renderReplyItem).join("");
+                        } else {
+                            list.innerHTML = '<div class="pp-comments-empty">Couldn\u2019t load comments</div>';
+                        }
                     });
                 }
 
@@ -1275,6 +1282,7 @@
                 const input = panel.querySelector(".pp-comment-compose input");
                 if (!input || !input.value.trim()) return;
                 const content = input.value.trim();
+                input.blur();
                 input.value = "";
                 postEvent("createReply", {
                     postId: sk,
@@ -1283,16 +1291,20 @@
                     mediaType: "text",
                     arText: { content },
                 });
+                const myName = document.querySelector(".user-bar-name")?.textContent || "You";
+                const localItem = {
+                    userInfo: { username: myName },
+                    arText: { content },
+                    createdAt: new Date().toISOString(),
+                };
+                if (!_localReplies[sk]) _localReplies[sk] = [];
+                _localReplies[sk].push(localItem);
+
                 const list = document.getElementById("pp-clist-" + sk);
                 if (list) {
                     const empty = list.querySelector(".pp-comments-empty");
                     if (empty) empty.remove();
-                    const myName = document.querySelector(".user-bar-name")?.textContent || "You";
-                    list.insertAdjacentHTML("beforeend", renderReplyItem({
-                        userInfo: { username: myName },
-                        arText: { content },
-                        createdAt: new Date().toISOString(),
-                    }));
+                    list.insertAdjacentHTML("beforeend", renderReplyItem(localItem));
                     list.scrollTop = list.scrollHeight;
                     updatePopup(sk);
                 }
@@ -1401,7 +1413,7 @@
                         `<div class="pp-comments-list" id="pp-clist-${sk}">` +
                             '<div class="pp-comments-empty">No comments yet</div></div>' +
                         '<div class="pp-comment-compose">' +
-                            `<input placeholder="Add a comment\u2026" onkeydown="if(event.key==='Enter')window._augSendComment('${esk}')">` +
+                            `<input placeholder="Add a comment\u2026" onkeydown="if(event.key==='Enter'){event.preventDefault();window._augSendComment('${esk}')}">` +
                             `<button onclick="window._augSendComment('${esk}')" title="Send">` +
                             '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>' +
                         '</button></div>' +
