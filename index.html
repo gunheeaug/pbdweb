@@ -519,14 +519,11 @@
             z-index: 5;
         }
 
-        .tagline-text {
-            font-family: 'Times New Roman', Times, serif;
-            font-size: clamp(1.2rem, 2.5vw, 1.8rem);
-            font-weight: 100;
-            font-style: italic;
-            color: #fff;
-            letter-spacing: 0;
-            opacity: 1;
+        .tagline-image {
+            width: min(78vw, 760px);
+            height: auto;
+            display: block;
+            margin: 0 auto;
         }
 
         /* Apps Section - App Cards */
@@ -1034,7 +1031,7 @@
     <div class="bottom-section">
         <!-- Tagline -->
         <div class="tagline-section" id="tagline-section">
-            <p class="tagline-text">We make Earth more interesting.</p>
+            <img src="assets/images/pbd-tagline.png" alt="We make Earth more interesting." class="tagline-image" loading="lazy" decoding="async">
         </div>
 
         <!-- Apps Section -->
