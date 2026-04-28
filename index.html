@@ -137,7 +137,10 @@
                     rgba(0,0,0,0.16) 80%, 
                     rgba(0,0,0,0.06) 90%, 
                     transparent 100%),
-                url('/assets/images/basquiat bg.jpg') center top / cover no-repeat;
+                image-set(
+                    url('/assets/images/basquiat bg.webp') type('image/webp'),
+                    url('/assets/images/basquiat bg.jpg') type('image/jpeg')
+                ) center top / cover no-repeat;
         }
 
         a {
@@ -961,7 +964,10 @@
                         rgba(0,0,0,0.16) 80%, 
                         rgba(0,0,0,0.06) 90%, 
                         transparent 100%),
-                    url('/assets/images/basquiat bg.jpg') center top / cover no-repeat;
+                    image-set(
+                    url('/assets/images/basquiat bg.webp') type('image/webp'),
+                    url('/assets/images/basquiat bg.jpg') type('image/jpeg')
+                ) center top / cover no-repeat;
             }
 
         }
@@ -970,7 +976,7 @@
 <body>
     <!-- Loading Screen -->
     <div class="loading-screen" id="loadingScreen">
-        <img src="assets/images/Earth.png" alt="Loading" class="loading-earth">
+        <picture style="display: contents;"><source srcset="assets/images/Earth.webp" type="image/webp"><img src="assets/images/Earth.png" alt="Loading" class="loading-earth" decoding="async" fetchpriority="high"></picture>
     </div>
 
     <!-- Navigation -->
@@ -989,26 +995,26 @@
         <h1 class="hero-title">pale blue dot</h1>
         
         <div class="earth-container">
-            <img src="assets/images/Earth.png" alt="Earth" class="earth-image">
+            <picture style="display: contents;"><source srcset="assets/images/Earth.webp" type="image/webp"><img src="assets/images/Earth.png" alt="Earth" class="earth-image" decoding="async" fetchpriority="high"></picture>
             
             <!-- Stickers on Earth -->
-            <img src="assets/stickers/aug sticker 1.png" alt="" class="earth-sticker sticker-1" onclick="scrollToApps()">
-            <img src="assets/stickers/aug sticker 2.png" alt="" class="earth-sticker sticker-2" onclick="scrollToApps()">
-            <img src="assets/stickers/aug sticker 3.png" alt="" class="earth-sticker sticker-3" onclick="scrollToApps()">
-            <img src="assets/stickers/aug sticker 4.png" alt="" class="earth-sticker sticker-4" onclick="scrollToApps()">
-            <img src="assets/stickers/aug sticker 5.png" alt="" class="earth-sticker sticker-5" onclick="scrollToApps()">
-            <img src="assets/stickers/aug sticker 6.png" alt="" class="earth-sticker sticker-6" onclick="scrollToApps()">
-            <img src="assets/stickers/aug sticker 7.png" alt="" class="earth-sticker sticker-7" onclick="scrollToApps()">
-            <img src="assets/stickers/aug sticker 8.png" alt="" class="earth-sticker sticker-8" onclick="scrollToApps()">
-            <img src="assets/stickers/aug sticker 9.png" alt="" class="earth-sticker sticker-9" onclick="scrollToApps()">
-            <img src="assets/stickers/aug sticker 10.png" alt="" class="earth-sticker sticker-10" onclick="scrollToApps()">
-            <img src="assets/stickers/aug eyes sticker 1.png" alt="" class="earth-sticker sticker-11" onclick="scrollToApps()">
-            <img src="assets/stickers/Basquiat sticker 1.png" alt="" class="earth-sticker basquiat sticker-12" onclick="scrollToApps()">
-            <img src="assets/stickers/Basquiat sticker 2.png" alt="" class="earth-sticker basquiat sticker-13" onclick="scrollToApps()">
-            <img src="assets/stickers/pbd sticker 1.png" alt="" class="earth-sticker sticker-14" onclick="scrollToApps()">
-            <img src="assets/stickers/pbd sticker 2.png" alt="" class="earth-sticker sticker-15" onclick="scrollToApps()">
-            <img src="assets/stickers/pbd sticker 4.png" alt="" class="earth-sticker sticker-16" onclick="scrollToApps()">
-            <img src="assets/stickers/pbd sticker 6.png" alt="" class="earth-sticker sticker-17" onclick="scrollToApps()">
+            <picture style="display: contents;"><source srcset="assets/stickers/aug%20sticker%201.webp" type="image/webp"><img src="assets/stickers/aug sticker 1.png" alt="" class="earth-sticker sticker-1" onclick="scrollToApps()" loading="lazy" decoding="async"></picture>
+            <picture style="display: contents;"><source srcset="assets/stickers/aug%20sticker%202.webp" type="image/webp"><img src="assets/stickers/aug sticker 2.png" alt="" class="earth-sticker sticker-2" onclick="scrollToApps()" loading="lazy" decoding="async"></picture>
+            <picture style="display: contents;"><source srcset="assets/stickers/aug%20sticker%203.webp" type="image/webp"><img src="assets/stickers/aug sticker 3.png" alt="" class="earth-sticker sticker-3" onclick="scrollToApps()" loading="lazy" decoding="async"></picture>
+            <picture style="display: contents;"><source srcset="assets/stickers/aug%20sticker%204.webp" type="image/webp"><img src="assets/stickers/aug sticker 4.png" alt="" class="earth-sticker sticker-4" onclick="scrollToApps()" loading="lazy" decoding="async"></picture>
+            <picture style="display: contents;"><source srcset="assets/stickers/aug%20sticker%205.webp" type="image/webp"><img src="assets/stickers/aug sticker 5.png" alt="" class="earth-sticker sticker-5" onclick="scrollToApps()" loading="lazy" decoding="async"></picture>
+            <picture style="display: contents;"><source srcset="assets/stickers/aug%20sticker%206.webp" type="image/webp"><img src="assets/stickers/aug sticker 6.png" alt="" class="earth-sticker sticker-6" onclick="scrollToApps()" loading="lazy" decoding="async"></picture>
+            <picture style="display: contents;"><source srcset="assets/stickers/aug%20sticker%207.webp" type="image/webp"><img src="assets/stickers/aug sticker 7.png" alt="" class="earth-sticker sticker-7" onclick="scrollToApps()" loading="lazy" decoding="async"></picture>
+            <picture style="display: contents;"><source srcset="assets/stickers/aug%20sticker%208.webp" type="image/webp"><img src="assets/stickers/aug sticker 8.png" alt="" class="earth-sticker sticker-8" onclick="scrollToApps()" loading="lazy" decoding="async"></picture>
+            <picture style="display: contents;"><source srcset="assets/stickers/aug%20sticker%209.webp" type="image/webp"><img src="assets/stickers/aug sticker 9.png" alt="" class="earth-sticker sticker-9" onclick="scrollToApps()" loading="lazy" decoding="async"></picture>
+            <picture style="display: contents;"><source srcset="assets/stickers/aug%20sticker%2010.webp" type="image/webp"><img src="assets/stickers/aug sticker 10.png" alt="" class="earth-sticker sticker-10" onclick="scrollToApps()" loading="lazy" decoding="async"></picture>
+            <picture style="display: contents;"><source srcset="assets/stickers/aug%20eyes%20sticker%201.webp" type="image/webp"><img src="assets/stickers/aug eyes sticker 1.png" alt="" class="earth-sticker sticker-11" onclick="scrollToApps()" loading="lazy" decoding="async"></picture>
+            <picture style="display: contents;"><source srcset="assets/stickers/Basquiat%20sticker%201.webp" type="image/webp"><img src="assets/stickers/Basquiat sticker 1.png" alt="" class="earth-sticker basquiat sticker-12" onclick="scrollToApps()" loading="lazy" decoding="async"></picture>
+            <picture style="display: contents;"><source srcset="assets/stickers/Basquiat%20sticker%202.webp" type="image/webp"><img src="assets/stickers/Basquiat sticker 2.png" alt="" class="earth-sticker basquiat sticker-13" onclick="scrollToApps()" loading="lazy" decoding="async"></picture>
+            <picture style="display: contents;"><source srcset="assets/stickers/pbd%20sticker%201.webp" type="image/webp"><img src="assets/stickers/pbd sticker 1.png" alt="" class="earth-sticker sticker-14" onclick="scrollToApps()" loading="lazy" decoding="async"></picture>
+            <picture style="display: contents;"><source srcset="assets/stickers/pbd%20sticker%202.webp" type="image/webp"><img src="assets/stickers/pbd sticker 2.png" alt="" class="earth-sticker sticker-15" onclick="scrollToApps()" loading="lazy" decoding="async"></picture>
+            <picture style="display: contents;"><source srcset="assets/stickers/pbd%20sticker%204.webp" type="image/webp"><img src="assets/stickers/pbd sticker 4.png" alt="" class="earth-sticker sticker-16" onclick="scrollToApps()" loading="lazy" decoding="async"></picture>
+            <picture style="display: contents;"><source srcset="assets/stickers/pbd%20sticker%206.webp" type="image/webp"><img src="assets/stickers/pbd sticker 6.png" alt="" class="earth-sticker sticker-17" onclick="scrollToApps()" loading="lazy" decoding="async"></picture>
         </div>
 
     </section>
@@ -1025,7 +1031,7 @@
         <!-- aug App Card -->
         <a href="/aug/" class="app-card" id="aug-card">
             <div class="app-card-header">
-                <img src="assets/images/aug-icon.png" alt="aug" class="app-card-icon">
+                <picture style="display: contents;"><source srcset="assets/images/aug-icon.webp" type="image/webp"><img src="assets/images/aug-icon.png" alt="aug" class="app-card-icon" decoding="async"></picture>
                 <div class="app-card-info">
                     <div class="app-card-title">aug - Spatial Snap</div>
                     <div class="app-card-tagline">Make anything into AR</div>
@@ -1040,16 +1046,16 @@
                 <span class="app-card-badge"><span class="app-card-badge-emoji">🤝</span><span class="app-card-badge-text">IRL</span></span>
             </div>
             <div class="app-card-previews">
-                <div class="app-card-preview"><img src="assets/App Previews/aug/aug 1.png" alt="aug preview"></div>
-                <div class="app-card-preview"><img src="assets/App Previews/aug/aug 2.png" alt="aug preview"></div>
-                <div class="app-card-preview"><img src="assets/App Previews/aug/aug 3.png" alt="aug preview"></div>
+                <div class="app-card-preview"><picture style="display: contents;"><source srcset="assets/App%20Previews/aug/aug%201.webp" type="image/webp"><img src="assets/App Previews/aug/aug 1.png" alt="aug preview" loading="lazy" decoding="async"></picture></div>
+                <div class="app-card-preview"><picture style="display: contents;"><source srcset="assets/App%20Previews/aug/aug%202.webp" type="image/webp"><img src="assets/App Previews/aug/aug 2.png" alt="aug preview" loading="lazy" decoding="async"></picture></div>
+                <div class="app-card-preview"><picture style="display: contents;"><source srcset="assets/App%20Previews/aug/aug%203.webp" type="image/webp"><img src="assets/App Previews/aug/aug 3.png" alt="aug preview" loading="lazy" decoding="async"></picture></div>
             </div>
         </a>
 
         <!-- Shotup AI App Card -->
         <a href="/shotupai/" class="app-card" id="shotupai-card">
             <div class="app-card-header">
-                <img src="assets/images/Shotupai-Icon.png" alt="Shotup AI" class="app-card-icon">
+                <picture style="display: contents;"><source srcset="assets/images/Shotupai-Icon.webp" type="image/webp"><img src="assets/images/Shotupai-Icon.png" alt="Shotup AI" class="app-card-icon" decoding="async"></picture>
                 <div class="app-card-info">
                     <div class="app-card-title">Shotup AI - Screenshots</div>
                     <div class="app-card-tagline">AI Learns Your Screenshots</div>
@@ -1064,16 +1070,16 @@
                 <span class="app-card-badge"><span class="app-card-badge-emoji">📁</span><span class="app-card-badge-text">Archive</span></span>
             </div>
             <div class="app-card-previews">
-                <div class="app-card-preview"><img src="assets/App Previews/Shotup AI/Shotup AI 1.png" alt="Shotup AI preview"></div>
-                <div class="app-card-preview"><img src="assets/App Previews/Shotup AI/Shotup AI 2.png" alt="Shotup AI preview"></div>
-                <div class="app-card-preview"><img src="assets/App Previews/Shotup AI/Shotup AI 3.png" alt="Shotup AI preview"></div>
+                <div class="app-card-preview"><picture style="display: contents;"><source srcset="assets/App%20Previews/Shotup%20AI/Shotup%20AI%201.webp" type="image/webp"><img src="assets/App Previews/Shotup AI/Shotup AI 1.png" alt="Shotup AI preview" loading="lazy" decoding="async"></picture></div>
+                <div class="app-card-preview"><picture style="display: contents;"><source srcset="assets/App%20Previews/Shotup%20AI/Shotup%20AI%202.webp" type="image/webp"><img src="assets/App Previews/Shotup AI/Shotup AI 2.png" alt="Shotup AI preview" loading="lazy" decoding="async"></picture></div>
+                <div class="app-card-preview"><picture style="display: contents;"><source srcset="assets/App%20Previews/Shotup%20AI/Shotup%20AI%203.webp" type="image/webp"><img src="assets/App Previews/Shotup AI/Shotup AI 3.png" alt="Shotup AI preview" loading="lazy" decoding="async"></picture></div>
             </div>
         </a>
 
         <!-- Superba App Card -->
         <a href="/superba/" class="app-card" id="superba-card">
             <div class="app-card-header">
-                <img src="assets/images/Superba-icon.png" alt="Superba" class="app-card-icon">
+                <picture style="display: contents;"><source srcset="assets/images/Superba-icon.webp" type="image/webp"><img src="assets/images/Superba-icon.png" alt="Superba" class="app-card-icon" decoding="async"></picture>
                 <div class="app-card-info">
                     <div class="app-card-title">Superba - Run with Friends</div>
                     <div class="app-card-tagline">Run IRL with Friends</div>
@@ -1088,16 +1094,16 @@
                 <span class="app-card-badge"><span class="app-card-badge-emoji">📍</span><span class="app-card-badge-text">Social Map</span></span>
             </div>
             <div class="app-card-previews">
-                <div class="app-card-preview"><img src="assets/App Previews/Superba/Superba 1.png" alt="Superba preview"></div>
-                <div class="app-card-preview"><img src="assets/App Previews/Superba/Superba 2.png" alt="Superba preview"></div>
-                <div class="app-card-preview"><img src="assets/App Previews/Superba/Superba 3.png" alt="Superba preview"></div>
+                <div class="app-card-preview"><picture style="display: contents;"><source srcset="assets/App%20Previews/Superba/Superba%201.webp" type="image/webp"><img src="assets/App Previews/Superba/Superba 1.png" alt="Superba preview" loading="lazy" decoding="async"></picture></div>
+                <div class="app-card-preview"><picture style="display: contents;"><source srcset="assets/App%20Previews/Superba/Superba%202.webp" type="image/webp"><img src="assets/App Previews/Superba/Superba 2.png" alt="Superba preview" loading="lazy" decoding="async"></picture></div>
+                <div class="app-card-preview"><picture style="display: contents;"><source srcset="assets/App%20Previews/Superba/Superba%203.webp" type="image/webp"><img src="assets/App Previews/Superba/Superba 3.png" alt="Superba preview" loading="lazy" decoding="async"></picture></div>
             </div>
         </a>
 
         <!-- Crèma App Card -->
         <a href="/crema/" class="app-card" id="crema-card">
             <div class="app-card-header">
-                <img src="assets/images/CremaAppIconRounded.png" alt="Crèma" class="app-card-icon">
+                <picture style="display: contents;"><source srcset="assets/images/CremaAppIconRounded.webp" type="image/webp"><img src="assets/images/CremaAppIconRounded.png" alt="Crèma" class="app-card-icon" decoding="async"></picture>
                 <div class="app-card-info">
                     <div class="app-card-title">Crèma - Baristas & Coffee Lovers</div>
                     <div class="app-card-tagline">Social Space for Coffee Enthusiasts</div>
@@ -1112,9 +1118,9 @@
                 <span class="app-card-badge"><span class="app-card-badge-emoji">🤝</span><span class="app-card-badge-text">Networking</span></span>
             </div>
             <div class="app-card-previews">
-                <div class="app-card-preview"><img src="assets/App%20Previews/Crema/crema1.jpg" alt="Crèma preview 1"></div>
-                <div class="app-card-preview"><img src="assets/App%20Previews/Crema/crema2.jpg" alt="Crèma preview 2"></div>
-                <div class="app-card-preview"><img src="assets/App%20Previews/Crema/crema3.jpg" alt="Crèma preview 3"></div>
+                <div class="app-card-preview"><picture style="display: contents;"><source srcset="assets/App%20Previews/Crema/crema1.webp" type="image/webp"><img src="assets/App%20Previews/Crema/crema1.jpg" alt="Crèma preview 1" loading="lazy" decoding="async"></picture></div>
+                <div class="app-card-preview"><picture style="display: contents;"><source srcset="assets/App%20Previews/Crema/crema2.webp" type="image/webp"><img src="assets/App%20Previews/Crema/crema2.jpg" alt="Crèma preview 2" loading="lazy" decoding="async"></picture></div>
+                <div class="app-card-preview"><picture style="display: contents;"><source srcset="assets/App%20Previews/Crema/crema3.webp" type="image/webp"><img src="assets/App%20Previews/Crema/crema3.jpg" alt="Crèma preview 3" loading="lazy" decoding="async"></picture></div>
             </div>
         </a>
     </section>

@@ -280,7 +280,7 @@
         <a href="/aug/" class="back-link">← Back to aug</a>
         
         <header class="header">
-            <img src="/assets/images/aug-icon.png" alt="aug">
+            <picture style="display: contents;"><source srcset="/assets/images/aug-icon.webp" type="image/webp"><img src="/assets/images/aug-icon.png" alt="aug" loading="lazy" decoding="async"></picture>
             <span>aug spatial</span>
         </header>
 
@@ -297,8 +297,8 @@
                 </div>
             </div>
             <div class="video-item">
-                <video id="video1" autoplay loop muted playsinline>
-                    <source src="/assets/videos/aug/aug billboard ads.mp4" type="video/mp4">
+                <video data-lazy-video id="video1" autoplay loop muted playsinline preload="none">
+                    <source data-src="/assets/videos/aug/aug billboard ads.mp4" type="video/mp4">
                 </video>
                 <div class="audio-hint">Tap video to enable sound</div>
             </div>
@@ -306,8 +306,8 @@
 
         <div class="section-layout">
             <div class="video-item">
-                <video id="video2" autoplay loop muted playsinline>
-                    <source src="/assets/videos/aug/aug find my idol.mp4" type="video/mp4">
+                <video data-lazy-video id="video2" autoplay loop muted playsinline preload="none">
+                    <source data-src="/assets/videos/aug/aug find my idol.mp4" type="video/mp4">
                 </video>
                 <div class="audio-hint">Tap video to enable sound</div>
             </div>
