@@ -965,9 +965,9 @@
                         rgba(0,0,0,0.06) 90%, 
                         transparent 100%),
                     image-set(
-                    url('/assets/images/basquiat bg.webp') type('image/webp'),
-                    url('/assets/images/basquiat bg.jpg') type('image/jpeg')
-                ) center top / cover no-repeat;
+                        url('/assets/images/basquiat bg.webp') type('image/webp'),
+                        url('/assets/images/basquiat bg.jpg') type('image/jpeg')
+                    ) center top / cover no-repeat;
             }
 
         }
@@ -1049,6 +1049,30 @@
                 <div class="app-card-preview"><picture style="display: contents;"><source srcset="assets/App%20Previews/aug/aug%201.webp" type="image/webp"><img src="assets/App Previews/aug/aug 1.png" alt="aug preview" loading="lazy" decoding="async"></picture></div>
                 <div class="app-card-preview"><picture style="display: contents;"><source srcset="assets/App%20Previews/aug/aug%202.webp" type="image/webp"><img src="assets/App Previews/aug/aug 2.png" alt="aug preview" loading="lazy" decoding="async"></picture></div>
                 <div class="app-card-preview"><picture style="display: contents;"><source srcset="assets/App%20Previews/aug/aug%203.webp" type="image/webp"><img src="assets/App Previews/aug/aug 3.png" alt="aug preview" loading="lazy" decoding="async"></picture></div>
+            </div>
+        </a>
+
+        <!-- augClaw App Card -->
+        <a href="/augclaw/" class="app-card" id="augclaw-card">
+            <div class="app-card-header">
+                <picture style="display: contents;"><source srcset="assets/images/aug-icon.webp" type="image/webp"><img src="assets/images/aug-icon.png" alt="augClaw" class="app-card-icon" decoding="async"></picture>
+                <div class="app-card-info">
+                    <div class="app-card-title">augClaw</div>
+                    <div class="app-card-tagline">Play with OpenClaw buddies</div>
+                </div>
+                <div class="app-card-download">
+                    <button class="app-card-download-btn">More</button>
+                </div>
+            </div>
+            <div class="app-card-badges">
+                <span class="app-card-badge"><span class="app-card-badge-emoji">🤖</span><span class="app-card-badge-text">AI Bots</span></span>
+                <span class="app-card-badge"><span class="app-card-badge-emoji">🌐</span><span class="app-card-badge-text">AR Buddies</span></span>
+                <span class="app-card-badge"><span class="app-card-badge-emoji">🦀</span><span class="app-card-badge-text">OpenClaw</span></span>
+            </div>
+            <div class="app-card-previews">
+                <div class="app-card-preview"><img src="assets/App Previews/augClaw/augClaw 1.png" alt="augClaw preview" loading="lazy" decoding="async"></div>
+                <div class="app-card-preview"><img src="assets/App Previews/augClaw/augClaw 2.png" alt="augClaw preview" loading="lazy" decoding="async"></div>
+                <div class="app-card-preview"><img src="assets/App Previews/augClaw/augClaw 3.png" alt="augClaw preview" loading="lazy" decoding="async"></div>
             </div>
         </a>
 
@@ -1215,9 +1239,10 @@
         // Download all app cards - call from browser console: downloadAllCards()
         function downloadAllCards() {
             downloadAppCard('aug-card', 'aug-app-card');
-            setTimeout(() => downloadAppCard('shotupai-card', 'shotupai-app-card'), 500);
-            setTimeout(() => downloadAppCard('superba-card', 'superba-app-card'), 1000);
-            setTimeout(() => downloadAppCard('crema-card', 'crema-app-card'), 1500);
+            setTimeout(() => downloadAppCard('augclaw-card', 'augclaw-app-card'), 500);
+            setTimeout(() => downloadAppCard('shotupai-card', 'shotupai-app-card'), 1000);
+            setTimeout(() => downloadAppCard('superba-card', 'superba-app-card'), 1500);
+            setTimeout(() => downloadAppCard('crema-card', 'crema-app-card'), 2000);
         }
 
         // Scroll to tagline and apps section when sticker is clicked

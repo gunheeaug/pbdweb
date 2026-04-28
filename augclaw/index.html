@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>augClaw — Play with your OpenClaw buddies | PBD</title>
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://pbd.team/augclaw/">
+    <meta property="og:title" content="augClaw — Play with your OpenClaw buddies">
+    <meta property="og:description" content="augClaw brings your AI agent bots into AR. Chat, interact, and play with OpenClaw buddies right on your desk.">
+    <meta property="og:image" content="https://pbd.team/assets/App%20Previews/augClaw/augClaw%205.png">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://pbd.team/augclaw/">
+    <meta name="twitter:title" content="augClaw — Play with your OpenClaw buddies">
+    <meta name="twitter:description" content="augClaw brings your AI agent bots into AR. Chat, interact, and play with OpenClaw buddies right on your desk.">
+    <meta name="twitter:image" content="https://pbd.team/assets/App%20Previews/augClaw/augClaw%205.png">
+
+    <link rel="icon" type="image/png" href="/assets/images/aug-icon.png">
+    <link rel="apple-touch-icon" href="/assets/images/aug-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="/assets/fonts/CalSans-Regular.ttf" rel="preload" as="font" type="font/ttf" crossorigin="anonymous">
+    <style>
+        @font-face {
+            font-family: 'Cal Sans';
+            src: url('/assets/fonts/CalSans-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', sans-serif;
+            background: #F6F3F0;
+            color: #1d1d1f;
+            line-height: 1.47059;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: #0066cc;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Header */
+        .header {
+            padding: 12px 22px;
+            background: rgba(246, 243, 240, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid #d2d2d7;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 17px;
+            color: #0066cc;
+        }
+
+        .back-link svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .website-button-style {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 6px 10px;
+            background: linear-gradient(135deg, #007AFF 0%, #5856D6 100%);
+            color: #fff !important;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .store-button-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            line-height: 1.1;
+        }
+
+        .store-button-text span {
+            white-space: nowrap;
+        }
+
+        .website-button-style img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        .website-button-style:hover {
+            opacity: 0.9;
+            text-decoration: none;
+            transform: translateY(-1px);
+        }
+
+        .website-button-style:active {
+            transform: translateY(0);
+        }
+
+        /* App Header */
+        .app-header {
+            padding: 20px 22px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            border-bottom: 1px solid #d2d2d7;
+            flex-wrap: wrap;
+        }
+
+        .app-icon {
+            width: 120px;
+            height: 120px;
+            border-radius: 26px;
+            flex-shrink: 0;
+        }
+
+        .app-info {
+            flex: 1;
+            min-width: 200px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .app-name {
+            font-family: 'Cal Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 28px;
+            font-weight: normal;
+            color: #1d1d1f;
+            margin-bottom: 2px;
+        }
+
+        .app-tagline {
+            font-size: 20px;
+            color: #6e6e73;
+            margin-bottom: 0;
+        }
+
+        .app-subtitle {
+            font-size: 13px;
+            color: #6e6e73;
+            margin-bottom: 12px;
+        }
+
+        .store-buttons {
+            display: flex;
+            flex-direction: row;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 768px) {
+            .store-buttons {
+                width: calc(100% + 44px);
+                margin: 10px -22px 0 -22px;
+                padding: 0 22px;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                scroll-padding: 0 22px; /* Ensure snap respects the left padding */
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                justify-content: flex-start;
+                gap: 8px;
+                display: flex !important; /* Ensure it stays a row for carousel */
+                flex-wrap: nowrap !important;
+            }
+
+            .store-buttons::after {
+                content: '';
+                flex: 0 0 22px; /* Matches the padding-left to provide space at the end */
+            }
+
+            .store-buttons::-webkit-scrollbar {
+                display: none;
+            }
+
+            .store-button, .website-button-style {
+                flex: 0 0 130px !important; /* Slightly shorter width */
+                scroll-snap-align: start;
+                width: 130px !important;
+                min-width: 130px !important;
+                min-height: 44px !important; /* Increased height */
+                justify-content: center !important;
+            }
+        }
+
+        .store-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background: linear-gradient(180deg, #3a3a3a 0%, #1a1a1a 100%);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 500;
+            padding: 6px 10px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border: 1px solid #333;
+            min-width: 120px;
+            min-height: 32px;
+        }
+
+        .store-button:hover {
+            text-decoration: none;
+            transform: translateY(-1px);
+        }
+
+        .store-button:active {
+            transform: translateY(0);
+        }
+
+        .store-button svg {
+            fill: #fff;
+            width: 18px;
+            height: 18px;
+        }
+
+        .store-button-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            line-height: 1.1;
+        }
+
+        .store-button-text small {
+            font-size: 7px;
+            font-weight: 400;
+        }
+
+        .store-button-text span {
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* Info Bar */
+        .info-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 14px 22px;
+            border-bottom: 1px solid #d2d2d7;
+            overflow-x: auto;
+            gap: 20px;
+        }
+
+        .info-item {
+            text-align: center;
+            min-width: 80px;
+            flex-shrink: 0;
+        }
+
+        .info-label {
+            font-size: 11px;
+            color: #6e6e73;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            font-size: 20px;
+            font-weight: 600;
+            color: #6e6e73;
+        }
+
+        .info-value-small {
+            font-size: 13px;
+            color: #6e6e73;
+        }
+
+        .info-icon {
+            width: 24px;
+            height: 24px;
+            margin: 0 auto 4px;
+            fill: #6e6e73;
+        }
+
+        .info-emoji {
+            font-size: 28px;
+            margin: 0 auto 4px;
+            line-height: 1;
+        }
+
+        /* What's New */
+        .section {
+            padding: 20px 22px;
+            border-bottom: 1px solid #d2d2d7;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1d1d1f;
+        }
+
+        .section-link {
+            font-size: 17px;
+            color: #2997ff;
+        }
+
+        .version-info {
+            display: flex;
+            justify-content: flex-end;
+            gap: 20px;
+            font-size: 14px;
+            color: #6e6e73;
+            margin-bottom: 10px;
+        }
+
+        .whats-new-text {
+            font-size: 15px;
+            color: #1d1d1f;
+            line-height: 1.5;
+        }
+
+        .more-link {
+            color: #2997ff;
+            font-size: 15px;
+        }
+
+        /* Preview Section */
+        .preview-section {
+            padding: 20px 0;
+            border-bottom: 1px solid #d2d2d7;
+            overflow: visible;
+        }
+
+        .preview-section .section-title {
+            padding: 0 22px;
+            margin-bottom: 16px;
+        }
+
+        .preview-carousel {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            overflow-y: visible;
+            padding: 20px 22px;
+            margin: -20px -22px;
+            width: calc(100% + 44px);
+            scroll-snap-type: x mandatory;
+            scroll-padding: 0 22px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .preview-carousel::after {
+            content: '';
+            flex: 0 0 22px;
+        }
+
+        .preview-carousel::-webkit-scrollbar {
+            display: none;
+        }
+
+        .preview-item {
+            flex-shrink: 0;
+            scroll-snap-align: start;
+        }
+
+        .preview-image, .preview-video {
+            height: 500px;
+            width: auto;
+            border-radius: 22px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .preview-video {
+            object-fit: cover;
+        }
+
+        /* Description */
+        .description-text {
+            font-size: 15px;
+            color: #1d1d1f;
+            line-height: 1.6;
+            white-space: pre-line;
+        }
+
+        /* Legal Section - Tabs */
+        .legal-section {
+            border-top: 1px solid #d2d2d7;
+            padding-top: 20px;
+        }
+
+        .legal-tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 1px solid #d2d2d7;
+            margin-bottom: 20px;
+        }
+
+        .legal-tab {
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #86868b;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+        }
+
+        .legal-tab:hover {
+            color: #1d1d1f;
+        }
+
+        .legal-tab.active {
+            color: #1d1d1f;
+            border-bottom-color: #1d1d1f;
+        }
+
+        .legal-tab-content {
+            display: none;
+        }
+
+        .legal-tab-content.active {
+            display: block;
+        }
+
+        .legal-content h3 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin: 16px 0 8px 0;
+        }
+
+        .legal-content h3:first-child {
+            margin-top: 0;
+        }
+
+        .legal-content h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin: 12px 0 6px 0;
+        }
+
+        .legal-content p {
+            font-size: 13px;
+            color: #6e6e73;
+            line-height: 1.5;
+            margin: 0 0 8px 0;
+        }
+
+        .legal-content ul {
+            margin: 0 0 8px 0;
+            padding-left: 18px;
+        }
+
+        .legal-content li {
+            font-size: 13px;
+            color: #6e6e73;
+            line-height: 1.5;
+            margin-bottom: 4px;
+        }
+
+        .legal-content a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        .legal-content a:hover {
+            text-decoration: underline;
+        }
+
+        .legal-content strong {
+            color: #1d1d1f;
+            font-weight: 600;
+        }
+
+        .legal-intro {
+            font-size: 14px !important;
+            color: #1d1d1f !important;
+            margin-bottom: 12px !important;
+        }
+
+        .legal-meta {
+            font-size: 13px !important;
+            color: #86868b !important;
+            margin-bottom: 8px !important;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 40px 22px;
+            text-align: center;
+        }
+
+        .footer-text {
+            font-size: 12px;
+            color: #6e6e73;
+        }
+
+        .footer-link {
+            color: #2997ff;
+            font-size: 12px;
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 768px) {
+            .app-header {
+                align-items: center;
+                gap: 15px;
+            }
+
+            .app-icon {
+                width: 80px;
+                height: 80px;
+                border-radius: 18px;
+            }
+
+            .app-info {
+                flex: 1;
+                min-width: 0;
+            }
+
+            .app-name {
+                font-size: 22px;
+            }
+
+            .app-tagline {
+                font-size: 13px;
+            }
+
+            .store-button {
+                min-width: 0;
+                flex: 1;
+                padding: 6px 8px;
+            }
+
+            .info-bar {
+                padding: 12px 16px;
+            }
+
+            .preview-carousel {
+                padding: 20px 22px !important;
+                margin: -20px -22px !important;
+                width: calc(100% + 44px) !important;
+                scroll-padding: 0 22px !important;
+            }
+
+            .preview-image, .preview-video {
+                height: 420px;
+                width: auto;
+            }
+
+            .preview-video {
+                object-fit: contain;
+                max-width: none;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 1000px;
+                margin: 0 auto;
+            }
+
+            .app-header, .section, .footer {
+                padding-left: 0;
+                padding-right: 0;
+            }
+
+            .info-bar {
+                padding-left: 0;
+                padding-right: 0;
+            }
+
+            .preview-carousel {
+                padding-left: 0;
+                padding-right: 0;
+            }
+
+            .preview-section .section-title {
+                padding-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="/" class="back-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M15 18l-6-6 6-6"/>
+            </svg>
+            🌍 Back
+        </a>
+    </header>
+
+    <div class="container">
+        <!-- App Header -->
+        <div class="app-header">
+            <picture style="display: contents;"><source srcset="../assets/images/aug-icon.webp" type="image/webp"><img src="../assets/images/aug-icon.png" alt="augClaw" class="app-icon" decoding="async"></picture>
+            <div class="app-info">
+                <h1 class="app-name">augClaw</h1>
+                <p class="app-tagline">Play with your OpenClaw buddies</p>
+            </div>
+            <div class="store-buttons">
+                <a href="/augclaw/termsandprivacy/" class="website-button-style">
+                    <picture style="display: contents;"><source srcset="../assets/images/aug%20earth%20logo%20neon%20strike.webp" type="image/webp"><img src="../assets/images/aug earth logo neon strike.png" alt="augClaw" loading="lazy" decoding="async"></picture>
+                    <div class="store-button-text">
+                        <small>pbd.team/</small>
+                        <span>Terms & Privacy</span>
+                    </div>
+                </a>
+                <a href="/augclaw/termsandprivacy/" class="store-button">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                    <div class="store-button-text">
+                        <small>View</small>
+                        <span>Legal</span>
+                    </div>
+                </a>
+                <a href="mailto:hello@pbd.team?subject=augClaw" class="store-button">
+                    <div class="store-button-text">
+                        <small>Contact</small>
+                        <span>PBD</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Features Bar -->
+        <div class="info-bar">
+            <div class="info-item">
+                <div class="info-emoji">🌐</div>
+                <div class="info-value-small">AR Buddies</div>
+            </div>
+            <div class="info-item">
+                <div class="info-emoji">📍</div>
+                <div class="info-value-small">AI Bots</div>
+            </div>
+            <div class="info-item">
+                <div class="info-emoji">🤝</div>
+                <div class="info-value-small">On Your Desk</div>
+            </div>
+            <div class="info-item">
+                <div class="info-emoji">📢</div>
+                <div class="info-value-small">Chat + Play</div>
+            </div>
+        </div>
+
+        <!-- What's augClaw -->
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title">What's augClaw</h2>
+            </div>
+            <p class="whats-new-text">
+                augClaw lets your AI agent bots dance on your desk. Chat with them, switch between buddies, and bring playful OpenClaw companions into your room with AR. <a href="#description" class="more-link">more</a>
+            </p>
+        </section>
+
+        <!-- Preview -->
+        <section class="preview-section">
+            <h2 class="section-title">Preview</h2>
+            <div class="preview-carousel">
+                <div class="preview-item">
+                    <img src="../assets/App Previews/augClaw/augClaw 1.png" alt="augClaw preview 1" class="preview-image" loading="lazy" decoding="async">
+                </div>
+                <div class="preview-item">
+                    <img src="../assets/App Previews/augClaw/augClaw 2.png" alt="augClaw preview 2" class="preview-image" loading="lazy" decoding="async">
+                </div>
+                <div class="preview-item">
+                    <img src="../assets/App Previews/augClaw/augClaw 3.png" alt="augClaw preview 3" class="preview-image" loading="lazy" decoding="async">
+                </div>
+                <div class="preview-item">
+                    <img src="../assets/App Previews/augClaw/augClaw 4.png" alt="augClaw preview 4" class="preview-image" loading="lazy" decoding="async">
+                </div>
+                <div class="preview-item">
+                    <img src="../assets/App Previews/augClaw/augClaw 5.png" alt="augClaw preview 5" class="preview-image" loading="lazy" decoding="async">
+                </div>
+            </div>
+        </section>
+
+        <!-- Description -->
+        <section class="section" id="description">
+            <p class="description-text">augClaw is an AR playground for your AI agent bots.
+
+Put your OpenClaw buddies on your desk, choose who you are talking to, and chat with them in the room around you. Your agents become playful little companions that can dance, type, and respond while staying grounded in your real space.
+
+Features:
+• Bring AI agent bots into AR
+• Chat and interact with buddies on your desk
+• Switch between multiple OpenClaw companions
+• Play with expressive characters in real space
+• Capture the feeling of AI agents living beside you
+
+Your AI buddies are ready to hang out with augClaw.</p>
+        </section>
+
+        <!-- About, Terms and Privacy -->
+        <section class="section legal-section">
+            <div class="legal-tabs">
+                <button class="legal-tab active" onclick="showTab('about')">About</button>
+                <button class="legal-tab" onclick="showTab('terms')">Terms</button>
+                <button class="legal-tab" onclick="showTab('privacy')">Privacy</button>
+            </div>
+
+            <!-- About Tab -->
+            <div id="about" class="legal-tab-content active">
+                <div class="legal-content">
+                    <h3>🤖 Your agents, now in the room.</h3>
+                    <p>augClaw turns AI agent bots into playful AR buddies you can place on your desk. Instead of feeling like abstract software, your assistants show up as little characters you can chat with and switch between.</p>
+
+                    <h3>🦀 Chat, watch, and play.</h3>
+                    <p>Talk to Superba, Crema, Codex, and more while they sit in your real space. They can respond, type, dance, and make your desk feel like a tiny living workspace for AI companions.</p>
+
+                    <h3>📱 Built for OpenClaw experiments.</h3>
+                    <p>augClaw is a small AR service from PBD for exploring what agent-native interfaces can feel like when they leave the chat box and become something you can point your camera at.</p>                </div>
+            </div>
+
+            <!-- Terms Tab -->
+            <div id="terms" class="legal-tab-content">
+                <div class="legal-content">
+                    <p class="legal-intro"><strong>AUGCLAW TERMS OF SERVICE</strong></p>
+                    <p class="legal-meta"><strong>Last Updated:</strong> January 4, 2026</p>
+                    <p class="legal-meta"><strong>Effective Date:</strong> January 4, 2026</p>
+                    <p>These Terms of Service ("<strong>Terms</strong>") form a legally binding agreement between you and <strong>PBD LLC</strong> ("<strong>augClaw</strong>," "<strong>we</strong>," "<strong>us</strong>"), located at <strong>3150 Wilshire Blvd., Los Angeles, CA 90010</strong>.</p>
+                    <p>augClaw provides real-world augmented reality experiences, including: (i) augClaw mobile applications ("<strong>Apps</strong>"), including iOS <strong>App Clips</strong>; (ii) websites and web experiences we operate, including <strong>WebXR</strong> pages opened by QR codes ("<strong>Sites</strong>"); (iii) QR-based out-of-home ("<strong>OOH</strong>") AR advertising experiences (billboards, posters, wheatpaste, signage); and (iv) events, promotions, and merchandise (collectively, the "<strong>Services</strong>").</p>
+                    <p>By accessing or using the Services, you agree to these Terms. If you do not agree, do not use the Services.</p>
+
+                    <h3>1. Eligibility; No Children</h3>
+                    <p>The Services are not directed to children. You may not use the Services if you are:</p>
+                    <ul>
+                        <li>under <strong>13</strong> years old (United States and most jurisdictions), or</li>
+                        <li>under <strong>14</strong> years old (Republic of Korea).</li>
+                    </ul>
+                    <p>We may suspend or terminate accounts we reasonably believe are used by underage users.</p>
+
+                    <h3>2. Safety Is Critical (Outdoor AR / QR Scanning)</h3>
+                    <p><strong>AR viewing and QR scanning can distract you and create serious safety risks.</strong> You agree that you will:</p>
+                    <ul>
+                        <li><strong>Never use the Services while driving</strong> or operating machinery.</li>
+                        <li>Use the Services only when it is safe; <strong>stop walking when possible</strong> before scanning a QR code or viewing AR.</li>
+                        <li>Use extra caution near roads, intersections, stairs, construction areas, bodies of water, and crowded spaces.</li>
+                        <li>Follow all laws, posted signs, and venue rules.</li>
+                        <li><strong>Do not trespass</strong> or enter restricted or unsafe areas to view AR content.</li>
+                    </ul>
+                    <h4>Assumption of Risk</h4>
+                    <p>You understand that AR and location-based experiences involve inherent risks (including distraction, collision, falls, trespass, and property damage). <strong>You use the Services at your own risk.</strong></p>
+                    <h4>No Waiver of Non-Waivable Rights</h4>
+                    <p>Nothing in these Terms excludes or limits liability that cannot be excluded under applicable law. Where prohibited, we do not exclude liability for <strong>gross negligence</strong> or <strong>willful misconduct</strong>.</p>
+
+                    <h3>3. Privacy</h3>
+                    <p>Your use of the Services is subject to our <strong>Privacy Policy</strong> (below). By using the Services, you consent to the collection, use, sharing, and processing of information as described in the Privacy Policy.</p>
+
+                    <h3>4. Accounts and Security</h3>
+                    <p>Some Services require an account ("<strong>Account</strong>"). You agree to:</p>
+                    <ul>
+                        <li>provide accurate information and keep it updated;</li>
+                        <li>keep your login credentials confidential; and</li>
+                        <li>promptly notify us of suspected unauthorized use.</li>
+                    </ul>
+                    <p>You are responsible for all activities under your Account. We may restrict or refuse service to rooted/jailbroken devices or where we reasonably believe access poses a security or fraud risk.</p>
+
+                    <h3>5. QR → WebXR; QR → App Clip / App</h3>
+                    <p>augClaw may provide AR content via QR codes placed on OOH media.</p>
+                    <p>When you scan a QR code:</p>
+                    <ul>
+                        <li>it may open a <strong>WebXR</strong> webpage that requests permission to use your device camera and sensors; and/or</li>
+                        <li>it may open an <strong>App Clip</strong> or the augClaw App to show AR content using augClaw's AR engine.</li>
+                    </ul>
+                    <p>You may refuse permissions, but the experience may not function. Third-party platforms (mobile OS, browser providers, Apple App Clip systems) affect functionality; augClaw is not responsible for third-party outages, limitations, or changes.</p>
+
+                    <h3>6. Purchases, Subscriptions, Virtual Currency, and Virtual Goods</h3>
+                    <p>The Services may offer:</p>
+                    <ul>
+                        <li><strong>in-app purchases</strong> (one-time and/or subscriptions),</li>
+                        <li><strong>virtual currency</strong> ("<strong>Virtual Currency</strong>"), and</li>
+                        <li><strong>virtual goods or digital items</strong> ("<strong>Virtual Goods</strong>").</li>
+                    </ul>
+                    <h4>6.1 Platform Terms Apply</h4>
+                    <p>Purchases processed through Apple Legal, Google Play, or other platforms are governed by that platform's purchase and refund policies in addition to these Terms.</p>
+                    <h4>6.2 License; No Cash Value</h4>
+                    <p>Virtual Currency and Virtual Goods are <strong>licensed, not sold</strong>, have <strong>no real-world cash value</strong>, and are not redeemable for money. Transfers or resale are prohibited unless required by law.</p>
+                    <h4>6.3 Refunds and Cancellation</h4>
+                    <p>Refunds and cancellation/withdrawal rights depend on applicable law and platform policies. Nothing in these Terms limits any <strong>non-waivable</strong> statutory rights you may have. We will provide required subscription and recurring billing disclosures at the time of purchase.</p>
+
+                    <h3>7. Acceptable Use; Prohibited Conduct</h3>
+                    <p>You agree not to:</p>
+                    <ul>
+                        <li>violate laws, venue rules, or posted instructions;</li>
+                        <li>harass, threaten, stalk, exploit, or impersonate others;</li>
+                        <li>trespass or encourage trespass to view AR content;</li>
+                        <li>upload, post, or transmit unlawful, infringing, deceptive, or harmful content;</li>
+                        <li>cheat or falsify location/sensor data, or manipulate the Services;</li>
+                        <li>scrape, spider, or use automated tools to access the Services without our permission;</li>
+                        <li>reverse engineer, decompile, disassemble, or bypass security measures except where the law expressly permits;</li>
+                        <li>disrupt or interfere with the Services, servers, or other users.</li>
+                    </ul>
+
+                    <h3>8. User Content</h3>
+                    <p>"<strong>User Content</strong>" means any content you submit or make available through the Services (e.g., text, photos, videos, AR placements/pins, messages, comments).</p>
+                    <p>You are solely responsible for your User Content and represent and warrant that:</p>
+                    <ul>
+                        <li>you own it or have all necessary rights, permissions, and consents to submit it; and</li>
+                        <li>it does not violate any law or third-party rights (including privacy/publicity rights).</li>
+                    </ul>
+
+                    <h3>9. License You Grant to augClaw</h3>
+                    <p>You retain ownership of your User Content. By submitting User Content, you grant augClaw a <strong>non-exclusive, worldwide, royalty-free, sublicensable, and transferable license</strong> to host, store, reproduce, display, perform, distribute, and use your User Content, and to modify it <strong>only as necessary</strong> for technical processing/formatting, <strong>solely to</strong>:</p>
+                    <ul>
+                        <li>provide and operate the Services (including rendering AR and enabling persistence);</li>
+                        <li>maintain safety, integrity, and security (including moderation, anti-fraud, troubleshooting);</li>
+                        <li>improve and develop the Services; and</li>
+                        <li>market and promote the Services <strong>consistent with your settings/choices and applicable law</strong>.</li>
+                    </ul>
+                    <p>Where applicable law requires additional consent for certain uses (including promotional use), we will obtain it.</p>
+
+                    <h3>10. augClaw Content; Limited License to You</h3>
+                    <p>The Services and all content provided by augClaw (excluding User Content) are owned by augClaw or its licensors and are protected by intellectual property laws.</p>
+                    <p>Subject to your compliance with these Terms, augClaw grants you a limited, non-exclusive, non-transferable, revocable license to use the Services for personal, non-commercial purposes.</p>
+
+                    <h3>11. Moderation; Enforcement; Suspension and Termination</h3>
+                    <p>We may (but are not obligated to) monitor, review, and remove content; restrict features; suspend or terminate Accounts; and investigate violations to protect users, the public, and the Services.</p>
+                    <p>You may terminate your Account using in-app settings where available.</p>
+                    <p>Provisions that by their nature should survive termination (including intellectual property, disclaimers, limitation of liability, indemnification, and dispute terms) will survive.</p>
+
+                    <h3>12. Disclaimers</h3>
+                    <p>To the fullest extent permitted by law, the Services are provided <strong>"AS IS"</strong> and <strong>"AS AVAILABLE."</strong> We disclaim warranties of merchantability, fitness for a particular purpose, and non-infringement. We do not guarantee uninterrupted, secure, or error-free operation, or that AR content will always be accurate, safe, or available.</p>
+
+                    <h3>13. Limitation of Liability</h3>
+                    <p>To the fullest extent permitted by law, augClaw will not be liable for indirect, incidental, special, consequential, exemplary, or punitive damages, or loss of profits/data/goodwill.</p>
+                    <p>To the fullest extent permitted by law, augClaw's total liability arising out of or relating to the Services will not exceed the greater of:</p>
+                    <ul>
+                        <li><strong>$100 USD</strong>, or</li>
+                        <li>the amount you paid augClaw in the <strong>12 months</strong> before the event giving rise to the claim.</li>
+                    </ul>
+                    <p>This section does not limit liability that cannot be limited under applicable law.</p>
+
+                    <h3>14. Indemnification</h3>
+                    <p>You agree to indemnify and hold harmless augClaw and its members, officers, employees, and agents from claims, damages, losses, and expenses (including reasonable attorneys' fees) arising out of:</p>
+                    <ul>
+                        <li>your misuse of the Services;</li>
+                        <li>your User Content; or</li>
+                        <li>your violation of these Terms or applicable law.</li>
+                    </ul>
+
+                    <h3>15. Disputes; Governing Law; Venue</h3>
+                    <p>Except where prohibited by mandatory consumer protection laws:</p>
+                    <ul>
+                        <li>These Terms are governed by the laws of the <strong>State of California</strong>, excluding conflict-of-law rules.</li>
+                        <li>You and augClaw agree to the jurisdiction of state and federal courts located in <strong>Los Angeles County, California</strong>.</li>
+                    </ul>
+                    <p>If you are a resident of the Republic of Korea (or another jurisdiction with mandatory consumer forum rules), nothing in these Terms deprives you of rights or remedies available under mandatory local consumer laws, including access to a competent forum where required.</p>
+
+                    <h3>16. DMCA / Copyright Complaints</h3>
+                    <p>If you believe content on the Services infringes your copyright, send a notice to:</p>
+                    <p><strong>DMCA Agent (PBD LLC):</strong> Legal/Privacy Team<br>
+                    <strong>Email:</strong> <a href="mailto:hello@pbd.team">hello@pbd.team</a><br>
+                    <strong>Mail:</strong> PBD LLC, 3150 Wilshire Blvd., Los Angeles, CA 90010</p>
+                    <p>Include: identification of the copyrighted work, the allegedly infringing material and its location, your contact information, a good-faith statement, a statement under penalty of perjury, and your signature (physical or electronic).</p>
+
+                    <h3>17. Contact</h3>
+                    <p><strong>Support:</strong> <a href="mailto:hello@pbd.team">hello@pbd.team</a><br>
+                    <strong>Legal / Privacy:</strong> <a href="mailto:hello@pbd.team">hello@pbd.team</a><br>
+                    <strong>Mail:</strong> PBD LLC, 3150 Wilshire Blvd., Los Angeles, CA 90010</p>
+                </div>
+            </div>
+
+            <!-- Privacy Tab -->
+            <div id="privacy" class="legal-tab-content">
+                <div class="legal-content">
+                    <p class="legal-intro"><strong>AUGCLAW PRIVACY POLICY</strong></p>
+                    <p class="legal-meta"><strong>Last Updated:</strong> January 4, 2026</p>
+                    <p class="legal-meta"><strong>Effective Date:</strong> January 4, 2026</p>
+                    <p class="legal-meta"><strong>Controller / Business:</strong> PBD LLC ("augClaw"), 3150 Wilshire Blvd., Los Angeles, CA 90010</p>
+                    <p class="legal-meta"><strong>Privacy Contact:</strong> <a href="mailto:hello@pbd.team">hello@pbd.team</a></p>
+                    <p class="legal-meta"><strong>Support Contact:</strong> <a href="mailto:hello@pbd.team">hello@pbd.team</a></p>
+                    <p>This Privacy Policy explains how we collect, use, share, and retain information when you use the Services, including QR-based WebXR/App Clip AR experiences and OOH advertising experiences.</p>
+
+                    <h3>1. Scope</h3>
+                    <p>This Policy applies to the augClaw Apps and App Clips, augClaw Sites (including WebXR pages opened from QR codes), and related events, promotions, purchases, and advertising experiences.</p>
+
+                    <h3>2. Information We Collect</h3>
+                    <p>We collect the categories of information below, depending on what you use and what permissions you grant.</p>
+                    
+                    <h4>2.1 Account and Identifiers</h4>
+                    <ul>
+                        <li>username and internal account ID</li>
+                        <li>email address (including Apple "Hide My Email" relay email if used)</li>
+                        <li>authentication tokens from Apple/Google sign-in</li>
+                        <li>age or age-range (to verify eligibility)</li>
+                    </ul>
+
+                    <h4>2.2 Device and Usage Data</h4>
+                    <ul>
+                        <li>device model, OS version, app version, language</li>
+                        <li>browser type/user agent (for web/WebXR)</li>
+                        <li>IP address, timestamps, logs</li>
+                        <li>in-app actions and feature usage</li>
+                        <li>diagnostics, performance metrics, crash reports</li>
+                    </ul>
+
+                    <h4>2.3 Location Data</h4>
+                    <ul>
+                        <li><strong>precise GPS location</strong> (if you grant permission), including background location if you enable it</li>
+                        <li>approximate location inferred from IP address (web)</li>
+                        <li>proximity and movement patterns related to in-app experiences</li>
+                    </ul>
+
+                    <h4>2.4 Camera, WebXR/App Clip, AR Scene, and Spatial Data</h4>
+                    <p>To render AR and improve the Services, we may collect and process:</p>
+                    <ul>
+                        <li><strong>raw camera images/video frames</strong> (including the live camera view used for AR);</li>
+                        <li>device sensor data (e.g., gyroscope/accelerometer);</li>
+                        <li>spatial/AR mapping data (e.g., camera pose, feature points, planes/anchors, depth where supported);</li>
+                        <li>AR session metadata (lighting estimates, timestamps, tracking quality).</li>
+                    </ul>
+                    <p><strong>Important notice:</strong> Because we collect <strong>raw images/video</strong> and spatial data, it may include personal information visible in the scene (such as faces, license plates, interiors, addresses, or other identifying details). <strong>We do not automatically blur faces or license plates.</strong></p>
+
+                    <h4>2.5 User Content and Social Data</h4>
+                    <ul>
+                        <li>photos/videos/text you upload or post</li>
+                        <li>AR pins/placements and associated metadata</li>
+                        <li>messages, comments, reactions</li>
+                        <li>friend connections and social interactions if enabled</li>
+                    </ul>
+
+                    <h4>2.6 Purchases and Commercial Information</h4>
+                    <ul>
+                        <li>subscription status, product SKUs, purchase history</li>
+                        <li>receipts/transaction confirmations, timestamps</li>
+                    </ul>
+                    <p>Payment details are generally processed by Apple/Google or other payment processors; we typically receive limited purchase metadata.</p>
+
+                    <h4>2.7 Advertising and Measurement Data</h4>
+                    <p>Because the Services include nearby sponsored locations and interest-based advertising, and we measure campaigns, we may collect:</p>
+                    <ul>
+                        <li>advertising identifiers (e.g., IDFA/AAID where available and permitted)</li>
+                        <li>ad impressions, clicks, conversions, and related analytics</li>
+                        <li>attribution and measurement events</li>
+                    </ul>
+                    <p>We use third-party analytics/measurement/attribution providers, including <strong>Meta</strong>, <strong>Google</strong>, and <strong>AppsFlyer</strong> (and similar providers). These partners may collect or receive certain device and event data subject to their own policies.</p>
+
+                    <h4>2.8 Cookies and Similar Technologies (Web)</h4>
+                    <p>Our Sites/WebXR pages may use cookies, SDKs, and similar technologies for:</p>
+                    <ul>
+                        <li>essential functions,</li>
+                        <li>analytics/performance, and</li>
+                        <li>interest-based advertising and measurement (where permitted).</li>
+                    </ul>
+
+                    <h3>3. How We Use Information</h3>
+                    <p>We use information to:</p>
+                    <ul>
+                        <li>provide and operate the Services (including QR → WebXR and QR → App Clip/App experiences);</li>
+                        <li>render AR, enable persistence, and support location-based interactions;</li>
+                        <li>personalize content and show nearby sponsored locations;</li>
+                        <li>process purchases and manage subscriptions/entitlements;</li>
+                        <li>provide customer support and communicate updates;</li>
+                        <li>prevent fraud, abuse, and cheating; enforce Terms; and promote safety;</li>
+                        <li>analyze performance, fix bugs, and improve reliability.</li>
+                    </ul>
+
+                    <h3>4. AI / Machine Learning Training</h3>
+                    <h4>4.1 Separate Purposes</h4>
+                    <p>We separate:</p>
+                    <ul>
+                        <li>processing necessary to <strong>provide AR</strong> (real-time rendering/tracking), from</li>
+                        <li>optional use of camera/scene/spatial data to <strong>improve the Services and train/evaluate AI/ML models</strong>.</li>
+                    </ul>
+
+                    <h4>4.2 Default OFF; Opt-In Required</h4>
+                    <p><strong>By default, we do not use uploaded raw camera images/video or spatial scene data for AI/ML training.</strong></p>
+                    <p>We will use such data for AI/ML training <strong>only if you explicitly opt in</strong> through:</p>
+                    <ul>
+                        <li>an in-app setting (for App/App Clip users), and/or</li>
+                        <li>a web consent prompt (for WebXR users), where you affirmatively choose to participate.</li>
+                    </ul>
+                    <p>You may withdraw consent at any time in settings. Withdrawal applies going forward.</p>
+
+                    <h4>4.3 What Training Data May Include (If You Opt In)</h4>
+                    <p>If you opt in, training/improvement data may include:</p>
+                    <ul>
+                        <li>raw camera images/video frames;</li>
+                        <li>derived data such as feature points, embeddings, anchors, and mapping outputs;</li>
+                        <li>sensor signals related to AR stability; and</li>
+                        <li>contextual metadata (timestamps and approximate location related to AR placement).</li>
+                    </ul>
+                    <p>Because we do not blur faces/license plates, <strong>do not opt in</strong> if you are uncomfortable with the possibility that such details may be included in captured scenes.</p>
+
+                    <h4>4.4 Retention and Safeguards</h4>
+                    <p>We use safeguards designed to reduce risk, including access controls and retention limits. We keep training data only as long as reasonably necessary for the purposes described, then delete or de-identify it where feasible.</p>
+
+                    <h3>5. How We Share Information</h3>
+                    <p>We share information only as described below.</p>
+
+                    <h4>5.1 Service Providers</h4>
+                    <p>We share information with vendors that help us operate the Services (hosting, analytics, crash reporting, moderation, customer support, email delivery, payment processing). They are contractually restricted to use data only to provide services to us.</p>
+
+                    <h4>5.2 Advertising, Measurement, and Attribution Partners</h4>
+                    <p>We share certain identifiers and event data with advertising/measurement partners (including Meta, Google, AppsFlyer, and similar providers) to deliver and measure interest-based advertising, campaign performance, and attribution, where permitted and subject to your choices and device settings.</p>
+
+                    <h4>5.3 Other Users and the Public</h4>
+                    <p>If you choose to post publicly or use social features, your username/profile and content may be visible to other users and, depending on your settings, the public.</p>
+
+                    <h4>5.4 Legal and Safety</h4>
+                    <p>We may disclose information to comply with law, respond to valid legal requests, investigate abuse, protect safety, and enforce our Terms.</p>
+
+                    <h4>5.5 Business Transfers</h4>
+                    <p>If we are involved in a merger, acquisition, reorganization, financing, bankruptcy, or sale of assets, information may be transferred as part of that transaction.</p>
+
+                    <h3>6. International Transfers</h3>
+                    <p>We operate in the United States. If you use the Services from outside the U.S., your information may be transferred to and processed in the U.S. and other countries where we or our service providers operate. Where required by law, we will provide appropriate notices and obtain consent for overseas transfers.</p>
+
+                    <h3>7. Your Choices and Rights</h3>
+                    <h4>7.1 Device Permissions</h4>
+                    <p>You can control camera, location, motion sensors, photos, contacts, and notifications through your device settings. If you disable certain permissions, features may not work.</p>
+
+                    <h4>7.2 AI Training Consent</h4>
+                    <p>AI training use of camera/spatial data is <strong>default OFF</strong> and requires <strong>opt-in</strong>. You can withdraw consent at any time in settings.</p>
+
+                    <h4>7.3 Interest-Based Advertising Controls</h4>
+                    <p>You can limit interest-based advertising via device settings (where available), such as:</p>
+                    <ul>
+                        <li>iOS tracking permission controls, and</li>
+                        <li>Android ads personalization/advertising ID controls.</li>
+                    </ul>
+                    <p>You may also contact us for applicable opt-out requests at <a href="mailto:hello@pbd.team">hello@pbd.team</a>.</p>
+
+                    <h4>7.4 Access, Deletion, Correction</h4>
+                    <p>Depending on where you live, you may have rights to access, delete, or correct personal information, and to withdraw consent. To submit requests, email <a href="mailto:hello@pbd.team">hello@pbd.team</a>.</p>
+
+                    <h3>8. Data Retention</h3>
+                    <p>We retain personal information only as long as necessary for the purposes described, including to provide the Services, comply with legal obligations, resolve disputes, and enforce agreements. We may retain de-identified or aggregated data longer.</p>
+
+                    <h3>9. Security</h3>
+                    <p>We use reasonable administrative, technical, and organizational safeguards designed to protect information. No system is perfectly secure.</p>
+
+                    <h3>10. California Privacy Notice (CCPA/CPRA)</h3>
+                    <p>If you are a California resident, you may have rights to:</p>
+                    <ul>
+                        <li>request access to the personal information we collect about you;</li>
+                        <li>request deletion of certain personal information;</li>
+                        <li>request correction of inaccurate personal information; and</li>
+                        <li><strong>opt out of "sale" or "sharing"</strong> of personal information for cross-context behavioral advertising.</li>
+                    </ul>
+                    <p>Because we engage in interest-based advertising and measurement, we may "share" personal information for cross-context behavioral advertising as defined by California law. To opt out, email <a href="mailto:hello@pbd.team">hello@pbd.team</a> with subject:<br><strong>"California Opt-Out: Do Not Sell or Share"</strong></p>
+                    <p>We will not discriminate against you for exercising your rights.</p>
+
+                    <h3>11. Republic of Korea Notice</h3>
+                    <p>If you are in the Republic of Korea, you generally have rights to be informed, access, correct, delete, and withdraw consent regarding personal information. To exercise rights or ask questions, contact <a href="mailto:hello@pbd.team">hello@pbd.team</a>. Where required by Korean law, we will provide specific disclosures and obtain consent for overseas transfers and other processing activities.</p>
+
+                    <h3>12. Changes to This Policy</h3>
+                    <p>We may update this Policy from time to time. If we make material changes, we will provide reasonable notice through the App, Site, or other appropriate means.</p>
+
+                    <h3>13. Contact</h3>
+                    <p><strong>Privacy:</strong> <a href="mailto:hello@pbd.team">hello@pbd.team</a><br>
+                    <strong>Support:</strong> <a href="mailto:hello@pbd.team">hello@pbd.team</a><br>
+                    <strong>Mail:</strong> PBD LLC, 3150 Wilshire Blvd., Los Angeles, CA 90010</p>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            function showTab(tabId) {
+                // Hide all tab contents
+                document.querySelectorAll('.legal-tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                // Remove active class from all tabs
+                document.querySelectorAll('.legal-tab').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                // Show selected tab content
+                document.getElementById(tabId).classList.add('active');
+                // Add active class to clicked tab
+                event.target.classList.add('active');
+            }
+        </script>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p class="footer-text">© pbd llc</p>
+        <a href="mailto:hello@pbd.team" class="footer-link">hello@pbd.team</a>
+    </footer>
+    <script>
+        (function () {
+            function loadVideo(video) {
+                if (video.dataset.loaded === "true") return;
+                video.querySelectorAll("source[data-src]").forEach(function (source) {
+                    source.src = source.dataset.src;
+                    source.removeAttribute("data-src");
+                });
+                video.dataset.loaded = "true";
+                video.load();
+                if (video.autoplay) video.play().catch(function () {});
+            }
+
+            function initLazyVideos() {
+                var videos = document.querySelectorAll("video[data-lazy-video]");
+                if (!("IntersectionObserver" in window)) {
+                    videos.forEach(loadVideo);
+                    return;
+                }
+                var observer = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        if (!entry.isIntersecting) return;
+                        loadVideo(entry.target);
+                        observer.unobserve(entry.target);
+                    });
+                }, { rootMargin: "400px 0px" });
+                videos.forEach(function (video) { observer.observe(video); });
+            }
+
+            if (document.readyState === "loading") {
+                document.addEventListener("DOMContentLoaded", initLazyVideos);
+            } else {
+                initLazyVideos();
+            }
+        }());
+    </script>
+</body>
+</html>

@@ -66,6 +66,12 @@
         (function() {
             var path = window.location.pathname;
 
+            // /augClaw -> /augclaw for case-sensitive static hosts
+            if (path.indexOf('/augClaw') === 0) {
+                window.location.replace('/augclaw' + path.slice('/augClaw'.length) + window.location.search + window.location.hash);
+                return;
+            }
+
             // /aug/<username> -> redirect to account page (runs before any paint)
             var augKnownDirs = ['about', 'account', 'androidwaitlist', 'delete-account', 'termsandprivacy'];
             var augMatch = path.match(/^\/aug\/([^\/]+)\/?$/);
@@ -153,12 +159,12 @@
                         if (post.media_urls.length === 1) {
                             var m0 = post.media_urls[0];
                             media = '<div class="media-container single-media">' +
-                                (isVideoUrl(m0) ? '<video controls playsinline><source src="'+escapeHtml(m0)+'" type="video/mp4"></video>' : '<img src="'+escapeHtml(m0)+'" alt="">') + '</div>';
+                                (isVideoUrl(m0) ? '<video controls playsinline preload="metadata"><source src="'+escapeHtml(m0)+'" type="video/mp4"></video>' : '<img src="'+escapeHtml(m0)+'" alt="">') + '</div>';
                         } else {
                             media = '<div class="media-container"><div class="media-scroll">';
                             post.media_urls.forEach(function(m) {
                                 media += '<div class="media-item">' +
-                                    (isVideoUrl(m) ? '<video controls playsinline><source src="'+escapeHtml(m)+'" type="video/mp4"></video>' : '<img src="'+escapeHtml(m)+'" alt="">') + '</div>';
+                                    (isVideoUrl(m) ? '<video controls playsinline preload="metadata"><source src="'+escapeHtml(m)+'" type="video/mp4"></video>' : '<img src="'+escapeHtml(m)+'" alt="">') + '</div>';
                             });
                             media += '</div></div>';
                         }
