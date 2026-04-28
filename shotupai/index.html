@@ -1080,5 +1080,41 @@ Every screenshot becomes useful with Shotup AI.</p>
         <p class="footer-text">© pbd llc</p>
         <a href="mailto:hello@pbd.team" class="footer-link">hello@pbd.team</a>
     </footer>
+    <script>
+        (function () {
+            function loadVideo(video) {
+                if (video.dataset.loaded === "true") return;
+                video.querySelectorAll("source[data-src]").forEach(function (source) {
+                    source.src = source.dataset.src;
+                    source.removeAttribute("data-src");
+                });
+                video.dataset.loaded = "true";
+                video.load();
+                if (video.autoplay) video.play().catch(function () {});
+            }
+
+            function initLazyVideos() {
+                var videos = document.querySelectorAll("video[data-lazy-video]");
+                if (!("IntersectionObserver" in window)) {
+                    videos.forEach(loadVideo);
+                    return;
+                }
+                var observer = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        if (!entry.isIntersecting) return;
+                        loadVideo(entry.target);
+                        observer.unobserve(entry.target);
+                    });
+                }, { rootMargin: "400px 0px" });
+                videos.forEach(function (video) { observer.observe(video); });
+            }
+
+            if (document.readyState === "loading") {
+                document.addEventListener("DOMContentLoaded", initLazyVideos);
+            } else {
+                initLazyVideos();
+            }
+        }());
+    </script>
 </body>
 </html>

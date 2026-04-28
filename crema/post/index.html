@@ -412,7 +412,7 @@
                     var m = post.media_urls[0];
                     mediaHtml = '<div class="media-container single-media">' +
                         (isVideoUrl(m)
-                            ? '<video controls playsinline><source src="' + escapeHtml(m) + '" type="video/mp4"></video>'
+                            ? '<video controls playsinline preload="metadata"><source src="' + escapeHtml(m) + '" type="video/mp4"></video>'
                             : '<img src="' + escapeHtml(m) + '" alt="">') +
                         '</div>';
                 } else {
@@ -420,7 +420,7 @@
                     post.media_urls.forEach(function(m) {
                         mediaHtml += '<div class="media-item">' +
                             (isVideoUrl(m)
-                                ? '<video controls playsinline><source src="' + escapeHtml(m) + '" type="video/mp4"></video>'
+                                ? '<video controls playsinline preload="metadata"><source src="' + escapeHtml(m) + '" type="video/mp4"></video>'
                                 : '<img src="' + escapeHtml(m) + '" alt="">') +
                             '</div>';
                     });
