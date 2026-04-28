@@ -532,7 +532,7 @@
             margin-top: 2rem;
             padding: 4rem 2rem 8rem;
             display: grid;
-            grid-template-columns: repeat(2, 340px);
+            grid-template-columns: repeat(auto-fit, 340px);
             gap: 1.5rem;
             justify-content: center;
             align-items: flex-start;
@@ -544,7 +544,11 @@
         }
 
         .app-card {
-            background: radial-gradient(ellipse at 30% 20%, #FFFFFF 0%, #F8F6F4 40%, #EFECE9 80%, #E5E2DF 100%);
+            background:
+                linear-gradient(135deg, rgba(255,255,255,0.62) 0%, rgba(248,246,244,0.42) 55%, rgba(229,226,223,0.34) 100%),
+                radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.78) 0%, rgba(248,246,244,0.48) 40%, rgba(239,236,233,0.36) 80%, rgba(229,226,223,0.28) 100%);
+            backdrop-filter: blur(24px) saturate(1.25);
+            -webkit-backdrop-filter: blur(24px) saturate(1.25);
             border-radius: 24px;
             padding: 20px;
             width: 340px;
@@ -557,12 +561,12 @@
                 0 8px 16px rgba(0,0,0,0.08),
                 0 16px 32px rgba(0,0,0,0.1),
                 0 24px 48px rgba(0,0,0,0.1),
-                inset 0 6px 12px -4px rgba(255,255,255,1),
+                inset 0 6px 12px -4px rgba(255,255,255,0.85),
                 inset 0 -6px 12px -4px rgba(0,0,0,0.08),
                 inset 6px 0 12px -4px rgba(255,255,255,0.7),
                 inset -6px 0 12px -4px rgba(0,0,0,0.05),
                 inset 0 0 20px rgba(255,255,255,0.3);
-            border: none;
+            border: 1px solid rgba(255,255,255,0.45);
             position: relative;
             overflow: visible;
         }
@@ -627,6 +631,7 @@
             height: 64px;
             border-radius: 14px;
             flex-shrink: 0;
+            transform: translateX(-4px);
         }
 
         .app-card-info {
@@ -650,6 +655,12 @@
             margin-top: 2px;
             white-space: nowrap;
             overflow: visible;
+        }
+
+        .app-card-tagline.two-line {
+            white-space: normal;
+            line-height: 1.25;
+            padding-right: 85px;
         }
 
         .app-card-rating {
@@ -1052,13 +1063,13 @@
             </div>
         </a>
 
-        <!-- augClaw App Card -->
+        <!-- augclaw App Card -->
         <a href="/augclaw/" class="app-card" id="augclaw-card">
             <div class="app-card-header">
-                <picture style="display: contents;"><source srcset="assets/images/aug-icon.webp" type="image/webp"><img src="assets/images/aug-icon.png" alt="augClaw" class="app-card-icon" decoding="async"></picture>
+                <img src="assets/images/augclaw-icon.png" alt="augclaw" class="app-card-icon" decoding="async">
                 <div class="app-card-info">
-                    <div class="app-card-title">augClaw</div>
-                    <div class="app-card-tagline">Play with OpenClaw buddies</div>
+                    <div class="app-card-title">augclaw</div>
+                    <div class="app-card-tagline two-line">Play with<br>OpenClaw buddies</div>
                 </div>
                 <div class="app-card-download">
                     <button class="app-card-download-btn">More</button>
@@ -1070,9 +1081,9 @@
                 <span class="app-card-badge"><span class="app-card-badge-emoji">🦀</span><span class="app-card-badge-text">OpenClaw</span></span>
             </div>
             <div class="app-card-previews">
-                <div class="app-card-preview"><img src="assets/App Previews/augClaw/augClaw 1.png" alt="augClaw preview" loading="lazy" decoding="async"></div>
-                <div class="app-card-preview"><img src="assets/App Previews/augClaw/augClaw 2.png" alt="augClaw preview" loading="lazy" decoding="async"></div>
-                <div class="app-card-preview"><img src="assets/App Previews/augClaw/augClaw 3.png" alt="augClaw preview" loading="lazy" decoding="async"></div>
+                <div class="app-card-preview"><img src="assets/App Previews/augClaw/augClaw 1.png" alt="augclaw preview" loading="lazy" decoding="async"></div>
+                <div class="app-card-preview"><img src="assets/App Previews/augClaw/augClaw 2.png" alt="augclaw preview" loading="lazy" decoding="async"></div>
+                <div class="app-card-preview"><img src="assets/App Previews/augClaw/augClaw 3.png" alt="augclaw preview" loading="lazy" decoding="async"></div>
             </div>
         </a>
 
@@ -1130,7 +1141,7 @@
                 <picture style="display: contents;"><source srcset="assets/images/CremaAppIconRounded.webp" type="image/webp"><img src="assets/images/CremaAppIconRounded.png" alt="Crèma" class="app-card-icon" decoding="async"></picture>
                 <div class="app-card-info">
                     <div class="app-card-title">Crèma - Baristas & Coffee Lovers</div>
-                    <div class="app-card-tagline">Social Space for Coffee Enthusiasts</div>
+                    <div class="app-card-tagline">Social for Coffee Enthusiasts</div>
                 </div>
                 <div class="app-card-download">
                     <button class="app-card-download-btn">More</button>
