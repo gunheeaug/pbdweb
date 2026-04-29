@@ -126,6 +126,7 @@
 
         .bottom-section {
             position: relative;
+            margin-top: 0;
             background: 
                 linear-gradient(to bottom, 
                     #000 0%, 
@@ -143,6 +144,7 @@
                     url('/assets/images/basquiat bg.webp') type('image/webp'),
                     url('/assets/images/basquiat bg.jpg') type('image/jpeg')
                 ) center top / cover no-repeat;
+            background-color: #000;
         }
 
         a {
@@ -152,7 +154,7 @@
 
         /* Hero Section - First View */
         .hero-section {
-            height: 145vh;
+            height: 125vh;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -160,6 +162,8 @@
             padding-top: 33vh;
             position: relative;
             overflow: visible;
+            background: #000;
+            margin-bottom: -1px;
         }
 
         /* Logo as typed text */
@@ -425,6 +429,25 @@
             max-width: 160px;
         }
 
+        .earth-sticker.app-icon-sticker {
+            width: var(--app-sticker-size, 72px);
+            height: var(--app-sticker-size, 72px);
+            max-width: var(--app-sticker-size, 72px) !important;
+            border-radius: 16px;
+            border: none;
+            object-fit: cover;
+            background: transparent !important;
+            box-shadow: none;
+            filter: none !important;
+            opacity: 1 !important;
+        }
+
+        .sticker-5.app-icon-sticker { --app-sticker-size: 60px; }
+        .sticker-6.app-icon-sticker { --app-sticker-size: 84px; }
+        .sticker-7.app-icon-sticker { --app-sticker-size: 80px; }
+        .sticker-8.app-icon-sticker { --app-sticker-size: 78px; }
+        .sticker-9.app-icon-sticker { --app-sticker-size: 78px; }
+
         /* Smaller stickers */
         .sticker-4, .sticker-5, .sticker-11 {
             max-width: 60px !important;
@@ -512,17 +535,15 @@
 
         /* Tagline Section */
         .tagline-section {
-            position: absolute;
-            top: calc(70vh + clamp(400px, 55vw, 600px) - 8px);
-            left: 0;
-            right: 0;
-            padding: 0 2rem;
+            margin-top: 75vh;
+            padding: 3rem 2rem 1rem 2rem;
             text-align: center;
-            z-index: 20;
+            position: relative;
+            z-index: 5;
         }
 
         .tagline-image {
-            width: min(58vw, 700px);
+            width: min(70vw, 680px);
             height: auto;
             display: block;
             margin: 0 auto;
@@ -530,8 +551,8 @@
 
         /* Apps Section - App Cards */
         .apps-section {
-            margin-top: -13rem;
-            padding: 1rem 2rem 8rem;
+            margin-top: 2rem;
+            padding: 4rem 2rem 8rem;
             display: grid;
             grid-template-columns: repeat(auto-fit, 340px);
             gap: 1.5rem;
@@ -691,7 +712,7 @@
             padding: 6px 18px;
             border-radius: 100px;
             font-size: 15px;
-            font-weight: 600;
+            font-weight: 500;
             cursor: pointer;
             transition: background 0.2s ease;
         }
@@ -923,6 +944,16 @@
                 max-width: 70px !important;
             }
 
+            .earth-sticker.app-icon-sticker {
+                border-radius: 11px;
+            }
+
+            .sticker-5.app-icon-sticker { --app-sticker-size: 35px; }
+            .sticker-6.app-icon-sticker { --app-sticker-size: 48px; }
+            .sticker-7.app-icon-sticker { --app-sticker-size: 48px; }
+            .sticker-8.app-icon-sticker { --app-sticker-size: 46px; }
+            .sticker-9.app-icon-sticker { --app-sticker-size: 46px; }
+
             /* Specific mobile sticker adjustments */
             .sticker-7 { max-width: 55px !important; }
             .sticker-14 { max-width: 80px !important; }
@@ -934,8 +965,7 @@
             .sticker-9 { right: 0%; }
 
             .apps-section {
-                margin-top: -7rem;
-                padding: 1rem 1rem 3rem;
+                padding: 3rem 1rem;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
@@ -952,8 +982,8 @@
             }
 
             .tagline-section {
-                top: calc(70vh + 90vw - 8px);
-                padding: 0 1.5rem;
+                margin-top: 3rem;
+                padding: 2rem 2rem 2rem 2rem;
             }
 
             .app-card.visible:hover {
@@ -961,7 +991,7 @@
             }
 
             .bottom-section {
-                margin-top: 35vh;
+                margin-top: 0;
                 background: 
                     linear-gradient(to bottom, 
                         #000 0%, 
@@ -1028,15 +1058,16 @@
             <picture style="display: contents;"><source srcset="assets/stickers/pbd%20sticker%206.webp" type="image/webp"><img src="assets/stickers/pbd sticker 6.png" alt="" class="earth-sticker sticker-17" onclick="scrollToApps()" loading="lazy" decoding="async"></picture>
         </div>
 
-        <!-- Tagline -->
-        <div class="tagline-section" id="tagline-section">
-            <picture style="display: contents;"><source srcset="assets/images/pbd-tagline.webp" type="image/webp"><img src="assets/images/pbd-tagline.png" alt="We make Earth more interesting." class="tagline-image" loading="lazy" decoding="async"></picture>
-        </div>
 
     </section>
 
     <!-- Bottom Section with Basquiat Background -->
     <div class="bottom-section">
+        <!-- Tagline -->
+        <div class="tagline-section" id="tagline-section">
+            <img src="assets/images/pbd-tagline.png" alt="We make Earth more interesting." class="tagline-image" loading="lazy" decoding="async">
+        </div>
+
         <!-- Apps Section -->
         <section class="apps-section" id="apps-section">
         <!-- aug App Card -->
@@ -1228,6 +1259,50 @@
                 });
             });
         });
+
+        // Rotate app icon stickers through selected aug sticker slots.
+        (function rotateAppIconStickers() {
+            const appIconStickers = [
+                { src: 'assets/images/aug-icon.png', alt: 'aug' },
+                { src: 'assets/images/augclaw-icon.png', alt: 'augclaw' },
+                { src: 'assets/images/Shotupai-Icon.png', alt: 'Shotup AI' },
+                { src: 'assets/images/Superba-icon.png', alt: 'Superba' },
+                { src: 'assets/images/CremaAppIconRounded.png', alt: 'Crema' }
+            ];
+            const slots = ['.sticker-5', '.sticker-6', '.sticker-7', '.sticker-8', '.sticker-9'].map((selector) => {
+                const img = document.querySelector(selector);
+                if (!img) return null;
+                const picture = img.closest('picture');
+                if (picture) {
+                    picture.querySelectorAll('source').forEach((source) => source.remove());
+                }
+                return {
+                    img,
+                    src: img.getAttribute('src'),
+                    alt: img.getAttribute('alt') || ''
+                };
+            }).filter(Boolean);
+            if (!slots.length) return;
+
+            let activeIndex = -1;
+            function restoreSlot(slot) {
+                slot.img.src = slot.src;
+                slot.img.alt = slot.alt;
+                slot.img.classList.remove('app-icon-sticker');
+            }
+            function showNextIcon() {
+                if (activeIndex >= 0) restoreSlot(slots[activeIndex]);
+                activeIndex = (activeIndex + 1) % slots.length;
+                const icon = appIconStickers[activeIndex % appIconStickers.length];
+                const slot = slots[activeIndex];
+                slot.img.src = icon.src;
+                slot.img.alt = icon.alt;
+                slot.img.classList.add('app-icon-sticker');
+            }
+
+            setTimeout(showNextIcon, 1200);
+            setInterval(showNextIcon, 2600);
+        }());
 
         // Download app card as image
         function downloadAppCard(cardId, filename) {
