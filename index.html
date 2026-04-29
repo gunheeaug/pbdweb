@@ -152,7 +152,7 @@
 
         /* Hero Section - First View */
         .hero-section {
-            height: 100vh;
+            height: 145vh;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -512,15 +512,17 @@
 
         /* Tagline Section */
         .tagline-section {
-            margin-top: 42vh;
-            padding: 0 2rem 1rem 2rem;
+            position: absolute;
+            top: calc(70vh + clamp(400px, 55vw, 600px) - 8px);
+            left: 0;
+            right: 0;
+            padding: 0 2rem;
             text-align: center;
-            position: relative;
-            z-index: 5;
+            z-index: 20;
         }
 
         .tagline-image {
-            width: min(64vw, 780px);
+            width: min(58vw, 700px);
             height: auto;
             display: block;
             margin: 0 auto;
@@ -528,8 +530,8 @@
 
         /* Apps Section - App Cards */
         .apps-section {
-            margin-top: 2rem;
-            padding: 4rem 2rem 8rem;
+            margin-top: -13rem;
+            padding: 1rem 2rem 8rem;
             display: grid;
             grid-template-columns: repeat(auto-fit, 340px);
             gap: 1.5rem;
@@ -932,7 +934,8 @@
             .sticker-9 { right: 0%; }
 
             .apps-section {
-                padding: 3rem 1rem;
+                margin-top: -7rem;
+                padding: 1rem 1rem 3rem;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
@@ -949,8 +952,8 @@
             }
 
             .tagline-section {
-                margin-top: 2rem;
-                padding: 1rem 2rem 2rem 2rem;
+                top: calc(70vh + 90vw - 8px);
+                padding: 0 1.5rem;
             }
 
             .app-card.visible:hover {
@@ -1025,15 +1028,15 @@
             <picture style="display: contents;"><source srcset="assets/stickers/pbd%20sticker%206.webp" type="image/webp"><img src="assets/stickers/pbd sticker 6.png" alt="" class="earth-sticker sticker-17" onclick="scrollToApps()" loading="lazy" decoding="async"></picture>
         </div>
 
-    </section>
-
-    <!-- Bottom Section with Basquiat Background -->
-    <div class="bottom-section">
         <!-- Tagline -->
         <div class="tagline-section" id="tagline-section">
             <picture style="display: contents;"><source srcset="assets/images/pbd-tagline.webp" type="image/webp"><img src="assets/images/pbd-tagline.png" alt="We make Earth more interesting." class="tagline-image" loading="lazy" decoding="async"></picture>
         </div>
 
+    </section>
+
+    <!-- Bottom Section with Basquiat Background -->
+    <div class="bottom-section">
         <!-- Apps Section -->
         <section class="apps-section" id="apps-section">
         <!-- aug App Card -->
