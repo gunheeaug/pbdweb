@@ -107,51 +107,97 @@
         
         <form id="waitlistForm">
             <input type="email" id="emailInput" placeholder="Enter your email" required>
-            <input type="tel" id="phoneInput" placeholder="Phone number (optional)">
+            <input type="tel" id="phoneInput" placeholder="Phone number" required>
+            <label style="display:flex;gap:10px;align-items:flex-start;text-align:left;font-size:14px;color:#6e6e73;line-height:1.4;">
+                <input type="checkbox" id="smsConsent" required style="margin-top:3px;flex-shrink:0;">
+                <span>I agree to receive SMS messages of any kind from Crèma (access codes, product updates, and other notices). Msg &amp; data rates may apply.</span>
+            </label>
             <button type="submit">Notify Me</button>
         </form>
         
         <div id="successMessage" style="display: none; margin-top: 20px; color: #34c759; font-weight: 600;">
-            You've been added to the waitlist!
+            You've been added to the waitlist! Watch for a text with your access code in about a day.
+        </div>
+        <div id="errorMessage" style="display: none; margin-top: 20px; color: #ff3b30; font-weight: 600;">
+            Something went wrong. Please try again.
         </div>
         
         <a href="/crema/" class="back-link">← Back to Crèma</a>
     </div>
 
     <script>
+        const SUPABASE_URL = 'https://jantbnwrzeyvfblschct.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphbnRibndyemV5dmZibHNjaGN0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkxOTk3OTEsImV4cCI6MjA4NDc3NTc5MX0.qGMiXRyBusIdmf-CSx8ohVWLFXFi7tVYY91rzmsMfrI';
+
         // Check for phone number from onboarding
         const onboardingPhone = localStorage.getItem('pbd_onboarding_phone');
         if (onboardingPhone) {
             document.getElementById('phoneInput').value = onboardingPhone;
         }
 
-        document.getElementById('waitlistForm').addEventListener('submit', function(e) {
+        document.getElementById('waitlistForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const email = document.getElementById('emailInput').value;
-            const phone = document.getElementById('phoneInput').value;
-            const date = new Date().toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'short', 
-                day: 'numeric' 
-            });
-            
-            // Get existing waitlist
-            const waitlist = JSON.parse(localStorage.getItem('pbd_waitlist_crema') || '[]');
-            
-            // Add new entry
-            waitlist.push({
-                email: email,
-                phone: phone,
-                date: date,
-                platform: 'Android'
-            });
-            
-            // Save back to localStorage
-            localStorage.setItem('pbd_waitlist_crema', JSON.stringify(waitlist));
-            
-            // Show success
-            document.getElementById('waitlistForm').style.display = 'none';
-            document.getElementById('successMessage').style.display = 'block';
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            const email = document.getElementById('emailInput').value.trim();
+            const phone = document.getElementById('phoneInput').value.trim();
+            const smsConsent = document.getElementById('smsConsent').checked;
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.style.display = 'none';
+            errorMessage.textContent = 'Something went wrong. Please try again.';
+            submitButton.disabled = true;
+
+            if (!phone || !smsConsent) {
+                errorMessage.textContent = 'Phone number and SMS consent are required.';
+                errorMessage.style.display = 'block';
+                submitButton.disabled = false;
+                return;
+            }
+
+            try {
+                const checkRes = await fetch(`${SUPABASE_URL}/rest/v1/rpc/waitlist_has_open_code`, {
+                    method: 'POST',
+                    headers: {
+                        apikey: SUPABASE_ANON_KEY,
+                        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ p_phone: phone })
+                });
+                const hasOpen = await checkRes.json();
+                if (hasOpen === true) {
+                    errorMessage.textContent = "You're already on the waitlist with an access code.";
+                    errorMessage.style.display = 'block';
+                    submitButton.disabled = false;
+                    return;
+                }
+
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/waitlist_submissions`, {
+                    method: 'POST',
+                    headers: {
+                        apikey: SUPABASE_ANON_KEY,
+                        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+                        'Content-Type': 'application/json',
+                        Prefer: 'return=minimal'
+                    },
+                    body: JSON.stringify({
+                        email,
+                        phone,
+                        platform: 'Android',
+                        source: 'crema-android-waitlist',
+                        sms_consent: true,
+                        sms_consent_at: new Date().toISOString()
+                    })
+                });
+
+                if (!response.ok) throw new Error('Waitlist submission failed');
+
+                document.getElementById('waitlistForm').style.display = 'none';
+                document.getElementById('successMessage').style.display = 'block';
+            } catch (error) {
+                console.error(error);
+                errorMessage.style.display = 'block';
+                submitButton.disabled = false;
+            }
         });
     </script>
 </body>
