@@ -20,10 +20,8 @@
 
     <link rel="icon" type="image/png" href="/assets/images/aug-icon.png">
     <link rel="apple-touch-icon" href="/assets/images/aug-icon.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="/assets/fonts/CalSans-Regular.ttf" rel="preload" as="font" type="font/ttf" crossorigin="anonymous">
+    <link rel="stylesheet" href="./earth-hero.css">
     <style>
         @font-face {
             font-family: "Cal Sans";
@@ -38,11 +36,11 @@
             --black: #0A0A0A;
             --offwhite: #FAFAF8;
             --white: #FFFFFF;
-            --muted: #5C5C58;
+            --muted: #3A3A38;
             --rule: rgba(10, 10, 10, 0.1);
             --nav-h: 64px;
             --font-display: "Cal Sans", system-ui, sans-serif;
-            --font-body: "Manrope", system-ui, sans-serif;
+            --font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -67,7 +65,8 @@
             font-family: var(--font-body);
             color: var(--black);
             background: var(--white);
-            line-height: 1.55;
+            line-height: 1.6;
+            font-weight: 400;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
         }
@@ -92,16 +91,18 @@
             top: 0;
             z-index: 100;
             height: var(--nav-h);
-            background: var(--white);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: none;
         }
 
         .site-nav {
             position: relative;
-            max-width: 1120px;
+            max-width: 1200px;
             margin: 0 auto;
             height: 100%;
-            padding: 0 20px;
+            padding: 0 40px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -109,23 +110,80 @@
         }
 
         .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             font-family: var(--font-display);
             font-weight: 400;
             font-size: 1.35rem;
+            line-height: 1;
             letter-spacing: -0.03em;
             text-decoration: none !important;
             color: var(--black);
         }
 
+        .brand picture {
+            display: contents;
+        }
+
+        .brand-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: block;
+            flex-shrink: 0;
+        }
+
+        .brand-label {
+            display: inline-flex;
+            align-items: baseline;
+            /* Optical nudge so lowercase glyph mass matches icon center */
+            position: relative;
+            top: -2px;
+            line-height: 1;
+        }
+
+        .brand-text {
+            line-height: 1;
+        }
+
+        .brand-section {
+            font-size: 1.05rem;
+            font-weight: 400;
+            color: #8A8A86;
+            letter-spacing: -0.02em;
+            line-height: 1;
+        }
+
         .nav-toggle {
             display: none;
-            border: 1px solid rgba(0, 0, 0, 0.18);
-            background: var(--white);
-            font-family: var(--font-body);
-            font-size: 0.875rem;
-            font-weight: 600;
-            padding: 8px 12px;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 36px;
+            padding: 0;
+            border: 0;
+            background: transparent;
+            color: var(--black);
             cursor: pointer;
+        }
+
+        .nav-toggle-icon {
+            display: block;
+            width: 18px;
+            height: 12px;
+        }
+
+        .nav-toggle-icon span {
+            display: block;
+            height: 2px;
+            margin: 0 0 3px;
+            background: currentColor;
+            border-radius: 1px;
+        }
+
+        .nav-toggle-icon span:last-child {
+            margin-bottom: 0;
         }
 
         .nav-links {
@@ -151,6 +209,7 @@
         }
 
         @media (max-width: 899px) {
+            .site-nav { padding: 0 20px; }
             .nav-toggle { display: inline-flex; }
             .nav-links {
                 display: none;
@@ -160,8 +219,10 @@
                 right: 0;
                 flex-direction: column;
                 align-items: stretch;
-                background: var(--white);
-                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                box-shadow: 0 12px 28px rgba(0, 0, 0, 0.06);
                 padding: 12px 20px 20px;
                 gap: 12px;
             }
@@ -171,14 +232,19 @@
         .deck-section {
             min-height: 100vh;
             min-height: 100dvh;
-            padding: calc(var(--nav-h) + 56px) 24px 72px;
+            padding: calc(var(--nav-h) + 72px) 64px 88px;
             display: flex;
             align-items: center;
             scroll-snap-align: start;
         }
 
+        #overview.deck-section {
+            align-items: flex-start;
+            padding-top: calc(var(--nav-h) + 32px);
+        }
+
         .deck-section .inner {
-            max-width: 920px;
+            max-width: 1200px;
             margin: 0 auto;
             width: 100%;
         }
@@ -191,11 +257,136 @@
         }
 
         .band-neon {
-            background: linear-gradient(180deg, #F7F7F4 0%, var(--white) 100%);
+            background: var(--white);
         }
 
-        .deck-section + .deck-section {
-            border-top: 1px solid var(--rule);
+        @media (min-width: 900px) {
+            .stack {
+                grid-template-columns: 1fr 1fr;
+                column-gap: 48px;
+                row-gap: 2.25rem;
+            }
+
+            .deck-section p,
+            .deck-section li,
+            .lede {
+                max-width: 34rem;
+            }
+
+            #overview h1 {
+                width: 100%;
+                max-width: none;
+                font-size: clamp(2.75rem, 5.6vw, 4.5rem);
+                margin-bottom: 1.75rem;
+            }
+
+            #overview .lede,
+            #overview .rule {
+                width: 100%;
+                max-width: none;
+            }
+
+            #overview .lede + .lede {
+                margin-top: 1rem;
+            }
+
+            #gtm .inner > p,
+            #founder .inner > p,
+            #pbd .inner > p,
+            #contact .inner > p {
+                max-width: 40rem;
+            }
+        }
+
+        .intro-media {
+            display: none;
+        }
+
+        @media (max-width: 899px) {
+            html { scroll-snap-type: none; }
+
+            .deck-section {
+                padding: calc(var(--nav-h) + 28px) 28px 48px;
+                min-height: auto;
+                align-items: flex-start;
+            }
+
+            .stack {
+                grid-template-columns: 1fr;
+            }
+
+            #overview.deck-section {
+                padding-top: calc(var(--nav-h) + 12px);
+                padding-bottom: 28px;
+            }
+
+            #overview .inner {
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 48px;
+            }
+
+            #overview .intro-hero {
+                text-align: left;
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+                width: 100%;
+            }
+
+            #overview .rule { display: none; }
+
+            #overview h1 {
+                width: 100%;
+                max-width: none;
+                font-size: clamp(1.85rem, 8vw, 2.4rem);
+                margin-bottom: 1.35rem;
+            }
+
+            #overview .lede {
+                width: 100%;
+                max-width: none;
+                margin: 0;
+            }
+
+            #overview .lede + .lede {
+                margin-top: 0.85rem;
+            }
+
+            .intro-media {
+                display: block;
+                position: relative;
+                width: 100%;
+                border-radius: 32px;
+                overflow: hidden;
+                background: #111;
+                aspect-ratio: 3 / 4;
+                box-shadow: 0 18px 40px rgba(0, 0, 0, 0.14);
+            }
+
+            .intro-media video {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+            }
+
+            .intro-media-caption {
+                position: absolute;
+                left: 20px;
+                right: 20px;
+                top: 22px;
+                margin: 0;
+                max-width: none !important;
+                color: #fff !important;
+                font-family: var(--font-display);
+                font-size: clamp(1.45rem, 6.5vw, 1.9rem);
+                line-height: 1.15;
+                letter-spacing: -0.02em;
+                text-shadow: 0 2px 16px rgba(0, 0, 0, 0.35);
+                pointer-events: none;
+            }
         }
 
         .deck-section h1,
@@ -208,45 +399,113 @@
 
         .deck-section h1 {
             font-size: clamp(3.5rem, 10vw, 6.5rem);
-            margin-bottom: 1.25rem;
+            margin-bottom: 1.85rem;
         }
 
         .deck-section h2 {
             font-size: clamp(2.25rem, 5vw, 3.5rem);
-            margin-bottom: 1.25rem;
+            margin-bottom: 1.85rem;
+        }
+
+        .why-title-break {
+            display: none;
+        }
+
+        @media (max-width: 899px) {
+            .why-title-break {
+                display: block;
+            }
+        }
+
+        /* Shared header → body spacing for content sections */
+        .deck-section:not(#overview) h2 {
+            margin-bottom: 0.85rem;
+        }
+
+        .deck-section:not(#overview) .rule {
+            margin: 0 0 1.1rem;
+        }
+
+        .deck-section .stack {
+            margin-top: 0;
         }
 
         .deck-section h3 {
-            font-family: var(--font-display);
-            font-weight: 400;
-            font-size: clamp(1.35rem, 2.5vw, 1.75rem);
-            line-height: 1.25;
-            margin-bottom: 0.55rem;
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: clamp(1.2rem, 2.2vw, 1.4rem);
+            line-height: 1.3;
+            letter-spacing: -0.015em;
+            margin-bottom: 0.35rem;
+            text-align: left;
+        }
+
+        .deck-section h3.accent {
+            font-family: var(--font-body);
+            letter-spacing: -0.015em;
+            line-height: 1.3;
+        }
+
+        .deck-section p + p {
+            margin-top: 0.85rem;
         }
 
         .deck-section p,
+        .deck-section .lede,
+        .deck-section .stack p {
+            font-family: var(--font-body);
+            font-size: clamp(1rem, 1.6vw, 1.45rem);
+            font-weight: normal;
+            letter-spacing: normal;
+            line-height: normal;
+            text-align: justify;
+            text-justify: inter-word;
+            max-width: 40rem;
+        }
+
         .deck-section li {
-            font-size: clamp(1.05rem, 2vw, 1.2rem);
             max-width: 40rem;
         }
 
         .lede {
-            font-size: clamp(1.15rem, 2.4vw, 1.35rem);
             max-width: 36rem;
+        }
+
+        .deck-section .intro-media-caption {
+            text-align: left;
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+        }
+
+        .deck-section p.accent {
+            text-align: left;
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: clamp(1.2rem, 2.2vw, 1.4rem);
+            letter-spacing: -0.015em;
+            line-height: 1.3;
+            margin-bottom: 0.35rem;
         }
 
         .rule {
             border: 0;
-            border-top: 1px solid var(--rule);
-            opacity: 1;
-            margin: 1.5rem 0;
+            border-top: 1px solid transparent;
+            margin: 0.35rem 0 2.25rem;
             max-width: 40rem;
         }
 
         .deck-section p,
         .deck-section .lede,
         .deck-section .stack p {
-            color: var(--muted);
+            color: #1F1F1D;
+        }
+
+        .deck-section .intro-media-caption {
+            color: #fff;
+        }
+
+        .deck-section .accent {
+            color: var(--black);
         }
 
         .deck-section h1,
@@ -259,11 +518,12 @@
             list-style: none;
             display: grid;
             gap: 1.75rem;
-            margin-top: 0.25rem;
+            margin-top: 0;
         }
 
         .accent {
-            font-family: var(--font-display);
+            font-family: var(--font-body);
+            font-weight: 700;
             color: var(--black);
         }
 
@@ -289,10 +549,23 @@
 
     <header class="site-header">
         <nav class="site-nav" aria-label="Investor sections">
-            <a class="brand" href="../">aug</a>
-            <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="nav-links">Menu</button>
+            <a class="brand" href="../">
+                <picture>
+                    <source srcset="/assets/images/aug-icon.webp" type="image/webp">
+                    <img src="/assets/images/aug-icon.png" alt="" class="brand-icon" width="28" height="28" decoding="async">
+                </picture>
+                <span class="brand-label"><span class="brand-text">aug</span><span class="brand-section">/Investors</span></span>
+            </a>
+            <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Menu">
+                <span class="nav-toggle-icon" aria-hidden="true">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            </button>
             <ul id="nav-links" class="nav-links">
                 <li><a href="#intro">Intro</a></li>
+                <li><a href="#overview">Overview</a></li>
                 <li><a href="#why">Why Aug</a></li>
                 <li><a href="#problems">Problems</a></li>
                 <li><a href="#gtm">Go-to-Market</a></li>
@@ -304,31 +577,84 @@
     </header>
 
     <main>
-        <section id="intro" class="deck-section band-neon" data-section>
+        <!-- Same first-section Earth + stickers as pbd.team -->
+        <section id="intro" class="pbd-hero-section" data-section>
+            <h1 class="hero-title">Leave words out there.<br>Make your day <span class="hero-spatial">spatial</span>.</h1>
+            <div class="earth-container" id="earthContainer">
+                <picture>
+                    <source srcset="/assets/images/Earth.webp" type="image/webp">
+                    <img src="/assets/images/Earth.png" alt="Earth" class="earth-image" decoding="async" fetchpriority="high">
+                </picture>
+
+                <picture><source srcset="/assets/stickers/aug%20sticker%201.webp" type="image/webp"><img src="/assets/stickers/aug%20sticker%201.png" alt="" class="earth-sticker sticker-1" loading="lazy" decoding="async"></picture>
+                <picture><source srcset="/assets/stickers/aug%20sticker%202.webp" type="image/webp"><img src="/assets/stickers/aug%20sticker%202.png" alt="" class="earth-sticker sticker-2" loading="lazy" decoding="async"></picture>
+                <picture><source srcset="/assets/stickers/aug%20sticker%203.webp" type="image/webp"><img src="/assets/stickers/aug%20sticker%203.png" alt="" class="earth-sticker sticker-3" loading="lazy" decoding="async"></picture>
+                <picture><source srcset="/assets/stickers/aug%20sticker%204.webp" type="image/webp"><img src="/assets/stickers/aug%20sticker%204.png" alt="" class="earth-sticker sticker-4" loading="lazy" decoding="async"></picture>
+                <picture><source srcset="/assets/stickers/aug%20sticker%205.webp" type="image/webp"><img src="/assets/stickers/aug%20sticker%205.png" alt="" class="earth-sticker sticker-5" loading="lazy" decoding="async"></picture>
+                <picture><source srcset="/assets/stickers/aug%20sticker%206.webp" type="image/webp"><img src="/assets/stickers/aug%20sticker%206.png" alt="" class="earth-sticker sticker-6" loading="lazy" decoding="async"></picture>
+                <picture><source srcset="/assets/stickers/aug%20sticker%207.webp" type="image/webp"><img src="/assets/stickers/aug%20sticker%207.png" alt="" class="earth-sticker sticker-7" loading="lazy" decoding="async"></picture>
+                <picture><source srcset="/assets/stickers/aug%20sticker%208.webp" type="image/webp"><img src="/assets/stickers/aug%20sticker%208.png" alt="" class="earth-sticker sticker-8" loading="lazy" decoding="async"></picture>
+                <picture><source srcset="/assets/stickers/aug%20sticker%209.webp" type="image/webp"><img src="/assets/stickers/aug%20sticker%209.png" alt="" class="earth-sticker sticker-9" loading="lazy" decoding="async"></picture>
+                <picture><source srcset="/assets/stickers/aug%20sticker%2010.webp" type="image/webp"><img src="/assets/stickers/aug%20sticker%2010.png" alt="" class="earth-sticker sticker-10" loading="lazy" decoding="async"></picture>
+                <picture><source srcset="/assets/stickers/aug%20eyes%20sticker%201.webp" type="image/webp"><img src="/assets/stickers/aug%20eyes%20sticker%201.png" alt="" class="earth-sticker sticker-11" loading="lazy" decoding="async"></picture>
+                <picture><source srcset="/assets/stickers/Basquiat%20sticker%201.webp" type="image/webp"><img src="/assets/stickers/Basquiat%20sticker%201.png" alt="" class="earth-sticker basquiat sticker-12" loading="lazy" decoding="async"></picture>
+                <picture><source srcset="/assets/stickers/Basquiat%20sticker%202.webp" type="image/webp"><img src="/assets/stickers/Basquiat%20sticker%202.png" alt="" class="earth-sticker basquiat sticker-13" loading="lazy" decoding="async"></picture>
+                <picture><source srcset="/assets/stickers/pbd%20sticker%201.webp" type="image/webp"><img src="/assets/stickers/pbd%20sticker%201.png" alt="" class="earth-sticker sticker-14" loading="lazy" decoding="async"></picture>
+                <picture><source srcset="/assets/stickers/pbd%20sticker%202.webp" type="image/webp"><img src="/assets/stickers/pbd%20sticker%202.png" alt="" class="earth-sticker sticker-15" loading="lazy" decoding="async"></picture>
+                <picture><source srcset="/assets/stickers/pbd%20sticker%204.webp" type="image/webp"><img src="/assets/stickers/pbd%20sticker%204.png" alt="" class="earth-sticker sticker-16" loading="lazy" decoding="async"></picture>
+                <picture><source srcset="/assets/stickers/pbd%20sticker%206.webp" type="image/webp"><img src="/assets/stickers/pbd%20sticker%206.png" alt="" class="earth-sticker sticker-17" loading="lazy" decoding="async"></picture>
+            </div>
+            <a class="earth-explore" href="#overview">
+                <span class="earth-explore-label">explore <span class="earth-explore-brand">aug</span></span>
+                <svg class="earth-explore-chevron" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                    <path d="M3.5 5.75L8 10.25L12.5 5.75" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </a>
+        </section>
+
+        <section id="overview" class="deck-section band-neon" data-section>
             <div class="inner reveal">
-                <h1>aug</h1>
-                <hr class="rule">
-                <p class="lede">Aug is a spatial social. It pulls users out of the 2D scroll feed and into the real-world camera scene, where they can instantly create and share AR text, photos, GIF stickers, and more spatial content for others nearby to discover and interact with. Creating spatial content should feel as easy and native as posting an IG Story or TikTok.</p>
+                <div class="intro-hero">
+                    <h1>It's a Spatial Social</h1>
+                    <hr class="rule">
+                    <p class="lede">Yes, but aug is not just another social platform - it's spatial. It pulls users out of the 2D scroll feed and <strong>into the real-world camera scene.</strong></p>
+                    <p class="lede">You can instantly create and share <strong>AR text, photos, GIF stickers, and more spatial content for others nearby to discover and interact with.</strong> Creating spatial content should feel as easy and native as posting an IG Story or TikTok.</p>
+                </div>
+                <div class="intro-media">
+                    <video
+                        class="intro-video"
+                        src="/assets/videos/aug/aug-demo-1.mp4#t=3"
+                        autoplay
+                        muted
+                        loop
+                        playsinline
+                        preload="metadata"
+                        data-start="3"
+                        aria-label="Aug demo video"
+                    ></video>
+                    <p class="intro-media-caption">Make the world your feed.</p>
+                </div>
             </div>
         </section>
 
         <section id="why" class="deck-section band-black" data-section>
             <div class="inner reveal">
-                <h2>Why Aug</h2>
-                <p class="accent">Three major shifts.</p>
+                <h2 class="why-title">Why aug - <br class="why-title-break">The Three Shifts</h2>
                 <hr class="rule">
                 <ol class="stack">
                     <li>
                         <h3>1. Consumer AR as a data funnel for Physical AI</h3>
-                        <p>Aug naturally incentivizes users to generate valuable video, movement, and spatial data for AI. Data captured through mobile AR using LiDAR, depth sensing, and spatial mapping can contain structured information about real-world geometry, objects, surfaces, distances, and movement—not just pixels from a regular mobile video. We’ve already seen the strategic value of large-scale geospatial and real-world datasets. The opportunity is to build consumer AR people genuinely want to use, while naturally generating high-quality spatial data as part of the experience.</p>
+                        <p><strong>Aug naturally incentivizes users to generate valuable video, movement, and spatial data for AI.</strong> Data captured through mobile AR using LiDAR, depth sensing, and spatial mapping can contain structured information about real-world geometry, objects, surfaces, distances, and movement—not just pixels from a regular mobile video.</p>
+                        <p>We’ve already seen the strategic value of large-scale geospatial and real-world datasets. The opportunity is to build consumer AR people genuinely want to use, while <strong>generating high-quality spatial data as part of the experience.</strong></p>
                     </li>
                     <li>
                         <h3>2. Spatial content pulls users toward glasses</h3>
-                        <p>People will purchase their first pair of smart glasses when there is content, utility, or a social experience compelling enough to pull them there. Aug builds user-generated spatial content and communities on mobile first, then can leverage that existing network to give users a reason to move onto glasses and experience that content in a more native form.</p>
+                        <p>People will purchase their first pair of smart glasses when there is content, utility, or a social experience compelling enough to pull them there. Aug builds user-generated spatial content and communities on mobile first, then <strong>can leverage that existing network to give users a reason to move onto glasses and experience that content in a more native form.</strong></p>
                     </li>
                     <li>
                         <h3>3. AR needs a UGC ecosystem</h3>
-                        <p>We do not need to wait for better glasses hardware for AR to become meaningful. Pokémon GO already proved the potential of mobile AR at massive scale. The missing piece has been user-generated content. While Instagram, TikTok, Snapchat, and YouTube grew through creator ecosystems, AR has largely remained publisher-driven. Aug changes that by making AR creation instant, social, and user-driven—thoughts, reactions, selfies, memes, and what is happening in the moment, shared in seconds through the camera.</p>
+                        <p>We do not need to wait for better glasses hardware for AR to become meaningful. Pokémon GO already proved the potential of mobile AR at massive scale. <strong>The missing piece has been user-generated content.</strong></p>
+                        <p>While Instagram, TikTok, Snapchat, and YouTube grew through creator ecosystems, AR has largely remained publisher-driven. <strong>Aug changes that by making AR creation instant, social, and user-driven</strong>—thoughts, reactions, selfies, memes, and what is happening in the moment, shared in seconds through the camera.</p>
                     </li>
                 </ol>
             </div>
@@ -336,24 +662,20 @@
 
         <section id="problems" class="deck-section band-light" data-section>
             <div class="inner reveal">
-                <h2>Problems Aug is solving</h2>
+                <h2>Problems We Solve</h2>
                 <hr class="rule">
                 <ul class="stack">
                     <li>
-                        <h3>Social is stuck in the 2D feed</h3>
-                        <p>Attention lives in scroll timelines, while real life happens in places. There’s no native, easy way to leave and discover social content in the camera scene where people already gather.</p>
+                        <h3>Social is Stuck in the Limited 2D Feed Real Estate</h3>
+                        <p>Attention lives in scroll timelines, while real life happens in places. <strong>There’s no native, easy way to leave and discover social content in the camera scene.</strong></p>
                     </li>
                     <li>
-                        <h3>AR has been publisher-driven</h3>
-                        <p>Most AR experiences ship a single content universe from a single provider. Without a creator flywheel, spatial experiences don’t compound the way social apps do.</p>
+                        <h3>Mobile AR has been publisher-driven</h3>
+                        <p>Most AR experiences ship <strong>a single content universe from a single provider.</strong> Without a creator flywheel, spatial experiences do not compound the way social apps do.</p>
                     </li>
                     <li>
-                        <h3>Creation friction kills spatial UGC</h3>
-                        <p>Studio-grade 3D is not what most people want to post. If creating AR content isn’t as easy as a Story or TikTok, the ecosystem never forms.</p>
-                    </li>
-                    <li>
-                        <h3>The next computing surface needs a network</h3>
-                        <p>Glasses need content and community before they become habitual. Waiting for hardware alone won’t produce the social graph or content library that makes the device worth wearing.</p>
+                        <h3>Creation friction kills spatial User Generated Content (UGC)</h3>
+                        <p><strong>Studio-grade 3D is not what most people want to post.</strong> If creating AR content isn’t as easy as a Story or TikTok, the ecosystem never forms. In fact, Apple's RealityKit framework does not include a direct, built-in API to record the rendered 3D scene into a video file, so we had to develop our own.</p>
                     </li>
                 </ul>
             </div>
@@ -363,11 +685,12 @@
             <div class="inner reveal">
                 <h2>Go-to-Market</h2>
                 <hr class="rule">
-                <h3 class="accent">Wedge: K-pop and anime fandoms</h3>
-                <p>We start by turning meaningful fan locations—concert venues, pop-ups, event spaces, outdoor billboards, and other places tied to a favorite idol or character—into shared augmented spaces. Fans open Aug at these locations and interact through a persistent augmented board, leaving supportive messages, posting reactions, sharing stickers and fan-created content, and discovering what other fans have left behind.</p>
+                <h3>Wedge: K-pop and Anime Fandoms</h3>
+                <p><strong>We start by turning meaningful fan locations</strong>—concert venues, pop-ups, event spaces, outdoor billboards, and other places tied to a favorite idol or character—into shared augmented spaces.</p>
+                <p>Fans open Aug at these locations and interact through <strong>a persistent augmented board,</strong> leaving supportive messages, posting reactions, sharing stickers and fan-created content, and discovering what other fans have left behind.</p>
                 <hr class="rule">
-                <h3>Then expand</h3>
-                <p>Fandom locations → broader place-based social communities → a wider spatial content network, including OOH and brand moments as the network grows.</p>
+                <h3>Then Expand</h3>
+                <p>Fandom locations → broader place-based social communities → a wider spatial content network, including Out-of-Home (OOH) and brand moments as the network grows.</p>
             </div>
         </section>
 
@@ -376,8 +699,10 @@
                 <h2>Founder</h2>
                 <hr class="rule">
                 <h3>Gunhee Han</h3>
-                <p>Co-founder of Aug and CEO of Pale Blue Dot (PBD LLC). Designs and builds Aug in Los Angeles. Background spans operations and strategy—including work at Hyperloop Transportation Technologies—and building AI/AR products. UCLA, Political Science with a concentration in game theory.</p>
-                <p style="margin-top: 1.25rem;">
+                <p>Founder and CEO of Aug and its app development studio, Pale Blue Dot (PBD LLC). Designs and builds Aug in Los Angeles. Background spans operations and strategy—including work at Hyperloop Transportation Technologies—and building AI/AR products. UCLA, Political Science with a concentration in Game Theory.</p>
+                <p>Earlier in his career, he spent seven years helping scale a fast-growing tech startup from the inside. As Global Operations Lead and Executive Assistant to the CEO at Hyperloop Transportation Technologies, he supported fundraising, strategic investment partnerships, and SPAC preparation for the deep-tech mobility startup operating across energy, infrastructure, and aerospace.</p>
+                <p>He managed investor-facing processes for SPAC preparations, coordinated data room diligence workflows, supported strategic investment partnerships involving cash, in-kind contributions, and intellectual property, and contributed to building long-range revenue models.</p>
+                <p>
                     <a class="text-link" href="https://www.linkedin.com/in/gunheehan" target="_blank" rel="noopener noreferrer">LinkedIn →</a>
                 </p>
             </div>
@@ -389,7 +714,7 @@
                 <hr class="rule">
                 <p>PBD LLC is named after the Pale Blue Dot—the idea that from any standing point, the same matter can be seen and thought differently, just as we look at society and Earth from inside and from outside. The studio builds apps that shift viewpoint and make Earth more interesting.</p>
                 <hr class="rule">
-                <p class="accent" style="margin-bottom: 1rem;">Satellite apps that bring specific interest groups into Aug’s AR ecosystem:</p>
+                <p class="accent">Satellite apps that bring specific interest groups into Aug’s AR ecosystem:</p>
                 <ul class="stack">
                     <li>
                         <h3>Superba</h3>
@@ -408,9 +733,13 @@
                 <h2>Contact</h2>
                 <hr class="rule">
                 <p><a class="text-link" href="mailto:gunhee@aug.ooo">gunhee@aug.ooo</a></p>
-                <p style="margin-top: 1rem;">
+                <p>
                     <a class="text-link" href="https://www.linkedin.com/in/gunheehan" target="_blank" rel="noopener noreferrer">linkedin.com/in/gunheehan</a>
                 </p>
+                <p><a class="text-link" href="tel:+13103594964">+1 310-359-4964</a></p>
+                <p><a class="text-link" href="tel:+821087115099">+82 10-8711-5099</a></p>
+                <p>aug: <a class="text-link" href="https://augaugaug.com" target="_blank" rel="noopener noreferrer">augaugaug.com</a></p>
+                <p>Pale Blue Dot: <a class="text-link" href="https://pbd.team" target="_blank" rel="noopener noreferrer">pbd.team</a></p>
             </div>
         </section>
     </main>
@@ -421,6 +750,14 @@
             const toggle = document.querySelector(".nav-toggle");
             const links = document.querySelectorAll('.nav-links a[href^="#"]');
             const sections = document.querySelectorAll("[data-section]");
+            const earthContainer = document.getElementById("earthContainer");
+
+            // Reveal Earth on load (same timing feel as pbd.team)
+            window.addEventListener("load", function () {
+                setTimeout(function () {
+                    if (earthContainer) earthContainer.classList.add("visible");
+                }, 200);
+            });
 
             if (toggle && header) {
                 toggle.addEventListener("click", function () {
@@ -432,6 +769,29 @@
                         header.classList.remove("is-open");
                         toggle.setAttribute("aria-expanded", "false");
                     });
+                });
+            }
+
+            document.querySelectorAll(".pbd-hero-section .earth-sticker").forEach(function (sticker) {
+                sticker.addEventListener("click", function () {
+                    const overview = document.getElementById("overview");
+                    if (overview) overview.scrollIntoView({ behavior: "smooth" });
+                });
+            });
+
+            // Skip the first few seconds of the demo clip on start/loop
+            const introVideo = document.querySelector(".intro-video");
+            if (introVideo) {
+                const startAt = parseFloat(introVideo.getAttribute("data-start") || "3", 10);
+                const seekToStart = function () {
+                    if (introVideo.currentTime < startAt) {
+                        introVideo.currentTime = startAt;
+                    }
+                };
+                introVideo.addEventListener("loadedmetadata", seekToStart);
+                introVideo.addEventListener("playing", seekToStart);
+                introVideo.addEventListener("seeked", function () {
+                    if (introVideo.currentTime < 0.2) introVideo.currentTime = startAt;
                 });
             }
 

@@ -1,0 +1,371 @@
+/* Exact pbd.team first-section Earth + satellite stickers */
+
+.pbd-hero-section {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: calc(var(--nav-h, 64px) + 28px);
+    position: relative;
+    overflow: visible;
+    background: #FFFFFF;
+    margin-bottom: -1px;
+    scroll-snap-align: start;
+}
+
+.pbd-hero-section .hero-title {
+    font-family: "Cal Sans", sans-serif;
+    font-size: clamp(1.75rem, 4.6vw, 2.85rem);
+    font-weight: normal;
+    color: #0A0A0A;
+    letter-spacing: -0.03em;
+    z-index: 10;
+    text-align: center;
+    max-width: min(94vw, 40rem);
+    line-height: 1.15;
+    padding: 0 16px;
+    margin: 0 0 75px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.pbd-hero-section .hero-spatial {
+    color: #0A0A0A;
+    text-shadow:
+        0 2px 10px rgba(176, 246, 0, 0.6),
+        0 4px 22px rgba(176, 246, 0, 0.5),
+        0 8px 36px rgba(176, 246, 0, 0.4);
+}
+
+.pbd-hero-section .earth-container {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    width: clamp(360px, 52vw, 560px);
+    height: clamp(360px, 52vw, 560px);
+    margin: 0 auto;
+    overflow: visible;
+    opacity: 0;
+    flex-shrink: 0;
+}
+
+.pbd-hero-section .earth-container.visible {
+    animation: pbdEarthIn 0.3s ease-out forwards;
+}
+
+@keyframes pbdEarthIn {
+    0% {
+        opacity: 0;
+        filter: brightness(2) contrast(2) saturate(0);
+        transform: scaleY(0.01);
+    }
+    15% {
+        opacity: 1;
+        filter: brightness(3) contrast(3) saturate(0);
+        transform: scaleY(0.02);
+    }
+    30% {
+        filter: brightness(2) contrast(1.5) saturate(0.3);
+        transform: scaleY(0.5);
+    }
+    50% {
+        filter: brightness(1.5) contrast(1.2) saturate(0.6);
+        transform: scaleY(0.8);
+    }
+    70% {
+        filter: brightness(1.2) contrast(1.1) saturate(0.8);
+        transform: scaleY(0.95);
+    }
+    85% {
+        filter: brightness(1.1) contrast(1.05) saturate(0.9);
+        transform: scaleY(1.02);
+    }
+    100% {
+        opacity: 1;
+        /* filter:none so parent filter doesn’t clip child drop-shadows */
+        filter: none;
+        transform: none;
+    }
+}
+
+.pbd-hero-section .earth-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 50%;
+}
+
+.pbd-hero-section .earth-explore {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    margin-top: 28px;
+    margin-bottom: 40px;
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: 0;
+    color: #0A0A0A;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    z-index: 10;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.pbd-hero-section .earth-explore-label {
+    white-space: nowrap;
+}
+
+.pbd-hero-section .earth-explore-brand {
+    font-family: "Cal Sans", sans-serif;
+    font-weight: normal;
+}
+
+.pbd-hero-section .earth-explore-chevron {
+    display: block;
+    animation: pbdExploreBounce 1.6s ease-in-out infinite;
+}
+
+.pbd-hero-section .earth-explore:hover {
+    background: none;
+    text-decoration: none;
+    opacity: 0.65;
+}
+
+@keyframes pbdExploreBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(3px); }
+}
+
+.pbd-hero-section .earth-sticker {
+    position: absolute;
+    cursor: pointer;
+    width: auto;
+    height: auto;
+    max-width: 120px;
+    z-index: 20;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+    opacity: 0;
+}
+
+@keyframes pbdTvStatic {
+    0% {
+        opacity: 0;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5)) brightness(3) contrast(1.5);
+        clip-path: inset(0 0 100% 0);
+    }
+    5% { opacity: 1; clip-path: inset(0 0 60% 0); }
+    10% {
+        opacity: 0.3;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5)) brightness(2) saturate(0);
+        clip-path: inset(0 0 40% 0);
+    }
+    15% { opacity: 1; clip-path: inset(0 0 20% 0); }
+    20% {
+        opacity: 0.5;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5)) brightness(1.5);
+        clip-path: inset(0 0 30% 0);
+    }
+    25% { opacity: 0.8; clip-path: inset(0 0 10% 0); }
+    30% {
+        opacity: 0.2;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5)) brightness(2.5) contrast(2);
+        clip-path: inset(0 0 5% 0);
+    }
+    40% {
+        opacity: 1;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5)) brightness(1.2);
+        clip-path: none;
+    }
+    50% { opacity: 0.6; filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5)); }
+    60% { opacity: 1; }
+    70% {
+        opacity: 0.8;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5)) brightness(1.1);
+    }
+    80% { opacity: 1; }
+    90% { opacity: 0.9; }
+    100% {
+        opacity: 1;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+        /* none — inset(0) still clips drop-shadow outside the box */
+        clip-path: none;
+    }
+}
+
+@keyframes pbdFloat1 {
+    0%, 100% { translate: 0 0; }
+    50% { translate: 4px -6px; }
+}
+@keyframes pbdFloat2 {
+    0%, 100% { translate: 0 0; }
+    50% { translate: -5px -4px; }
+}
+@keyframes pbdFloat3 {
+    0%, 100% { translate: 0 0; }
+    50% { translate: 3px -5px; }
+}
+@keyframes pbdFloat4 {
+    0%, 100% { translate: 0 0; }
+    50% { translate: -4px -6px; }
+}
+@keyframes pbdFloat5 {
+    0%, 100% { translate: 0 0; }
+    50% { translate: 5px -3px; }
+}
+@keyframes pbdFloat6 {
+    0%, 100% { translate: 0 0; }
+    50% { translate: -3px -5px; }
+}
+
+@keyframes pbdSpin {
+    0% { rotate: 0deg; }
+    100% { rotate: 360deg; }
+}
+
+@keyframes pbdTvBlink {
+    0%, 100% { opacity: 1; filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5)); }
+    92% { opacity: 1; filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5)); }
+    94% { opacity: 0.3; filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5)) brightness(2); }
+    95% { opacity: 0; filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5)) brightness(3); }
+    96% { opacity: 0.2; filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5)) brightness(2) saturate(0); }
+    97% { opacity: 0.8; filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5)) brightness(1.5); }
+    98% { opacity: 0.4; filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5)) brightness(2); }
+    99% { opacity: 1; filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5)); }
+}
+
+.pbd-hero-section .sticker-1 { animation: pbdTvStatic 0.2s ease-out 0.05s forwards; }
+.pbd-hero-section .sticker-2 { animation: pbdTvStatic 0.2s ease-out 0.1s forwards; }
+.pbd-hero-section .sticker-3 { animation: pbdTvStatic 0.2s ease-out 0.15s forwards, pbdFloat3 5.5s ease-in-out 0.4s infinite, pbdTvBlink 22s ease-in-out 6s infinite; }
+.pbd-hero-section .sticker-4 { animation: pbdTvStatic 0.2s ease-out 0.2s forwards, pbdFloat4 6.5s ease-in-out 0.45s infinite, pbdTvBlink 28s ease-in-out 15s infinite; }
+.pbd-hero-section .sticker-5 { animation: pbdTvStatic 0.2s ease-out 0.25s forwards, pbdFloat5 7.5s ease-in-out 0.5s infinite, pbdTvBlink 18s ease-in-out 10s infinite; }
+.pbd-hero-section .sticker-6 { animation: pbdTvStatic 0.2s ease-out 0.3s forwards, pbdFloat6 6.2s ease-in-out 0.55s infinite, pbdTvBlink 30s ease-in-out 18s infinite; }
+.pbd-hero-section .sticker-7 { animation: pbdTvStatic 0.2s ease-out 0.35s forwards, pbdFloat1 5.8s ease-in-out 0.6s infinite, pbdTvBlink 24s ease-in-out 9s infinite; }
+.pbd-hero-section .sticker-8 { animation: pbdTvStatic 0.2s ease-out 0.4s forwards, pbdFloat2 6.8s ease-in-out 0.65s infinite, pbdTvBlink 26s ease-in-out 14s infinite; }
+.pbd-hero-section .sticker-9 { animation: pbdTvStatic 0.2s ease-out 0.45s forwards, pbdFloat3 7.2s ease-in-out 0.7s infinite, pbdTvBlink 20s ease-in-out 7s infinite; }
+.pbd-hero-section .sticker-10 { animation: pbdTvStatic 0.2s ease-out 0.5s forwards, pbdFloat4 5.5s ease-in-out 0.75s infinite, pbdTvBlink 28s ease-in-out 20s infinite; }
+.pbd-hero-section .sticker-11 { animation: pbdTvStatic 0.2s ease-out 0.55s forwards, pbdFloat5 6.4s ease-in-out 0.8s infinite, pbdTvBlink 22s ease-in-out 11s infinite; }
+.pbd-hero-section .sticker-12 { animation: pbdTvStatic 0.2s ease-out 0.6s forwards; }
+.pbd-hero-section .sticker-13 { animation: pbdTvStatic 0.2s ease-out 0.65s forwards; }
+.pbd-hero-section .sticker-14 { animation: pbdTvStatic 0.2s ease-out 0.7s forwards, pbdFloat2 6.6s ease-in-out 0.95s infinite, pbdTvBlink 18s ease-in-out 8s infinite; }
+.pbd-hero-section .sticker-15 { animation: pbdTvStatic 0.2s ease-out 0.75s forwards, pbdSpin 10s linear 1s infinite, pbdTvBlink 26s ease-in-out 17s infinite; }
+.pbd-hero-section .sticker-16 { animation: pbdTvStatic 0.2s ease-out 0.8s forwards, pbdSpin 12s linear 1.05s infinite, pbdTvBlink 24s ease-in-out 13s infinite; }
+.pbd-hero-section .sticker-17 { animation: pbdTvStatic 0.2s ease-out 0.85s forwards, pbdFloat5 6.9s ease-in-out 1.1s infinite, pbdTvBlink 22s ease-in-out 10s infinite; }
+
+.pbd-hero-section .earth-sticker.basquiat { max-width: 160px; }
+
+.pbd-hero-section .sticker-4,
+.pbd-hero-section .sticker-5,
+.pbd-hero-section .sticker-11 { max-width: 60px !important; }
+
+.pbd-hero-section .sticker-10 { max-width: 80px !important; }
+.pbd-hero-section .sticker-15 { max-width: 30px !important; }
+.pbd-hero-section .sticker-16 { max-width: 40px !important; }
+
+.pbd-hero-section .sticker-1 {
+    bottom: 18%;
+    right: 8%;
+    transform: perspective(200px) rotateX(-15deg) rotateY(20deg) rotate(25deg);
+    transform-style: preserve-3d;
+}
+.pbd-hero-section .sticker-2 {
+    top: 35%;
+    left: 48%;
+    transform: rotate(0deg);
+    padding: 20px;
+    margin: -20px;
+    box-sizing: content-box;
+}
+.pbd-hero-section .sticker-3 { top: 8%; left: 8%; transform: rotate(-25deg); }
+.pbd-hero-section .sticker-4 { top: 5%; right: 5%; transform: rotate(20deg); }
+.pbd-hero-section .sticker-5 { top: 26%; left: 48%; transform: rotate(-5deg); }
+.pbd-hero-section .sticker-6 { top: 35%; left: 12%; transform: rotate(-15deg); }
+.pbd-hero-section .sticker-7 { top: 25%; left: 60%; transform: rotate(5deg); max-width: 80px; }
+.pbd-hero-section .sticker-8 { top: 12%; right: 8%; transform: rotate(10deg); }
+.pbd-hero-section .sticker-9 { top: 38%; right: 2%; transform: rotate(15deg); }
+.pbd-hero-section .sticker-10 { bottom: 22%; left: 2%; transform: rotate(-35deg); }
+.pbd-hero-section .sticker-11 { bottom: 10%; left: 40%; transform: rotate(0deg); }
+.pbd-hero-section .sticker-12 { top: 45%; left: 18%; transform: rotate(-10deg); }
+.pbd-hero-section .sticker-13 { top: 2%; left: 42%; transform: rotate(0deg); }
+.pbd-hero-section .sticker-14 { top: 25%; left: 18%; transform: rotate(-15deg); max-width: 140px; }
+.pbd-hero-section .sticker-15 {
+    top: 42%;
+    right: 22%;
+    transform: rotate(8deg);
+    padding: 20px;
+    margin: -20px;
+    box-sizing: content-box;
+}
+.pbd-hero-section .sticker-16 {
+    top: 58%;
+    left: 35%;
+    transform: rotate(5deg);
+    padding: 20px;
+    margin: -20px;
+    box-sizing: content-box;
+}
+.pbd-hero-section .sticker-17 { bottom: 28%; left: 28%; transform: rotate(-20deg); }
+
+@media (max-width: 768px) {
+    .pbd-hero-section {
+        padding-top: calc(var(--nav-h, 64px) + 18px);
+        min-height: auto;
+        padding-bottom: 24px;
+    }
+
+    .pbd-hero-section .hero-title {
+        font-size: clamp(1.5rem, 6.5vw, 1.95rem);
+        margin-bottom: 75px;
+    }
+
+    .pbd-hero-section .earth-container {
+        width: min(92vw, 420px);
+        height: min(92vw, 420px);
+    }
+
+    .pbd-hero-section .earth-explore {
+        margin-top: 22px;
+        margin-bottom: 28px;
+    }
+
+    .pbd-hero-section .earth-sticker {
+        max-width: 50px !important;
+    }
+
+    .pbd-hero-section .earth-sticker.basquiat {
+        max-width: 70px !important;
+    }
+
+    .pbd-hero-section .sticker-7 { max-width: 55px !important; }
+    .pbd-hero-section .sticker-14 { max-width: 80px !important; }
+    .pbd-hero-section .sticker-4,
+    .pbd-hero-section .sticker-5,
+    .pbd-hero-section .sticker-11 { max-width: 35px !important; }
+    .pbd-hero-section .sticker-15,
+    .pbd-hero-section .sticker-16 { max-width: 25px !important; }
+    .pbd-hero-section .sticker-10 { max-width: 45px !important; }
+    .pbd-hero-section .sticker-9 { right: 0%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pbd-hero-section .earth-container {
+        opacity: 1;
+        animation: none !important;
+        transform: none;
+        filter: none;
+    }
+    .pbd-hero-section .earth-sticker {
+        opacity: 1;
+        animation: none !important;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+        clip-path: none;
+    }
+}
