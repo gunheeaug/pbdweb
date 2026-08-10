@@ -262,23 +262,60 @@
         }
 
         @media (min-width: 900px) {
-            .stack {
-                grid-template-columns: 1fr 1fr;
-                column-gap: 48px;
+            #why .stack,
+            #problems .stack {
+                grid-template-columns: 1fr;
                 row-gap: 2.25rem;
+                max-width: 40rem;
+            }
+
+            #why .stack p,
+            #why .stack li,
+            #problems .stack p,
+            #problems .stack li,
+            #gtm .inner > p,
+            #founder .inner > p {
+                max-width: 40rem;
+            }
+
+            .deck-section {
+                padding: calc(var(--nav-h) + 88px) 72px 96px;
+                align-items: flex-start;
+            }
+
+            .deck-section .inner {
+                max-width: 1120px;
             }
 
             .deck-section p,
             .deck-section li,
             .lede {
-                max-width: 34rem;
+                max-width: 36rem;
+            }
+
+            #overview.deck-section {
+                align-items: center;
+                padding-top: calc(var(--nav-h) + 72px);
+                padding-bottom: 96px;
+            }
+
+            #overview .inner {
+                display: grid;
+                grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.85fr);
+                column-gap: 64px;
+                align-items: center;
+            }
+
+            #overview .intro-hero {
+                min-width: 0;
             }
 
             #overview h1 {
                 width: 100%;
-                max-width: none;
-                font-size: clamp(2.75rem, 5.6vw, 4.5rem);
-                margin-bottom: 1.75rem;
+                max-width: 14ch;
+                font-size: clamp(2.75rem, 4.4vw, 4rem);
+                margin-bottom: 1.5rem;
+                line-height: 1.08;
             }
 
             #overview .lede,
@@ -291,11 +328,69 @@
                 margin-top: 1rem;
             }
 
-            #gtm .inner > p,
-            #founder .inner > p,
-            #pbd .inner > p,
+            #overview .intro-media {
+                display: block;
+                position: relative;
+                width: 100%;
+                max-width: 400px;
+                justify-self: end;
+                border-radius: 28px;
+                overflow: hidden;
+                background: #111;
+                aspect-ratio: 3 / 4;
+                box-shadow: 0 22px 48px rgba(0, 0, 0, 0.14);
+            }
+
+            #overview .intro-media video {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+            }
+
+            #overview .intro-media-caption {
+                position: absolute;
+                left: 22px;
+                right: 22px;
+                top: 24px;
+                margin: 0;
+                max-width: none !important;
+                color: #fff !important;
+                font-family: var(--font-display);
+                font-size: clamp(1.5rem, 2vw, 1.85rem);
+                line-height: 1.15;
+                letter-spacing: -0.02em;
+                text-shadow: 0 2px 16px rgba(0, 0, 0, 0.35);
+                pointer-events: none;
+                text-align: left;
+            }
+
             #contact .inner > p {
                 max-width: 40rem;
+            }
+
+            #pbd .inner {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
+                column-gap: 48px;
+                align-items: start;
+            }
+
+            #pbd .pbd-copy {
+                min-width: 0;
+                max-width: 40rem;
+            }
+
+            #pbd .pbd-app-cards {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                margin-top: 0;
+                width: 100%;
+            }
+
+            #pbd .app-card {
+                width: 100%;
             }
         }
 
@@ -852,10 +947,12 @@
 
         <section id="pbd" class="deck-section band-black" data-section>
             <div class="inner reveal">
+                <div class="pbd-copy">
                 <h2>Pale Blue Dot</h2>
                 <hr class="rule">
                 <p>Pale Blue Dot (PBD LLC) is Gunhee’s independent app development studio. It is named after Carl Sagan’s <em>Pale Blue Dot</em>—Earth seen from deep space in the Voyager 1 photograph—and the idea that from any standing point, the same matter can be seen and thought differently, just as we look at society and Earth from inside and from outside. The studio builds apps that shift viewpoint and make Earth more interesting.</p>
                 <p>Along with Aug, Pale Blue Dot has launched satellite apps that bring specific interest groups into Aug’s AR ecosystem:</p>
+                </div>
                 <div class="pbd-app-cards">
                     <a href="/superba/" class="app-card" id="superba-card">
                         <div class="app-card-header">
