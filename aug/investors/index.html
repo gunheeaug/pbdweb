@@ -265,17 +265,21 @@
             #why .stack,
             #problems .stack {
                 grid-template-columns: 1fr;
-                row-gap: 2.25rem;
-                max-width: 40rem;
+                row-gap: 2.5rem;
+                max-width: none;
             }
 
-            #why .stack p,
-            #why .stack li,
-            #problems .stack p,
-            #problems .stack li,
+            #why .stack > li,
+            #problems .stack > li {
+                max-width: none;
+            }
+
+            /* Text-only blocks stay single-column readable width */
+            #why .stack > li > p,
+            #problems .stack > li > p,
             #gtm .inner > p,
-            #gtm .gtm-video,
-            #founder .inner > p {
+            #founder .inner > p,
+            #founder .inner > h3 {
                 max-width: 40rem;
             }
 
@@ -292,6 +296,17 @@
             .deck-section li,
             .lede {
                 max-width: 36rem;
+            }
+
+            /* Why / Problems / media rows need full inner width on desktop */
+            #why .stack > li,
+            #problems .stack > li,
+            .media-split,
+            .media-split-copy,
+            .media-split-copy p,
+            .media-split .gtm-video,
+            .media-split .lidar-callout {
+                max-width: none;
             }
 
             #overview.deck-section {
@@ -547,26 +562,22 @@
             margin-top: 0.85rem;
         }
 
-        .lidar-callout {
-            margin: 1.35rem 0 0.25rem;
-            max-width: 40rem;
+        .media-split {
+            display: flex;
+            flex-direction: column;
+            gap: 1.1rem;
+            width: 100%;
         }
 
-        .lidar-callout-caption {
-            margin: 0 0 0.65rem;
-            font-family: var(--font-body);
-            font-size: 1rem;
-            font-weight: 700;
-            letter-spacing: normal;
-            line-height: 1.3;
-            color: var(--black);
-            text-align: left;
+        .lidar-callout {
+            margin: 0;
+            max-width: 40rem;
         }
 
         .lidar-callout-image {
             display: block;
             width: 100%;
-            max-width: 420px;
+            max-width: 520px;
             height: auto;
             border-radius: 16px;
         }
@@ -574,7 +585,7 @@
         #gtm .gtm-video {
             width: 100%;
             max-width: 40rem;
-            margin: 1.1rem 0 1.25rem;
+            margin: 0;
         }
 
         #gtm .gtm-video video {
@@ -585,13 +596,51 @@
             box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
         }
 
-        #gtm h3 + .gtm-video,
-        #gtm p + .gtm-video {
-            margin-top: 1.1rem;
-        }
+        /* Desktop: copy left, media right (must follow base .media-split) */
+        @media (min-width: 900px) {
+            .media-split {
+                display: grid;
+                grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.9fr);
+                column-gap: 48px;
+                row-gap: 20px;
+                align-items: start;
+                max-width: none;
+            }
 
-        #gtm .gtm-video + p {
-            margin-top: 1.25rem;
+            .media-split-copy,
+            .media-split .gtm-video,
+            .media-split .lidar-callout {
+                max-width: none;
+                width: 100%;
+            }
+
+            .deck-section .media-split-copy p,
+            .deck-section .stack .media-split-copy p {
+                max-width: none;
+                width: 100%;
+            }
+
+            .media-split .lidar-callout {
+                margin: 0;
+            }
+
+            .media-split .lidar-callout-image {
+                max-width: 100%;
+            }
+
+            #gtm .media-split .gtm-video {
+                margin: 0;
+                max-width: none;
+            }
+
+            #gtm .media-split + p {
+                margin-top: 1.25rem;
+                max-width: 40rem;
+            }
+
+            #gtm .media-split + .rule {
+                margin-top: 1.75rem;
+            }
         }
 
         .deck-section p,
@@ -929,18 +978,21 @@
                 <ol class="stack">
                     <li>
                         <h3>1. Consumer AR as a data funnel for Physical AI</h3>
-                        <p><strong>Aug naturally incentivizes users to generate valuable video, movement, and spatial data for AI.</strong> Data captured through mobile AR using LiDAR, depth sensing, and spatial mapping can contain structured information about real-world geometry, objects, surfaces, distances, and movement—not just pixels from a regular mobile video.</p>
-                        <p>We’ve already seen the strategic value of large-scale geospatial and real-world datasets. The opportunity is to build consumer AR people genuinely want to use, while <strong>generating high-quality spatial data as part of the experience.</strong></p>
-                        <figure class="lidar-callout">
-                            <figcaption class="lidar-callout-caption">We use this:<br>LiDAR</figcaption>
-                            <img
-                                class="lidar-callout-image"
-                                src="/assets/images/lidar-iphone-camera.png"
-                                alt="iPhone Pro camera module with the LiDAR scanner labeled"
-                                loading="lazy"
-                                decoding="async"
-                            >
-                        </figure>
+                        <div class="media-split">
+                            <div class="media-split-copy">
+                                <p><strong>Aug naturally incentivizes users to generate valuable video, movement, and spatial data for AI.</strong> Data captured through mobile AR using LiDAR, depth sensing, and spatial mapping can contain structured information about real-world geometry, objects, surfaces, distances, and movement—not just pixels from a regular mobile video.</p>
+                                <p>We’ve already seen the strategic value of large-scale geospatial and real-world datasets. The opportunity is to build consumer AR people genuinely want to use, while <strong>generating high-quality spatial data as part of the experience.</strong></p>
+                            </div>
+                            <figure class="lidar-callout">
+                                <img
+                                    class="lidar-callout-image"
+                                    src="/assets/images/lidar-iphone-camera.png?v=4"
+                                    alt="iPhone Pro camera module with LiDAR scanner labeled"
+                                    loading="lazy"
+                                    decoding="async"
+                                >
+                            </figure>
+                        </div>
                     </li>
                     <li>
                         <h3>2. Spatial content pulls users toward glasses</h3>
@@ -981,32 +1033,40 @@
                 <h2>Go-to-Market</h2>
                 <hr class="rule">
                 <h3>Wedge: K-pop and Anime Fandoms</h3>
-                <p><strong>We start by turning meaningful fan locations</strong>—concert venues, pop-ups, event spaces, outdoor billboards, and other places tied to a favorite idol or character—into shared augmented spaces.</p>
-                <div class="gtm-video">
-                    <video
-                        src="/assets/videos/aug/aug%20find%20my%20idol.mp4"
-                        autoplay
-                        muted
-                        loop
-                        playsinline
-                        preload="metadata"
-                        aria-label="Aug K-pop fandom AR demo"
-                    ></video>
+                <div class="media-split">
+                    <div class="media-split-copy">
+                        <p><strong>We start by turning meaningful fan locations</strong>—concert venues, pop-ups, event spaces, outdoor billboards, and other places tied to a favorite idol or character—into shared augmented spaces.</p>
+                    </div>
+                    <div class="gtm-video">
+                        <video
+                            src="/assets/videos/aug/aug%20find%20my%20idol.mp4"
+                            autoplay
+                            muted
+                            loop
+                            playsinline
+                            preload="metadata"
+                            aria-label="Aug K-pop fandom AR demo"
+                        ></video>
+                    </div>
                 </div>
                 <p>Fans open Aug at these locations and interact through <strong>a persistent augmented board,</strong> leaving supportive messages, posting reactions, sharing stickers and fan-created content, and discovering what other fans have left behind.</p>
                 <hr class="rule">
                 <h3>Then Expand</h3>
-                <p>Fandom locations → broader place-based social communities → a wider spatial content network, including Out-of-Home (OOH) and brand moments as the network grows.</p>
-                <div class="gtm-video">
-                    <video
-                        src="/assets/videos/aug/aug%20billboard%20ads.mp4"
-                        autoplay
-                        muted
-                        loop
-                        playsinline
-                        preload="metadata"
-                        aria-label="Aug OOH billboard AR demo"
-                    ></video>
+                <div class="media-split">
+                    <div class="media-split-copy">
+                        <p>Fandom locations → broader place-based social communities → a wider spatial content network, including Out-of-Home (OOH) and brand moments as the network grows.</p>
+                    </div>
+                    <div class="gtm-video">
+                        <video
+                            src="/assets/videos/aug/aug%20billboard%20ads.mp4"
+                            autoplay
+                            muted
+                            loop
+                            playsinline
+                            preload="metadata"
+                            aria-label="Aug OOH billboard AR demo"
+                        ></video>
+                    </div>
                 </div>
             </div>
         </section>
