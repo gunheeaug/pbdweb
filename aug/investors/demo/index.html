@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aug — Demo</title>
+    <meta name="description" content="Aug product demos — sticker posting, anime and K-pop fan groups.">
+    <meta name="robots" content="noindex">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://pbd.team/aug/investors/demo/">
+    <meta property="og:title" content="Aug — Demo">
+    <meta property="og:description" content="Aug product demos — sticker posting, anime and K-pop fan groups.">
+    <meta property="og:image" content="https://pbd.team/assets/images/aug Thumbnail.png">
+
+    <link rel="icon" type="image/png" href="/assets/images/aug-icon.png">
+    <link rel="apple-touch-icon" href="/assets/images/aug-icon.png">
+    <link href="/assets/fonts/CalSans-Regular.ttf" rel="preload" as="font" type="font/ttf" crossorigin="anonymous">
+
+    <style>
+        @font-face {
+            font-family: "Cal Sans";
+            src: url("/assets/fonts/CalSans-Regular.ttf") format("truetype");
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        :root {
+            --neon: #B0F600;
+            --black: #0A0A0A;
+            --white: #FFFFFF;
+            --muted: #8A8A86;
+            --nav-h: 64px;
+            --font-display: "Cal Sans", system-ui, sans-serif;
+            --font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--black);
+            background: var(--white);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        a { color: inherit; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        :focus-visible { outline: 2px solid var(--neon); outline-offset: 3px; }
+
+        .skip-link {
+            position: absolute;
+            left: -999px;
+            top: 0;
+            background: var(--black);
+            color: var(--neon);
+            padding: 12px 16px;
+            z-index: 1000;
+        }
+        .skip-link:focus { left: 12px; top: 12px; }
+
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            height: var(--nav-h);
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .site-nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            height: 100%;
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-display);
+            font-size: 1.35rem;
+            letter-spacing: -0.03em;
+            text-decoration: none !important;
+            color: var(--black);
+        }
+
+        .brand picture { display: contents; }
+
+        .brand-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: block;
+            flex-shrink: 0;
+        }
+
+        .brand-label {
+            display: inline-flex;
+            align-items: baseline;
+            position: relative;
+            top: -2px;
+            line-height: 1;
+        }
+
+        .brand-section {
+            font-size: 1.05rem;
+            color: var(--muted);
+            letter-spacing: -0.02em;
+        }
+
+        .nav-back {
+            font-size: 0.8125rem;
+            font-weight: 600;
+            text-decoration: none !important;
+            color: var(--black);
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-back:hover {
+            border-bottom-color: var(--neon);
+            text-decoration: none;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: calc(var(--nav-h) + 40px) 40px 80px;
+        }
+
+        h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.25rem, 4vw, 3.25rem);
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+        }
+
+        .lede {
+            font-size: clamp(1rem, 1.5vw, 1.2rem);
+            color: #3A3A38;
+            max-width: 36rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 36px 40px;
+        }
+
+        @media (min-width: 900px) {
+            .demo-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .demo-card {
+            min-width: 0;
+        }
+
+        .demo-card video {
+            display: block;
+            width: 100%;
+            max-width: 360px;
+            margin: 0 auto;
+            aspect-ratio: 9 / 19.5;
+            object-fit: cover;
+            border-radius: 24px;
+            background: #111;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+            cursor: pointer;
+        }
+
+        .demo-card h2 {
+            font-family: var(--font-body);
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: -0.015em;
+            margin-top: 0.85rem;
+            text-align: center;
+        }
+
+        .audio-hint {
+            text-align: center;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: #007AFF;
+            margin-top: 0.35rem;
+            cursor: pointer;
+        }
+
+        .audio-hint.is-hidden {
+            display: none;
+        }
+
+        @media (max-width: 899px) {
+            .site-nav { padding: 0 20px; }
+            main { padding: calc(var(--nav-h) + 24px) 24px 56px; }
+            .demo-card video { max-width: 280px; }
+        }
+    </style>
+</head>
+<body>
+    <a class="skip-link" href="#demos">Skip to demos</a>
+
+    <header class="site-header">
+        <nav class="site-nav" aria-label="Demo navigation">
+            <a class="brand" href="/aug/investors/">
+                <picture>
+                    <source srcset="/assets/images/aug-icon.webp" type="image/webp">
+                    <img src="/assets/images/aug-icon.png" alt="" class="brand-icon" width="28" height="28" decoding="async">
+                </picture>
+                <span class="brand-label"><span class="brand-text">aug</span><span class="brand-section">/Investors</span></span>
+            </a>
+            <a class="nav-back" href="/aug/investors/">← Pitch</a>
+        </nav>
+    </header>
+
+    <main id="demos">
+        <h1>Demo</h1>
+        <p class="lede">Product clips — sticker posting and fan-group boards. Tap a video for sound.</p>
+
+        <div class="demo-grid">
+            <article class="demo-card">
+                <video
+                    id="demo1"
+                    src="/assets/videos/aug/demo/sticker-posting-0.mp4"
+                    autoplay
+                    muted
+                    loop
+                    playsinline
+                    preload="metadata"
+                    aria-label="General sticker posting demo"
+                ></video>
+                <h2>General Sticker Posting</h2>
+                <p class="audio-hint">Tap for sound</p>
+            </article>
+
+            <article class="demo-card">
+                <video
+                    id="demo2"
+                    src="/assets/videos/aug/demo/anime-fan-group.mp4"
+                    autoplay
+                    muted
+                    loop
+                    playsinline
+                    preload="metadata"
+                    aria-label="Anime fan group demo"
+                ></video>
+                <h2>Anime Fan Group</h2>
+                <p class="audio-hint">Tap for sound</p>
+            </article>
+
+            <article class="demo-card">
+                <video
+                    id="demo3"
+                    src="/assets/videos/aug/demo/sticker-posting-1.mp4"
+                    autoplay
+                    muted
+                    loop
+                    playsinline
+                    preload="metadata"
+                    aria-label="General sticker posting demo 2"
+                ></video>
+                <h2>General Sticker Posting (2)</h2>
+                <p class="audio-hint">Tap for sound</p>
+            </article>
+
+            <article class="demo-card">
+                <video
+                    id="demo4"
+                    src="/assets/videos/aug/demo/kpop-fan-group.mp4"
+                    autoplay
+                    muted
+                    loop
+                    playsinline
+                    preload="metadata"
+                    aria-label="K-pop idol fan group post demo"
+                ></video>
+                <h2>K-pop Idol Fan Group</h2>
+                <p class="audio-hint">Tap for sound</p>
+            </article>
+        </div>
+    </main>
+
+    <script>
+        const videos = Array.from(document.querySelectorAll('.demo-card video'));
+        let audioUnlocked = false;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                const video = entry.target;
+                if (entry.isIntersecting) {
+                    video.play().catch(() => {});
+                    if (audioUnlocked) video.muted = false;
+                } else {
+                    video.muted = true;
+                }
+            });
+        }, { threshold: 0.45 });
+
+        function unlockAudio(targetVideo) {
+            audioUnlocked = true;
+            document.querySelectorAll('.audio-hint').forEach((h) => h.classList.add('is-hidden'));
+            videos.forEach((v) => {
+                const rect = v.getBoundingClientRect();
+                const visible = rect.top < window.innerHeight && rect.bottom > 0;
+                if (v === targetVideo || visible) {
+                    v.muted = false;
+                    v.play().catch(() => {});
+                }
+            });
+        }
+
+        videos.forEach((video) => {
+            observer.observe(video);
+            video.addEventListener('click', () => unlockAudio(video));
+            const hint = video.parentElement.querySelector('.audio-hint');
+            if (hint) hint.addEventListener('click', () => unlockAudio(video));
+        });
+    </script>
+</body>
+</html>
