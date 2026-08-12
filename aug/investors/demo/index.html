@@ -42,10 +42,9 @@
 
         @media (prefers-reduced-motion: reduce) {
             html { scroll-behavior: auto; }
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
+            .carousel-track,
+            .demo-intro {
+                transition: none !important;
             }
         }
 
@@ -56,6 +55,8 @@
             line-height: 1.5;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
+            min-height: 100vh;
+            min-height: 100dvh;
         }
 
         a { color: inherit; text-decoration: none; }
@@ -143,75 +144,183 @@
         }
 
         main {
-            max-width: 1200px;
+            max-width: 960px;
             margin: 0 auto;
-            padding: calc(var(--nav-h) + 40px) 40px 80px;
+            padding: calc(var(--nav-h) + 28px) 24px 56px;
+            text-align: center;
+        }
+
+        .demo-intro {
+            margin-bottom: 1.5rem;
+            min-height: 7.5rem;
+        }
+
+        .demo-kicker {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 0.55rem;
         }
 
         h1 {
             font-family: var(--font-display);
-            font-size: clamp(2.25rem, 4vw, 3.25rem);
+            font-size: clamp(2rem, 4vw, 2.85rem);
             letter-spacing: -0.03em;
             line-height: 1.1;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.55rem;
         }
 
         .lede {
-            font-size: clamp(1rem, 1.5vw, 1.2rem);
+            font-size: clamp(1rem, 1.5vw, 1.15rem);
             color: #3A3A38;
-            max-width: 36rem;
-            margin-bottom: 2.5rem;
+            max-width: 34rem;
+            margin: 0 auto;
+            line-height: 1.45;
         }
 
-        .demo-grid {
+        .carousel {
+            position: relative;
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 36px 40px;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
         }
 
-        @media (min-width: 900px) {
-            .demo-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        .demo-card {
-            min-width: 0;
-        }
-
-        .demo-card-link {
-            display: block;
-            text-decoration: none !important;
-            color: inherit;
-        }
-
-        .demo-card video {
-            display: block;
+        .carousel-viewport {
+            overflow: hidden;
             width: 100%;
             max-width: 360px;
             margin: 0 auto;
+            touch-action: pan-y;
+        }
+
+        .carousel-track {
+            display: flex;
+            width: 100%;
+            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: transform;
+        }
+
+        .carousel-slide {
+            flex: 0 0 100%;
+            width: 100%;
+            min-width: 0;
+        }
+
+        .carousel-slide video {
+            display: block;
+            width: 100%;
             aspect-ratio: 9 / 19.5;
             object-fit: cover;
             border-radius: 24px;
             background: #111;
             box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
             cursor: pointer;
-            pointer-events: none;
         }
 
-        .demo-card h2 {
-            font-family: var(--font-body);
-            font-size: 1.05rem;
-            font-weight: 700;
-            letter-spacing: -0.015em;
-            margin-top: 0.85rem;
-            text-align: center;
+        .carousel-meta {
+            margin-top: 1rem;
+            min-height: 2.75rem;
+        }
+
+        .carousel-meta a {
+            display: inline-block;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: #007AFF;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+        }
+
+        .carousel-meta a:hover {
+            border-bottom-color: currentColor;
+        }
+
+        .audio-hint {
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: #007AFF;
+            margin-top: 0.35rem;
+            cursor: pointer;
+        }
+
+        .audio-hint.is-hidden { display: none; }
+
+        .carousel-btn {
+            appearance: none;
+            border: 0;
+            background: transparent;
+            color: var(--black);
+            width: 48px;
+            height: 48px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: background 0.2s ease, opacity 0.2s ease;
+        }
+
+        .carousel-btn:hover {
+            background: rgba(10, 10, 10, 0.06);
+        }
+
+        .carousel-btn:disabled {
+            opacity: 0.28;
+            cursor: default;
+            background: transparent;
+        }
+
+        .carousel-btn svg {
+            width: 28px;
+            height: 28px;
+            display: block;
+        }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 1.25rem;
+        }
+
+        .carousel-dot {
+            appearance: none;
+            border: 0;
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(10, 10, 10, 0.18);
+            cursor: pointer;
+            padding: 0;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .carousel-dot[aria-current="true"] {
+            background: var(--black);
+            transform: scale(1.15);
+        }
+
+        .carousel-count {
+            margin-top: 0.65rem;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--muted);
+            letter-spacing: 0.02em;
         }
 
         @media (max-width: 899px) {
             .site-nav { padding: 0 20px; }
-            main { padding: calc(var(--nav-h) + 24px) 24px 56px; }
-            .demo-card video { max-width: 280px; }
+            main { padding: calc(var(--nav-h) + 20px) 12px 48px; }
+            .demo-intro { min-height: 8.25rem; margin-bottom: 1.15rem; }
+            .carousel { gap: 0; }
+            .carousel-btn { width: 40px; height: 40px; }
+            .carousel-btn svg { width: 24px; height: 24px; }
+            .carousel-viewport { max-width: 280px; }
         }
     </style>
 </head>
@@ -232,76 +341,205 @@
     </header>
 
     <main id="demos">
-        <h1>Demo</h1>
-        <p class="lede">Product clips — sticker posting and fan-group boards. Open a clip for the full demo.</p>
-
-        <div class="demo-grid">
-            <article class="demo-card">
-                <a class="demo-card-link" href="/aug/investors/demo/posting1/">
-                    <video
-                        src="/assets/videos/aug/demo/sticker-posting-0.mp4"
-                        autoplay
-                        muted
-                        loop
-                        playsinline
-                        preload="metadata"
-                        aria-label="General sticker posting demo"
-                    ></video>
-                    <h2>General Sticker Posting</h2>
-                </a>
-            </article>
-
-            <article class="demo-card">
-                <a class="demo-card-link" href="/aug/investors/demo/anime/">
-                    <video
-                        src="/assets/videos/aug/demo/anime-fan-group.mp4"
-                        autoplay
-                        muted
-                        loop
-                        playsinline
-                        preload="metadata"
-                        aria-label="Anime fan group demo"
-                    ></video>
-                    <h2>Anime Fan Group</h2>
-                </a>
-            </article>
-
-            <article class="demo-card">
-                <a class="demo-card-link" href="/aug/investors/demo/posting2/">
-                    <video
-                        src="/assets/videos/aug/demo/sticker-posting-1.mp4"
-                        autoplay
-                        muted
-                        loop
-                        playsinline
-                        preload="metadata"
-                        aria-label="General sticker posting demo 2"
-                    ></video>
-                    <h2>General Sticker Posting (2)</h2>
-                </a>
-            </article>
-
-            <article class="demo-card">
-                <a class="demo-card-link" href="/aug/investors/demo/kpop/">
-                    <video
-                        src="/assets/videos/aug/demo/kpop-fan-group.mp4"
-                        autoplay
-                        muted
-                        loop
-                        playsinline
-                        preload="metadata"
-                        aria-label="K-pop idol fan group post demo"
-                    ></video>
-                    <h2>K-pop Idol Fan Group</h2>
-                </a>
-            </article>
+        <div class="demo-intro" aria-live="polite">
+            <p class="demo-kicker" data-kicker>Sticker posting</p>
+            <h1 data-heading>Leave stickers in the world</h1>
+            <p class="lede" data-lede>Drop AR stickers into the camera scene in seconds — content that lives on the place, not in a feed.</p>
         </div>
+
+        <div class="carousel" data-carousel>
+            <button type="button" class="carousel-btn" data-prev aria-label="Previous demo">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M15 5L8 12l7 7" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+
+            <div class="carousel-viewport" aria-roledescription="carousel" aria-label="Demo videos">
+                <div class="carousel-track" data-track>
+                    <article
+                        class="carousel-slide"
+                        data-href="/aug/investors/demo/posting1/"
+                        data-kicker="Sticker posting"
+                        data-heading="Leave stickers in the world"
+                        data-lede="Drop AR stickers into the camera scene in seconds — content that lives on the place, not in a feed."
+                    >
+                        <video
+                            src="/assets/videos/aug/demo/sticker-posting-0.mp4"
+                            muted
+                            loop
+                            playsinline
+                            preload="metadata"
+                            aria-label="General sticker posting demo"
+                        ></video>
+                    </article>
+                    <article
+                        class="carousel-slide"
+                        data-href="/aug/investors/demo/anime/"
+                        data-kicker="Anime fandom"
+                        data-heading="Anime energy, left in place"
+                        data-lede="Turn fan hangouts into shared augmented boards — reactions, stickers, and posts tied to the location."
+                    >
+                        <video
+                            src="/assets/videos/aug/demo/anime-fan-group.mp4"
+                            muted
+                            loop
+                            playsinline
+                            preload="metadata"
+                            aria-label="Anime fan group demo"
+                        ></video>
+                    </article>
+                    <article
+                        class="carousel-slide"
+                        data-href="/aug/investors/demo/posting2/"
+                        data-kicker="Sticker posting"
+                        data-heading="Post what happens here"
+                        data-lede="Capture the moment with spatial stickers and share them where they belong — right in the scene."
+                    >
+                        <video
+                            src="/assets/videos/aug/demo/sticker-posting-1.mp4"
+                            muted
+                            loop
+                            playsinline
+                            preload="metadata"
+                            aria-label="General sticker posting demo 2"
+                        ></video>
+                    </article>
+                    <article
+                        class="carousel-slide"
+                        data-href="/aug/investors/demo/kpop/"
+                        data-kicker="K-pop fandom"
+                        data-heading="Idol fandom, on location"
+                        data-lede="Concert venues, pop-ups, and fan spots become persistent boards for messages, stickers, and fan content."
+                    >
+                        <video
+                            src="/assets/videos/aug/demo/kpop-fan-group.mp4"
+                            muted
+                            loop
+                            playsinline
+                            preload="metadata"
+                            aria-label="K-pop idol fan group post demo"
+                        ></video>
+                    </article>
+                </div>
+            </div>
+
+            <button type="button" class="carousel-btn" data-next aria-label="Next demo">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="carousel-meta">
+            <a data-permalink href="/aug/investors/demo/posting1/">Open this demo →</a>
+            <p class="audio-hint" data-audio-hint>Tap video for sound</p>
+        </div>
+
+        <div class="carousel-dots" data-dots role="tablist" aria-label="Choose demo"></div>
+        <p class="carousel-count" data-count aria-live="polite">1 / 4</p>
     </main>
 
     <script>
-        document.querySelectorAll('.demo-card video').forEach((video) => {
-            video.play().catch(() => {});
-        });
+        (function () {
+            const root = document.querySelector('[data-carousel]');
+            const track = root.querySelector('[data-track]');
+            const slides = Array.from(track.querySelectorAll('.carousel-slide'));
+            const prevBtn = root.querySelector('[data-prev]');
+            const nextBtn = root.querySelector('[data-next]');
+            const dotsWrap = document.querySelector('[data-dots]');
+            const kickerEl = document.querySelector('[data-kicker]');
+            const headingEl = document.querySelector('[data-heading]');
+            const ledeEl = document.querySelector('[data-lede]');
+            const linkEl = document.querySelector('[data-permalink]');
+            const countEl = document.querySelector('[data-count]');
+            const hintEl = document.querySelector('[data-audio-hint]');
+            const videos = slides.map((slide) => slide.querySelector('video'));
+
+            let index = 0;
+            let audioUnlocked = false;
+            let touchStartX = 0;
+
+            slides.forEach((_, i) => {
+                const dot = document.createElement('button');
+                dot.type = 'button';
+                dot.className = 'carousel-dot';
+                dot.setAttribute('role', 'tab');
+                dot.setAttribute('aria-label', 'Go to demo ' + (i + 1));
+                dot.addEventListener('click', () => goTo(i));
+                dotsWrap.appendChild(dot);
+            });
+
+            const dots = Array.from(dotsWrap.children);
+
+            function syncPlayback() {
+                videos.forEach((video, i) => {
+                    if (i === index) {
+                        video.muted = !audioUnlocked;
+                        video.play().catch(() => {});
+                    } else {
+                        video.pause();
+                        video.muted = true;
+                        try { video.currentTime = 0; } catch (_) {}
+                    }
+                });
+            }
+
+            function render() {
+                track.style.transform = 'translateX(-' + (index * 100) + '%)';
+                const slide = slides[index];
+                kickerEl.textContent = slide.dataset.kicker;
+                headingEl.textContent = slide.dataset.heading;
+                ledeEl.textContent = slide.dataset.lede;
+                linkEl.href = slide.dataset.href;
+                document.title = 'Aug — ' + slide.dataset.heading;
+                countEl.textContent = (index + 1) + ' / ' + slides.length;
+                prevBtn.disabled = index === 0;
+                nextBtn.disabled = index === slides.length - 1;
+                dots.forEach((dot, i) => {
+                    dot.setAttribute('aria-current', i === index ? 'true' : 'false');
+                });
+                syncPlayback();
+            }
+
+            function goTo(next) {
+                index = Math.max(0, Math.min(slides.length - 1, next));
+                render();
+            }
+
+            function unlockAudio() {
+                audioUnlocked = true;
+                hintEl.classList.add('is-hidden');
+                const active = videos[index];
+                active.muted = false;
+                active.play().catch(() => {});
+            }
+
+            prevBtn.addEventListener('click', () => goTo(index - 1));
+            nextBtn.addEventListener('click', () => goTo(index + 1));
+
+            videos.forEach((video) => {
+                video.addEventListener('click', unlockAudio);
+            });
+            hintEl.addEventListener('click', unlockAudio);
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') goTo(index - 1);
+                if (e.key === 'ArrowRight') goTo(index + 1);
+            });
+
+            const viewport = root.querySelector('.carousel-viewport');
+            viewport.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].clientX;
+            }, { passive: true });
+            viewport.addEventListener('touchend', (e) => {
+                const dx = e.changedTouches[0].clientX - touchStartX;
+                if (Math.abs(dx) < 40) return;
+                if (dx < 0) goTo(index + 1);
+                else goTo(index - 1);
+            }, { passive: true });
+
+            render();
+        })();
     </script>
 </body>
 </html>

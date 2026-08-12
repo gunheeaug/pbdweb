@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aug — Posting Demo 1</title>
-    <meta name="description" content="Aug demo — General Sticker Posting.">
+    <title>Aug — Leave stickers in the world</title>
+    <meta name="description" content="Drop AR stickers into the camera scene in seconds — content that lives on the place, not in a feed.">
     <meta name="robots" content="noindex">
 
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://pbd.team/aug/investors/demo/posting1/">
-    <meta property="og:title" content="Aug — Posting Demo 1">
-    <meta property="og:description" content="Aug demo — General Sticker Posting.">
+    <meta property="og:title" content="Aug — Leave stickers in the world">
+    <meta property="og:description" content="Drop AR stickers into the camera scene in seconds — content that lives on the place, not in a feed.">
     <meta property="og:image" content="https://pbd.team/assets/images/aug Thumbnail.png">
 
     <link rel="icon" type="image/png" href="/assets/images/aug-icon.png">
@@ -129,16 +129,33 @@
         main {
             max-width: 480px;
             margin: 0 auto;
-            padding: calc(var(--nav-h) + 32px) 24px 64px;
+            padding: calc(var(--nav-h) + 28px) 24px 64px;
             text-align: center;
+        }
+
+        .demo-kicker {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 0.55rem;
         }
 
         h1 {
             font-family: var(--font-display);
-            font-size: clamp(1.75rem, 4vw, 2.25rem);
+            font-size: clamp(1.85rem, 4vw, 2.4rem);
             letter-spacing: -0.03em;
-            line-height: 1.15;
-            margin-bottom: 1.5rem;
+            line-height: 1.12;
+            margin-bottom: 0.55rem;
+        }
+
+        .lede {
+            font-size: clamp(1rem, 1.5vw, 1.1rem);
+            color: #3A3A38;
+            line-height: 1.45;
+            margin: 0 auto 1.5rem;
+            max-width: 34rem;
         }
 
         video {
@@ -188,7 +205,9 @@
     </header>
 
     <main>
-        <h1>General Sticker Posting</h1>
+        <p class="demo-kicker">Sticker posting</p>
+        <h1>Leave stickers in the world</h1>
+        <p class="lede">Drop AR stickers into the camera scene in seconds — content that lives on the place, not in a feed.</p>
         <video
             id="demo"
             src="/assets/videos/aug/demo/sticker-posting-0.mp4"
