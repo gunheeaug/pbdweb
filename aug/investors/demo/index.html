@@ -179,6 +179,12 @@
             min-width: 0;
         }
 
+        .demo-card-link {
+            display: block;
+            text-decoration: none !important;
+            color: inherit;
+        }
+
         .demo-card video {
             display: block;
             width: 100%;
@@ -190,6 +196,7 @@
             background: #111;
             box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
             cursor: pointer;
+            pointer-events: none;
         }
 
         .demo-card h2 {
@@ -199,19 +206,6 @@
             letter-spacing: -0.015em;
             margin-top: 0.85rem;
             text-align: center;
-        }
-
-        .audio-hint {
-            text-align: center;
-            font-size: 0.8125rem;
-            font-weight: 500;
-            color: #007AFF;
-            margin-top: 0.35rem;
-            cursor: pointer;
-        }
-
-        .audio-hint.is-hidden {
-            display: none;
         }
 
         @media (max-width: 899px) {
@@ -239,105 +233,74 @@
 
     <main id="demos">
         <h1>Demo</h1>
-        <p class="lede">Product clips — sticker posting and fan-group boards. Tap a video for sound.</p>
+        <p class="lede">Product clips — sticker posting and fan-group boards. Open a clip for the full demo.</p>
 
         <div class="demo-grid">
             <article class="demo-card">
-                <video
-                    id="demo1"
-                    src="/assets/videos/aug/demo/sticker-posting-0.mp4"
-                    autoplay
-                    muted
-                    loop
-                    playsinline
-                    preload="metadata"
-                    aria-label="General sticker posting demo"
-                ></video>
-                <h2>General Sticker Posting</h2>
-                <p class="audio-hint">Tap for sound</p>
+                <a class="demo-card-link" href="/aug/investors/demo/posting1/">
+                    <video
+                        src="/assets/videos/aug/demo/sticker-posting-0.mp4"
+                        autoplay
+                        muted
+                        loop
+                        playsinline
+                        preload="metadata"
+                        aria-label="General sticker posting demo"
+                    ></video>
+                    <h2>General Sticker Posting</h2>
+                </a>
             </article>
 
             <article class="demo-card">
-                <video
-                    id="demo2"
-                    src="/assets/videos/aug/demo/anime-fan-group.mp4"
-                    autoplay
-                    muted
-                    loop
-                    playsinline
-                    preload="metadata"
-                    aria-label="Anime fan group demo"
-                ></video>
-                <h2>Anime Fan Group</h2>
-                <p class="audio-hint">Tap for sound</p>
+                <a class="demo-card-link" href="/aug/investors/demo/anime/">
+                    <video
+                        src="/assets/videos/aug/demo/anime-fan-group.mp4"
+                        autoplay
+                        muted
+                        loop
+                        playsinline
+                        preload="metadata"
+                        aria-label="Anime fan group demo"
+                    ></video>
+                    <h2>Anime Fan Group</h2>
+                </a>
             </article>
 
             <article class="demo-card">
-                <video
-                    id="demo3"
-                    src="/assets/videos/aug/demo/sticker-posting-1.mp4"
-                    autoplay
-                    muted
-                    loop
-                    playsinline
-                    preload="metadata"
-                    aria-label="General sticker posting demo 2"
-                ></video>
-                <h2>General Sticker Posting (2)</h2>
-                <p class="audio-hint">Tap for sound</p>
+                <a class="demo-card-link" href="/aug/investors/demo/posting2/">
+                    <video
+                        src="/assets/videos/aug/demo/sticker-posting-1.mp4"
+                        autoplay
+                        muted
+                        loop
+                        playsinline
+                        preload="metadata"
+                        aria-label="General sticker posting demo 2"
+                    ></video>
+                    <h2>General Sticker Posting (2)</h2>
+                </a>
             </article>
 
             <article class="demo-card">
-                <video
-                    id="demo4"
-                    src="/assets/videos/aug/demo/kpop-fan-group.mp4"
-                    autoplay
-                    muted
-                    loop
-                    playsinline
-                    preload="metadata"
-                    aria-label="K-pop idol fan group post demo"
-                ></video>
-                <h2>K-pop Idol Fan Group</h2>
-                <p class="audio-hint">Tap for sound</p>
+                <a class="demo-card-link" href="/aug/investors/demo/kpop/">
+                    <video
+                        src="/assets/videos/aug/demo/kpop-fan-group.mp4"
+                        autoplay
+                        muted
+                        loop
+                        playsinline
+                        preload="metadata"
+                        aria-label="K-pop idol fan group post demo"
+                    ></video>
+                    <h2>K-pop Idol Fan Group</h2>
+                </a>
             </article>
         </div>
     </main>
 
     <script>
-        const videos = Array.from(document.querySelectorAll('.demo-card video'));
-        let audioUnlocked = false;
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                const video = entry.target;
-                if (entry.isIntersecting) {
-                    video.play().catch(() => {});
-                    if (audioUnlocked) video.muted = false;
-                } else {
-                    video.muted = true;
-                }
-            });
-        }, { threshold: 0.45 });
-
-        function unlockAudio(targetVideo) {
-            audioUnlocked = true;
-            document.querySelectorAll('.audio-hint').forEach((h) => h.classList.add('is-hidden'));
-            videos.forEach((v) => {
-                const rect = v.getBoundingClientRect();
-                const visible = rect.top < window.innerHeight && rect.bottom > 0;
-                if (v === targetVideo || visible) {
-                    v.muted = false;
-                    v.play().catch(() => {});
-                }
-            });
-        }
-
-        videos.forEach((video) => {
-            observer.observe(video);
-            video.addEventListener('click', () => unlockAudio(video));
-            const hint = video.parentElement.querySelector('.audio-hint');
-            if (hint) hint.addEventListener('click', () => unlockAudio(video));
+        document.querySelectorAll('.demo-card video').forEach((video) => {
+            video.play().catch(() => {});
         });
     </script>
 </body>

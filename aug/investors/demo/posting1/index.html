@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aug — Posting Demo 1</title>
+    <meta name="description" content="Aug demo — General Sticker Posting.">
+    <meta name="robots" content="noindex">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://pbd.team/aug/investors/demo/posting1/">
+    <meta property="og:title" content="Aug — Posting Demo 1">
+    <meta property="og:description" content="Aug demo — General Sticker Posting.">
+    <meta property="og:image" content="https://pbd.team/assets/images/aug Thumbnail.png">
+
+    <link rel="icon" type="image/png" href="/assets/images/aug-icon.png">
+    <link rel="apple-touch-icon" href="/assets/images/aug-icon.png">
+    <link href="/assets/fonts/CalSans-Regular.ttf" rel="preload" as="font" type="font/ttf" crossorigin="anonymous">
+
+    <style>
+        @font-face {
+            font-family: "Cal Sans";
+            src: url("/assets/fonts/CalSans-Regular.ttf") format("truetype");
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        :root {
+            --neon: #B0F600;
+            --black: #0A0A0A;
+            --white: #FFFFFF;
+            --muted: #8A8A86;
+            --nav-h: 64px;
+            --font-display: "Cal Sans", system-ui, sans-serif;
+            --font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--black);
+            background: var(--white);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            min-height: 100dvh;
+        }
+
+        a { color: inherit; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        :focus-visible { outline: 2px solid var(--neon); outline-offset: 3px; }
+
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            height: var(--nav-h);
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .site-nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            height: 100%;
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-display);
+            font-size: 1.35rem;
+            letter-spacing: -0.03em;
+            text-decoration: none !important;
+            color: var(--black);
+        }
+
+        .brand picture { display: contents; }
+
+        .brand-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: block;
+            flex-shrink: 0;
+        }
+
+        .brand-label {
+            display: inline-flex;
+            align-items: baseline;
+            position: relative;
+            top: -2px;
+            line-height: 1;
+        }
+
+        .brand-section {
+            font-size: 1.05rem;
+            color: var(--muted);
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .nav-links a {
+            font-size: 0.8125rem;
+            font-weight: 600;
+            text-decoration: none !important;
+            color: var(--black);
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-links a:hover {
+            border-bottom-color: var(--neon);
+        }
+
+        main {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: calc(var(--nav-h) + 32px) 24px 64px;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: var(--font-display);
+            font-size: clamp(1.75rem, 4vw, 2.25rem);
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            margin-bottom: 1.5rem;
+        }
+
+        video {
+            display: block;
+            width: 100%;
+            max-width: 360px;
+            margin: 0 auto;
+            aspect-ratio: 9 / 19.5;
+            object-fit: cover;
+            border-radius: 24px;
+            background: #111;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+            cursor: pointer;
+        }
+
+        .audio-hint {
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: #007AFF;
+            margin-top: 0.75rem;
+            cursor: pointer;
+        }
+
+        .audio-hint.is-hidden { display: none; }
+
+        @media (max-width: 899px) {
+            .site-nav { padding: 0 20px; }
+            video { max-width: 280px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <nav class="site-nav" aria-label="Demo navigation">
+            <a class="brand" href="/aug/investors/">
+                <picture>
+                    <source srcset="/assets/images/aug-icon.webp" type="image/webp">
+                    <img src="/assets/images/aug-icon.png" alt="" class="brand-icon" width="28" height="28" decoding="async">
+                </picture>
+                <span class="brand-label"><span class="brand-text">aug</span><span class="brand-section">/Investors</span></span>
+            </a>
+            <div class="nav-links">
+                <a href="/aug/investors/demo/">All demos</a>
+                <a href="/aug/investors/">Pitch</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <h1>General Sticker Posting</h1>
+        <video
+            id="demo"
+            src="/assets/videos/aug/demo/sticker-posting-0.mp4"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            aria-label="General sticker posting demo"
+        ></video>
+        <p class="audio-hint">Tap for sound</p>
+    </main>
+
+    <script>
+        const video = document.getElementById('demo');
+        const hint = document.querySelector('.audio-hint');
+
+        function unlockAudio() {
+            video.muted = false;
+            video.play().catch(() => {});
+            hint.classList.add('is-hidden');
+        }
+
+        video.addEventListener('click', unlockAudio);
+        hint.addEventListener('click', unlockAudio);
+        video.play().catch(() => {});
+    </script>
+</body>
+</html>
