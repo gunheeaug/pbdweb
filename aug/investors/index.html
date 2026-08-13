@@ -747,8 +747,9 @@
         #pbd .app-card-icon {
             width: 64px;
             height: 64px;
-            border-radius: 14px;
-            border: 1px solid rgba(0, 0, 0, 0.08);
+            /* Pre-masked squircle PNGs — CSS border/radius draws a different curve and gaps */
+            border: none;
+            border-radius: 0;
             flex-shrink: 0;
         }
 

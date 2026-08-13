@@ -94,8 +94,9 @@
         .app-icon {
             width: 120px;
             height: 120px;
-            border-radius: 26px;
-            border: 1px solid rgba(0, 0, 0, 0.08);
+            /* Pre-masked squircle PNGs — CSS border/radius draws a different curve and gaps */
+            border: none;
+            border-radius: 0;
             flex-shrink: 0;
         }
         
@@ -438,7 +439,6 @@
             .app-icon {
                 width: 80px;
                 height: 80px;
-                border-radius: 18px;
             }
 
             .app-info {
