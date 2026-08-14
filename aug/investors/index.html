@@ -568,8 +568,8 @@
         }
 
         #gtm .gtm-video-row {
-            display: grid;
-            grid-template-columns: 1fr;
+            display: flex;
+            flex-direction: column;
             gap: 1.1rem;
             margin-top: 1.5rem;
             width: 100%;
@@ -580,6 +580,7 @@
             max-width: none;
             margin: 0;
             min-width: 0;
+            flex: 1 1 0;
         }
 
         #gtm .gtm-video video {
@@ -592,9 +593,9 @@
 
         @media (min-width: 900px) {
             #gtm .gtm-video-row {
-                grid-template-columns: 1fr 1fr;
-                column-gap: 28px;
-                row-gap: 0;
+                flex-direction: row;
+                align-items: start;
+                gap: 28px;
                 margin-top: 1.75rem;
             }
         }
@@ -1076,7 +1077,7 @@
                 <hr class="rule">
                 <h3>Then Expand</h3>
                 <p>Fandom locations → broader place-based social communities → a wider spatial content network, including Out-of-Home (OOH) and brand moments as the network grows.</p>
-                <div class="gtm-video-row">
+                <div class="gtm-video-row" aria-label="Go-to-market demo videos">
                     <div class="gtm-video">
                         <video
                             src="/assets/videos/aug/aug%20find%20my%20idol.mp4"
