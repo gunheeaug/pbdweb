@@ -567,10 +567,19 @@
             border-radius: 12px;
         }
 
+        #gtm .gtm-video-row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.1rem;
+            margin-top: 1.5rem;
+            width: 100%;
+        }
+
         #gtm .gtm-video {
             width: 100%;
-            max-width: 40rem;
+            max-width: none;
             margin: 0;
+            min-width: 0;
         }
 
         #gtm .gtm-video video {
@@ -579,6 +588,15 @@
             border-radius: 20px;
             background: #111;
             box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+        }
+
+        @media (min-width: 900px) {
+            #gtm .gtm-video-row {
+                grid-template-columns: 1fr 1fr;
+                column-gap: 28px;
+                row-gap: 0;
+                margin-top: 1.75rem;
+            }
         }
 
         /* Desktop: keep media-splits single-column (copy, then media) */
@@ -613,20 +631,6 @@
             .media-split .lidar-callout-image {
                 max-width: 240px;
                 margin: 0 auto;
-            }
-
-            #gtm .media-split .gtm-video {
-                margin: 0;
-                max-width: none;
-            }
-
-            #gtm .media-split + p {
-                margin-top: 1.25rem;
-                max-width: none;
-            }
-
-            #gtm .media-split + .rule {
-                margin-top: 1.75rem;
             }
         }
 
@@ -699,7 +703,8 @@
             }
 
             .deck-section:not(#overview) .lidar-callout-image {
-                max-width: 520px;
+                max-width: 240px;
+                margin: 0 auto;
             }
         }
 
@@ -1066,10 +1071,12 @@
                 <h2>Go-to-Market</h2>
                 <hr class="rule">
                 <h3>Wedge: K-pop and Anime Fandoms</h3>
-                <div class="media-split">
-                    <div class="media-split-copy">
-                        <p><strong>We start by turning meaningful fan locations</strong>—concert venues, pop-ups, event spaces, outdoor billboards, and other places tied to a favorite idol or character—into shared augmented spaces.</p>
-                    </div>
+                <p><strong>We start by turning meaningful fan locations</strong>—concert venues, pop-ups, event spaces, outdoor billboards, and other places tied to a favorite idol or character—into shared augmented spaces.</p>
+                <p>Fans open Aug at these locations and interact through <strong>a persistent augmented board,</strong> leaving supportive messages, posting reactions, sharing stickers and fan-created content, and discovering what other fans have left behind.</p>
+                <hr class="rule">
+                <h3>Then Expand</h3>
+                <p>Fandom locations → broader place-based social communities → a wider spatial content network, including Out-of-Home (OOH) and brand moments as the network grows.</p>
+                <div class="gtm-video-row">
                     <div class="gtm-video">
                         <video
                             src="/assets/videos/aug/aug%20find%20my%20idol.mp4"
@@ -1080,14 +1087,6 @@
                             preload="metadata"
                             aria-label="Aug K-pop fandom AR demo"
                         ></video>
-                    </div>
-                </div>
-                <p>Fans open Aug at these locations and interact through <strong>a persistent augmented board,</strong> leaving supportive messages, posting reactions, sharing stickers and fan-created content, and discovering what other fans have left behind.</p>
-                <hr class="rule">
-                <h3>Then Expand</h3>
-                <div class="media-split">
-                    <div class="media-split-copy">
-                        <p>Fandom locations → broader place-based social communities → a wider spatial content network, including Out-of-Home (OOH) and brand moments as the network grows.</p>
                     </div>
                     <div class="gtm-video">
                         <video
