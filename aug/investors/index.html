@@ -670,6 +670,35 @@
             max-width: 40rem;
         }
 
+        /* Desktop: single-column sections fill the same width as Overview text+video */
+        @media (min-width: 900px) {
+            .deck-section:not(#overview) .inner {
+                max-width: 1120px;
+            }
+
+            .deck-section:not(#overview) .stack,
+            .deck-section:not(#overview) .stack > li,
+            .deck-section:not(#overview) p,
+            .deck-section:not(#overview) .lede,
+            .deck-section:not(#overview) .stack p,
+            .deck-section:not(#overview) .rule,
+            .deck-section:not(#overview) h2,
+            .deck-section:not(#overview) h3,
+            .deck-section:not(#overview) .media-split,
+            .deck-section:not(#overview) .media-split-copy,
+            .deck-section:not(#overview) .media-split-copy p,
+            .deck-section:not(#overview) .gtm-video,
+            .deck-section:not(#overview) .lidar-callout,
+            #gtm .gtm-video,
+            #gtm .media-split .gtm-video {
+                max-width: none;
+            }
+
+            .deck-section:not(#overview) .lidar-callout-image {
+                max-width: 520px;
+            }
+        }
+
         .deck-section p,
         .deck-section .lede,
         .deck-section .stack p {
