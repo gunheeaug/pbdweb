@@ -1,4 +1,4 @@
-import type { ProductId, ProductMetrics } from "./lib.ts";
+import { secret, type ProductId, type ProductMetrics } from "./lib.ts";
 
 type FetchFn = typeof fetch;
 
@@ -7,8 +7,8 @@ export async function loadAugclaw(): Promise<ProductMetrics> {
 }
 
 export async function loadAug(fetchFn: FetchFn = fetch): Promise<ProductMetrics> {
-  const bearer = Deno.env.get("AUG_ADMIN_BEARER");
-  const base = Deno.env.get("AUG_ADMIN_API_URL") || "https://dev-admin-api.aug.ooo";
+  const bearer = secret("AUG_ADMIN_BEARER");
+  const base = secret("AUG_ADMIN_API_URL") || "https://dev-admin-api.aug.ooo";
   if (!bearer) throw new Error("missing AUG_ADMIN_BEARER");
   const res = await fetchFn(`${base}/admin/analytics`, {
     headers: { Authorization: `Bearer ${bearer}` },
@@ -26,9 +26,9 @@ export async function loadAug(fetchFn: FetchFn = fetch): Promise<ProductMetrics>
 }
 
 export async function loadSuperba(fetchFn: FetchFn = fetch): Promise<ProductMetrics> {
-  const url = Deno.env.get("SUPERBA_SUPABASE_URL");
-  const anon = Deno.env.get("SUPERBA_ANON_KEY");
-  const pw = Deno.env.get("SUPERBA_ADMIN_PASSWORD");
+  const url = secret("SUPERBA_SUPABASE_URL");
+  const anon = secret("SUPERBA_ANON_KEY");
+  const pw = secret("SUPERBA_ADMIN_PASSWORD");
   if (!url || !anon || !pw) throw new Error("missing Superba secrets");
   const res = await fetchFn(`${url}/functions/v1/admin_metrics?limit=1`, {
     headers: { Authorization: `Bearer ${anon}`, "x-admin-password": pw },
@@ -52,9 +52,15 @@ export type RpcClient = {
 };
 
 export async function loadGather(client?: RpcClient): Promise<ProductMetrics> {
+  if (!client && !secret("GATHER_SERVICE_ROLE_KEY")) {
+    return await loadFromSummary(
+      secret("GATHER_SUMMARY_URL") ||
+        "https://gtwxclrlqmbbrbkuvude.supabase.co/functions/v1/pbd-summary",
+    );
+  }
   const c = client ?? gatherClient();
   const { data, error } = await c.rpc("admin_dashboard", {
-    p_password: Deno.env.get("GATHER_ADMIN_PASSWORD") ?? "",
+    p_password: secret("GATHER_ADMIN_PASSWORD") ?? "",
   });
   if (error) throw new Error(error.message);
   const d = data as { total: number; onboarded: number; dau: number; wau: number; mau: number };
@@ -68,8 +74,8 @@ export async function loadGather(client?: RpcClient): Promise<ProductMetrics> {
 }
 
 function gatherClient(): RpcClient {
-  const url = Deno.env.get("GATHER_SUPABASE_URL");
-  const key = Deno.env.get("GATHER_SERVICE_ROLE_KEY");
+  const url = secret("GATHER_SUPABASE_URL");
+  const key = secret("GATHER_SERVICE_ROLE_KEY");
   if (!url || !key) throw new Error("missing Gather secrets");
   return {
     async rpc(fn, args) {
@@ -113,8 +119,8 @@ export async function loadGosoomap(
 ): Promise<ProductMetrics> {
   const rows = listUsers ?? (() =>
     pageAuthUsers(
-      Deno.env.get("GOSOOMAP_SUPABASE_URL"),
-      Deno.env.get("GOSOOMAP_SERVICE_ROLE_KEY"),
+      secret("GOSOOMAP_SUPABASE_URL"),
+      secret("GOSOOMAP_SERVICE_ROLE_KEY"),
     ));
   const a = await countAuthActivity(rows);
   return {
@@ -130,15 +136,21 @@ export async function loadCrema(
   listUsers?: () => Promise<{ created_at?: string; last_sign_in_at?: string }[]>,
   countWaitlist?: () => Promise<number>,
 ): Promise<ProductMetrics> {
+  if (!listUsers && !countWaitlist && !secret("CREMA_SERVICE_ROLE_KEY")) {
+    return await loadFromSummary(
+      secret("CREMA_SUMMARY_URL") ||
+        "https://jantbnwrzeyvfblschct.supabase.co/functions/v1/pbd-summary",
+    );
+  }
   const rows = listUsers ?? (() =>
     pageAuthUsers(
-      Deno.env.get("CREMA_SUPABASE_URL"),
-      Deno.env.get("CREMA_SERVICE_ROLE_KEY"),
+      secret("CREMA_SUPABASE_URL"),
+      secret("CREMA_SERVICE_ROLE_KEY"),
     ));
   const wait = countWaitlist ?? (() =>
     countTable(
-      Deno.env.get("CREMA_SUPABASE_URL"),
-      Deno.env.get("CREMA_SERVICE_ROLE_KEY"),
+      secret("CREMA_SUPABASE_URL"),
+      secret("CREMA_SERVICE_ROLE_KEY"),
       "waitlist_submissions",
     ));
   const a = await countAuthActivity(rows);
@@ -159,6 +171,12 @@ export type ShotupClient = {
 };
 
 export async function loadShotup(client?: ShotupClient): Promise<ProductMetrics> {
+  if (!client && !secret("SHOTUP_SERVICE_ROLE_KEY")) {
+    return await loadFromSummary(
+      secret("SHOTUP_SUMMARY_URL") ||
+        "https://ipsalcfuqftizwfphcqn.supabase.co/functions/v1/pbd-summary",
+    );
+  }
   const c = client ?? shotupClient();
   const day = 86400000;
   const [users, sources, dau, wau, mau] = await Promise.all([
@@ -172,8 +190,8 @@ export async function loadShotup(client?: ShotupClient): Promise<ProductMetrics>
 }
 
 function shotupClient(): ShotupClient {
-  const url = Deno.env.get("SHOTUP_SUPABASE_URL");
-  const key = Deno.env.get("SHOTUP_SERVICE_ROLE_KEY");
+  const url = secret("SHOTUP_SUPABASE_URL");
+  const key = secret("SHOTUP_SERVICE_ROLE_KEY");
   if (!url || !key) throw new Error("missing Shotup secrets");
   return {
     countUsers: () => countTable(url, key, "users"),
@@ -196,6 +214,25 @@ export const PRODUCTS: {
   { id: "shotup", name: "Shotup AI", adminUrl: null, load: () => loadShotup() },
   { id: "augclaw", name: "augclaw", adminUrl: null, load: () => loadAugclaw() },
 ];
+
+async function loadFromSummary(url: string, fetchFn: FetchFn = fetch): Promise<ProductMetrics> {
+  const password = secret("PBD_ADMIN_PASSWORD") ?? "";
+  const res = await fetchFn(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ password }),
+  });
+  if (!res.ok) throw new Error(`summary ${res.status}`);
+  const d = await res.json();
+  if (d?.error) throw new Error(String(d.error));
+  return {
+    users: num(d.users),
+    dau: num(d.dau),
+    wau: num(d.wau),
+    mau: num(d.mau),
+    extra: String(d.extra ?? ""),
+  };
+}
 
 function num(v: unknown): number | null {
   if (v == null || v === "") return null;

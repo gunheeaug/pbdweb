@@ -45,6 +45,20 @@ export type StatsResponse = {
   cards: Card[];
 };
 
+const secretOverlay: Record<string, string> = {};
+
+export function secret(name: string): string | undefined {
+  return secretOverlay[name] ?? Deno.env.get(name) ?? undefined;
+}
+
+export function applySecrets(rows: { name?: string; value?: string }[]): void {
+  for (const row of rows) {
+    if (row.name && row.value && !secret(row.name)) {
+      secretOverlay[row.name] = row.value;
+    }
+  }
+}
+
 export async function sha256Hex(s: string): Promise<string> {
   const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
   return Array.from(new Uint8Array(digest))

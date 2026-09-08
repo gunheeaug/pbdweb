@@ -1,4 +1,4 @@
-import { passwordOk, settleCard, type Card, type ProductMetrics, type StatsResponse } from "./lib.ts";
+import { applySecrets, passwordOk, settleCard, type Card, type ProductMetrics, type StatsResponse } from "./lib.ts";
 import { PRODUCTS } from "./sources.ts";
 
 const ALLOW_ORIGIN = "https://pbd.team";
@@ -12,6 +12,26 @@ type ProductSpec = {
 };
 
 let cache: { at: number; body: StatsResponse } | null = null;
+let secretsHydrated = false;
+
+async function hydrateSourceSecrets(): Promise<void> {
+  if (secretsHydrated) return;
+  const url = Deno.env.get("SUPABASE_URL");
+  const key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  if (!url || !key) return;
+  try {
+    const res = await fetch(`${url}/rest/v1/admin_source_secrets?select=name,value`, {
+      headers: { apikey: key, Authorization: `Bearer ${key}` },
+    });
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!Array.isArray(data) || data.length === 0) return;
+    applySecrets(data as { name?: string; value?: string }[]);
+    secretsHydrated = true;
+  } catch {
+    // Function env still works if the table is missing.
+  }
+}
 
 function cors(origin: string | null): HeadersInit {
   const allow = origin === ALLOW_ORIGIN ? origin : ALLOW_ORIGIN;
@@ -53,6 +73,8 @@ export async function handleRequest(req: Request, now: () => number = Date.now):
     console.warn("pbd-admin-stats: rejected password");
     return new Response(JSON.stringify({ error: "Forbidden" }), { status: 403, headers });
   }
+
+  await hydrateSourceSecrets();
 
   const t = now();
   if (cache && t - cache.at < CACHE_MS) {
