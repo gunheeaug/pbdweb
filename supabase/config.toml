@@ -1,0 +1,4 @@
+project_id = "jantbnwrzeyvfblschct"
+
+[functions.pbd-admin-stats]
+verify_jwt = false
