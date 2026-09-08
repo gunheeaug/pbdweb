@@ -132,13 +132,13 @@ export async function loadCrema(
 ): Promise<ProductMetrics> {
   const rows = listUsers ?? (() =>
     pageAuthUsers(
-      Deno.env.get("SUPABASE_URL"),
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY"),
+      Deno.env.get("CREMA_SUPABASE_URL"),
+      Deno.env.get("CREMA_SERVICE_ROLE_KEY"),
     ));
   const wait = countWaitlist ?? (() =>
     countTable(
-      Deno.env.get("SUPABASE_URL"),
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY"),
+      Deno.env.get("CREMA_SUPABASE_URL"),
+      Deno.env.get("CREMA_SERVICE_ROLE_KEY"),
       "waitlist_submissions",
     ));
   const a = await countAuthActivity(rows);

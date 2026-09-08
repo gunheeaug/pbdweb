@@ -17,7 +17,7 @@ Gunhee only, in a browser. Not public, not for investors, not for end users.
 
 ## Approach
 
-Keep `pbd.team` on GitHub Pages. The admin page is static HTML. One Edge Function (hosted on the existing Crema Supabase project, already used by pbd.team waitlists) checks the password and pulls stats from each product in parallel.
+Keep `pbd.team` on GitHub Pages. The admin page is static HTML. One Edge Function (hosted on the dedicated pbdweb Supabase project `npzfayefowbeufbrtkxy`) checks the password and pulls stats from each product in parallel. Crema is a data source, not the host.
 
 The password lives only in the Function secret `PBD_ADMIN_PASSWORD`. It is never written into HTML, JS, git, or this spec.
 
