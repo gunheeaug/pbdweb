@@ -16,12 +16,14 @@ export async function loadAug(fetchFn: FetchFn = fetch): Promise<ProductMetrics>
   if (!res.ok) throw new Error(`aug ${res.status}`);
   const body = await res.json();
   const d = body.data ?? body;
+  const new30 = num(d.newUsersLast30Days) ?? 0;
   return {
     users: num(d.totalUsers),
     dau: num(d.dau),
     wau: num(d.wau),
     mau: num(d.mau),
-    extra: `New users (30d) ${num(d.newUsersLast30Days) ?? 0}`,
+    extra: `New users (30d) ${new30}`,
+    details: [{ label: "New users (30d)", value: String(new30) }],
   };
 }
 
@@ -35,12 +37,14 @@ export async function loadSuperba(fetchFn: FetchFn = fetch): Promise<ProductMetr
   });
   if (!res.ok) throw new Error(`superba ${res.status}`);
   const p = await res.json();
+  const runs = num(p.totals?.total_runs) ?? 0;
   return {
     users: num(p.totals?.total_users),
     dau: num(p.active?.dau),
     wau: num(p.active?.wau),
     mau: num(p.active?.mau),
-    extra: `Runs ${num(p.totals?.total_runs) ?? 0}`,
+    extra: `Runs ${runs}`,
+    details: [{ label: "Runs", value: String(runs) }],
   };
 }
 
@@ -64,12 +68,14 @@ export async function loadGather(client?: RpcClient): Promise<ProductMetrics> {
   });
   if (error) throw new Error(error.message);
   const d = data as { total: number; onboarded: number; dau: number; wau: number; mau: number };
+  const onboarded = num(d.onboarded) ?? 0;
   return {
     users: num(d.total),
     dau: num(d.dau),
     wau: num(d.wau),
     mau: num(d.mau),
-    extra: `Onboarded ${num(d.onboarded) ?? 0}`,
+    extra: `Onboarded ${onboarded}`,
+    details: [{ label: "Onboarded", value: String(onboarded) }],
   };
 }
 
@@ -128,7 +134,12 @@ export async function loadGosoomap(
     dau: a.dau,
     wau: a.wau,
     mau: a.mau,
+    last7: a.last7,
     extra: `Signups 7d ${a.last7} · 30d ${a.last30}`,
+    details: [
+      { label: "Signups (7d)", value: String(a.last7) },
+      { label: "Signups (30d)", value: String(a.last30) },
+    ],
   };
 }
 
@@ -160,7 +171,13 @@ export async function loadCrema(
     dau: a.dau,
     wau: a.wau,
     mau: a.mau,
+    last7: a.last7,
     extra: `Waitlist ${w}`,
+    details: [
+      { label: "Waitlist", value: String(w) },
+      { label: "Signups (7d)", value: String(a.last7) },
+      { label: "Signups (30d)", value: String(a.last30) },
+    ],
   };
 }
 
@@ -186,7 +203,14 @@ export async function loadShotup(client?: ShotupClient): Promise<ProductMetrics>
     c.activeUserIds(7 * day),
     c.activeUserIds(30 * day),
   ]);
-  return { users, dau, wau, mau, extra: `Sources ${sources}` };
+  return {
+    users,
+    dau,
+    wau,
+    mau,
+    extra: `Sources ${sources}`,
+    details: [{ label: "Sources", value: String(sources) }],
+  };
 }
 
 function shotupClient(): ShotupClient {
@@ -225,12 +249,21 @@ async function loadFromSummary(url: string, fetchFn: FetchFn = fetch): Promise<P
   if (!res.ok) throw new Error(`summary ${res.status}`);
   const d = await res.json();
   if (d?.error) throw new Error(String(d.error));
+  const details: { label: string; value: string }[] = [];
+  if (d.onboarded != null) details.push({ label: "Onboarded", value: String(num(d.onboarded) ?? 0) });
+  if (d.waitlist != null) details.push({ label: "Waitlist", value: String(num(d.waitlist) ?? 0) });
+  if (d.sources != null) details.push({ label: "Sources", value: String(num(d.sources) ?? 0) });
+  if (d.last7 != null) details.push({ label: "Signups (7d)", value: String(num(d.last7) ?? 0) });
+  if (d.last30 != null) details.push({ label: "Signups (30d)", value: String(num(d.last30) ?? 0) });
+  if (!details.length && d.extra) details.push({ label: "Note", value: String(d.extra) });
   return {
     users: num(d.users),
     dau: num(d.dau),
     wau: num(d.wau),
     mau: num(d.mau),
+    last7: num(d.last7),
     extra: String(d.extra ?? ""),
+    details,
   };
 }
 

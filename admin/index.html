@@ -6,82 +6,346 @@
     <meta name="robots" content="noindex, nofollow">
     <title>PBD Admin</title>
     <style>
+        :root {
+            color-scheme: light dark;
+            --background: #ffffff;
+            --ink: #121212;
+            --hairline: #ebebeb;
+            --canvas: #f5f5f5;
+            --muted: color-mix(in srgb, var(--ink) 40%, transparent);
+            --up: #1a7f4c;
+            --down: #b42318;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --background: #121212;
+                --ink: #f5f5f5;
+                --hairline: #2c2c2c;
+                --canvas: #0a0a0a;
+                --up: #3dba74;
+                --down: #f97066;
+            }
+        }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif; background: #F6F3F0; color: #1d1d1f; }
-        .wrap { max-width: 960px; margin: 0 auto; padding: 40px 20px; }
-        h1 { font-size: 28px; letter-spacing: -0.02em; }
-        h2 { font-size: 18px; font-weight: 650; }
-        .grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
+        body {
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: var(--canvas);
+            color: var(--ink);
+            min-height: 100dvh;
+        }
+        .display {
+            font-family: ui-serif, Georgia, "Times New Roman", serif;
+            font-weight: 300;
+            letter-spacing: -0.05em;
+        }
+        .shell { max-width: 64rem; margin: 0 auto; padding: 2.5rem 1.25rem; }
+        @media (min-width: 768px) { .shell { padding-left: 2rem; padding-right: 2rem; } }
+        .top {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            border-bottom: 1px solid var(--hairline);
+            background: color-mix(in srgb, var(--canvas) 90%, transparent);
+            backdrop-filter: blur(12px);
+        }
+        .top-inner {
+            max-width: 64rem;
+            margin: 0 auto;
+            padding: 0.75rem 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        @media (min-width: 768px) { .top-inner { padding-left: 2rem; padding-right: 2rem; } }
+        .eyebrow {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+        .text-btn {
+            background: none;
+            border: 0;
+            color: var(--ink);
+            font: inherit;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        h1 { font-size: 1.875rem; line-height: 1.15; }
+        .sub { margin-top: 0.5rem; font-size: 14px; color: color-mix(in srgb, var(--ink) 55%, transparent); }
+        .grid { display: grid; gap: 12px; grid-template-columns: 1fr; margin-top: 1.75rem; }
         @media (min-width: 800px) { .grid { grid-template-columns: 1fr 1fr; } }
-        .card { background: #fff; border-radius: 16px; padding: 20px; }
-        .card.error { background: #fff5f5; }
-        .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 16px; }
-        .metrics dt { font-size: 11px; color: #86868b; text-transform: uppercase; }
-        .metrics dd { font-size: 22px; font-weight: 650; font-variant-numeric: tabular-nums; }
-        .extra, .err { margin-top: 12px; font-size: 13px; color: #6e6e73; }
-        .err { color: #b42318; }
-        input, button { font: inherit; }
-        input { width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid #d2d2d7; }
-        button { background: #1d1d1f; color: #fff; border: 0; border-radius: 10px; padding: 10px 16px; cursor: pointer; }
-        a { color: #0066cc; }
+        .card {
+            background: var(--background);
+            border: 1px solid var(--hairline);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: left;
+            width: 100%;
+            color: inherit;
+            cursor: pointer;
+        }
+        .card:hover { border-color: color-mix(in srgb, var(--ink) 28%, var(--hairline)); }
+        .card.error { cursor: pointer; }
+        .card h2 { font-size: 1.5rem; }
+        .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 18px; }
+        .metrics dt, .stat dt { font-size: 11px; color: var(--muted); }
+        .metrics dd, .stat dd {
+            font-size: 1.35rem;
+            font-weight: 500;
+            letter-spacing: -0.03em;
+            font-variant-numeric: tabular-nums;
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .delta {
+            font-size: 11px;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+        }
+        .delta.up { color: var(--up); }
+        .delta.down { color: var(--down); }
+        .delta.flat { color: var(--muted); }
+        .extra { margin-top: 14px; font-size: 13px; color: color-mix(in srgb, var(--ink) 55%, transparent); }
+        .err { margin-top: 12px; font-size: 14px; color: var(--down); }
+        .field {
+            width: 100%;
+            border-radius: 14px;
+            border: 1px solid var(--hairline);
+            padding: 11px 16px;
+            font-size: 16px;
+            outline: none;
+            background: var(--background);
+            color: var(--ink);
+        }
+        .field:focus { border-color: var(--ink); }
+        .go {
+            height: 52px;
+            width: 100%;
+            border: 0;
+            border-radius: 16px;
+            background: var(--ink);
+            color: var(--background);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .login { max-width: 24rem; padding-top: 4rem; }
+        .login form { margin-top: 2rem; display: flex; flex-direction: column; gap: 16px; }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        @media (min-width: 640px) { .stats { grid-template-columns: repeat(5, 1fr); } }
+        .panel { margin-top: 2.5rem; }
+        .panel h3 { font-size: 1.25rem; margin-bottom: 1rem; }
+        .rows { display: grid; gap: 0; border: 1px solid var(--hairline); border-radius: 14px; overflow: hidden; background: var(--background); }
+        .rows div {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 14px 16px;
+            border-top: 1px solid var(--hairline);
+            font-size: 14px;
+        }
+        .rows div:first-child { border-top: 0; }
+        .rows dt { color: var(--muted); }
+        .rows dd { font-variant-numeric: tabular-nums; }
+        .chart { width: 100%; height: auto; display: block; }
+        .muted { color: var(--muted); font-size: 13px; }
         [hidden] { display: none !important; }
     </style>
 </head>
 <body>
-    <div class="wrap">
+    <header class="top" id="app-header" hidden>
+        <div class="top-inner">
+            <p class="eyebrow">Admin</p>
+            <button type="button" class="text-btn" id="header-action">Refresh</button>
+        </div>
+    </header>
+    <div class="shell">
         <section id="login-view">
-            <h1>PBD Admin</h1>
-            <form id="login-form" style="margin-top:24px;max-width:320px;display:flex;flex-direction:column;gap:12px;">
-                <input id="password" type="password" autocomplete="current-password" required>
-                <button type="submit">Continue</button>
-                <p id="login-msg" class="err"></p>
-            </form>
+            <div class="login">
+                <h1 class="display">Admin</h1>
+                <p class="sub">Enter the admin password.</p>
+                <form id="login-form">
+                    <input id="password" class="field" type="password" autocomplete="current-password" placeholder="Password" autofocus required>
+                    <p id="login-msg" class="err"></p>
+                    <button class="go" type="submit">Continue</button>
+                </form>
+            </div>
         </section>
         <section id="dash-view" hidden>
-            <header style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:24px;">
-                <h1>PBD Admin</h1>
-                <button type="button" id="refresh-btn">Refresh</button>
+            <header>
+                <h1 class="display">Overview</h1>
+                <p class="sub">Live users and retention across PBD products. Weekly change is versus last week.</p>
             </header>
             <div id="cards" class="grid"></div>
         </section>
+        <section id="detail-view" hidden></section>
     </div>
     <script>
         const FN = "https://npzfayefowbeufbrtkxy.supabase.co/functions/v1/pbd-admin-stats";
         const PW_KEY = "pbd_admin_pw";
         const $ = (id) => document.getElementById(id);
+        let payload = { generatedAt: "", cards: [] };
 
         function fmt(v) {
             if (v === null || v === undefined) return "—";
             return Number(v).toLocaleString();
         }
 
-        function render(cards) {
-            $("cards").innerHTML = cards.map((c) => {
+        function deltaEl(v) {
+            if (v === null || v === undefined) return "";
+            const cls = v > 0 ? "up" : v < 0 ? "down" : "flat";
+            const sign = v > 0 ? "+" : "";
+            return `<span class="delta ${cls}" title="Weekly change">${sign}${v}%</span>`;
+        }
+
+        function metric(label, value, delta, hint) {
+            return `<div class="stat">
+                <dt>${label}</dt>
+                <dd>${fmt(value)}${deltaEl(delta)}</dd>
+                ${hint ? `<p class="muted">${hint}</p>` : ""}
+            </div>`;
+        }
+
+        function route() {
+            const raw = (location.hash || "").replace(/^#\/?/, "");
+            return raw.split("/")[0] || "";
+        }
+
+        function setHeader(mode) {
+            $("app-header").hidden = mode === "login";
+            const btn = $("header-action");
+            btn.textContent = mode === "detail" ? "Overview" : "Refresh";
+        }
+
+        function show(view) {
+            $("login-view").hidden = view !== "login";
+            $("dash-view").hidden = view !== "dash";
+            $("detail-view").hidden = view !== "detail";
+            setHeader(view);
+        }
+
+        function renderDash() {
+            $("cards").innerHTML = payload.cards.map((c) => {
                 if (c.status === "error") {
-                    return `<article class="card error"><h2>${c.name}</h2><p class="err">불러오지 못함</p></article>`;
+                    return `<button type="button" class="card error" data-id="${c.id}">
+                        <h2 class="display">${c.name}</h2>
+                        <p class="err">불러오지 못함</p>
+                    </button>`;
                 }
-                const stick = c.stickiness == null ? "" : `<p class="extra">Stickiness ${c.stickiness}%</p>`;
-                const link = c.adminUrl ? `<p class="extra"><a href="${c.adminUrl}" target="_blank" rel="noopener">어드민 →</a></p>` : "";
-                return `<article class="card">
-                    <h2>${c.name}</h2>
+                return `<button type="button" class="card" data-id="${c.id}">
+                    <h2 class="display">${c.name}</h2>
                     <dl class="metrics">
-                        <div><dt>Users</dt><dd>${fmt(c.users)}</dd></div>
-                        <div><dt>DAU</dt><dd>${fmt(c.dau)}</dd></div>
-                        <div><dt>WAU</dt><dd>${fmt(c.wau)}</dd></div>
-                        <div><dt>MAU</dt><dd>${fmt(c.mau)}</dd></div>
+                        <div><dt>Users</dt><dd>${fmt(c.users)}${deltaEl(c.usersDelta)}</dd></div>
+                        <div><dt>DAU</dt><dd>${fmt(c.dau)}${deltaEl(c.dauDelta)}</dd></div>
+                        <div><dt>WAU</dt><dd>${fmt(c.wau)}${deltaEl(c.wauDelta)}</dd></div>
+                        <div><dt>MAU</dt><dd>${fmt(c.mau)}${deltaEl(c.mauDelta)}</dd></div>
                     </dl>
-                    ${stick}
                     <p class="extra">${c.extra || ""}</p>
-                    ${link}
-                </article>`;
+                </button>`;
             }).join("");
+        }
+
+        function linePath(points, key, w, h, padL, padR, padT, padB) {
+            const vals = points.map((p) => Number(p[key]) || 0);
+            const max = Math.max(1, ...vals);
+            const innerW = w - padL - padR;
+            const innerH = h - padT - padB;
+            return points.map((p, i) => {
+                const x = padL + (points.length === 1 ? innerW / 2 : (i / (points.length - 1)) * innerW);
+                const y = padT + innerH - ((Number(p[key]) || 0) / max) * innerH;
+                return `${i === 0 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)}`;
+            }).join(" ");
+        }
+
+        function chartSvg(points) {
+            if (!points || points.length < 2) {
+                return `<p class="muted">History starts as this page is opened. Weekly change appears after a week of snapshots.</p>`;
+            }
+            const w = 720, h = 220, padL = 36, padR = 12, padT = 16, padB = 28;
+            const ink = getComputedStyle(document.documentElement).getPropertyValue("--ink").trim() || "#121212";
+            const hair = getComputedStyle(document.documentElement).getPropertyValue("--hairline").trim() || "#ebebeb";
+            const users = linePath(points, "users", w, h, padL, padR, padT, padB);
+            const wau = linePath(points, "wau", w, h, padL, padR, padT, padB);
+            const first = points[0].date.slice(5);
+            const last = points[points.length - 1].date.slice(5);
+            return `<svg class="chart" viewBox="0 0 ${w} ${h}" role="img" aria-label="Users and WAU">
+                <path d="${users}" fill="none" stroke="${ink}" stroke-width="2"/>
+                <path d="${wau}" fill="none" stroke="${ink}" stroke-width="1.25" opacity="0.35"/>
+                <text x="${padL}" y="${h - 8}" font-size="11" fill="${hair === "#2c2c2c" ? "#888" : "#999"}">${first}</text>
+                <text x="${w - padR}" y="${h - 8}" font-size="11" text-anchor="end" fill="${hair === "#2c2c2c" ? "#888" : "#999"}">${last}</text>
+            </svg>
+            <p class="muted" style="margin-top:8px">Users (solid) · WAU (light)</p>`;
+        }
+
+        function renderDetail(id) {
+            const c = payload.cards.find((x) => x.id === id);
+            const view = $("detail-view");
+            if (!c) {
+                view.innerHTML = `<p class="err">Product not found.</p>`;
+                return;
+            }
+            if (c.status === "error") {
+                view.innerHTML = `
+                    <h1 class="display">${c.name}</h1>
+                    <p class="err">${c.error || "불러오지 못함"}</p>`;
+                return;
+            }
+            const details = (c.details || []).map((d) =>
+                `<div><dt>${d.label}</dt><dd>${d.value}</dd></div>`
+            ).join("");
+            const stick = c.stickiness == null ? "" : `<div><dt>Stickiness</dt><dd>${c.stickiness}%</dd></div>`;
+            view.innerHTML = `
+                <header style="border-bottom:1px solid var(--hairline);padding-bottom:1.5rem;">
+                    <h1 class="display">${c.name}</h1>
+                    <p class="sub">Weekly change is versus last week. Missing change shows as — until a week of history exists.</p>
+                    <dl class="stats">
+                        ${metric("Users", c.users, c.usersDelta, "signed up")}
+                        ${metric("DAU", c.dau, c.dauDelta, "last 24 hours")}
+                        ${metric("WAU", c.wau, c.wauDelta, "last 7 days")}
+                        ${metric("MAU", c.mau, c.mauDelta, "last 30 days")}
+                        ${metric("Stickiness", c.stickiness, null, "WAU ÷ MAU")}
+                    </dl>
+                </header>
+                <div class="panel">
+                    <h3 class="display">Trend</h3>
+                    ${chartSvg(c.series)}
+                </div>
+                <div class="panel">
+                    <h3 class="display">More</h3>
+                    <dl class="rows">${details}${stick}</dl>
+                </div>`;
+        }
+
+        function paint() {
+            const password = sessionStorage.getItem(PW_KEY);
+            if (!password) {
+                show("login");
+                return;
+            }
+            if (!payload.cards.length) return;
+            const id = route();
+            if (id) {
+                show("detail");
+                renderDetail(id);
+                return;
+            }
+            show("dash");
+            renderDash();
         }
 
         async function load() {
             const password = sessionStorage.getItem(PW_KEY);
             if (!password) {
-                $("login-view").hidden = false;
-                $("dash-view").hidden = true;
+                show("login");
                 return;
             }
             const res = await fetch(FN, {
@@ -91,19 +355,17 @@
             });
             if (res.status === 403) {
                 sessionStorage.removeItem(PW_KEY);
-                $("login-msg").textContent = "Wrong password.";
-                $("login-view").hidden = false;
-                $("dash-view").hidden = true;
+                $("login-msg").textContent = "Wrong password. Try again.";
+                show("login");
                 return;
             }
             if (!res.ok) {
-                $("login-msg").textContent = "Could not load stats.";
+                $("login-msg").textContent = "Couldn’t load admin stats.";
+                show("login");
                 return;
             }
-            const body = await res.json();
-            $("login-view").hidden = true;
-            $("dash-view").hidden = false;
-            render(body.cards);
+            payload = await res.json();
+            paint();
         }
 
         $("login-form").addEventListener("submit", (e) => {
@@ -111,7 +373,20 @@
             sessionStorage.setItem(PW_KEY, $("password").value);
             load();
         });
-        $("refresh-btn").addEventListener("click", load);
+        $("cards").addEventListener("click", (e) => {
+            const btn = e.target.closest("[data-id]");
+            if (!btn) return;
+            location.hash = `#/${btn.dataset.id}`;
+        });
+        $("header-action").addEventListener("click", () => {
+            if (route()) {
+                location.hash = "";
+                paint();
+                return;
+            }
+            load();
+        });
+        window.addEventListener("hashchange", paint);
         load();
     </script>
 </body>

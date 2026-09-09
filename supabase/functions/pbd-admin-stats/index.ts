@@ -1,4 +1,13 @@
-import { applySecrets, passwordOk, settleCard, type Card, type ProductMetrics, type StatsResponse } from "./lib.ts";
+import {
+  applyHistory,
+  applySecrets,
+  passwordOk,
+  settleCard,
+  type Card,
+  type ProductMetrics,
+  type SnapshotRow,
+  type StatsResponse,
+} from "./lib.ts";
 import { PRODUCTS } from "./sources.ts";
 
 const ALLOW_ORIGIN = "https://pbd.team";
@@ -49,6 +58,48 @@ export async function assembleCards(products: ProductSpec[] = PRODUCTS): Promise
   );
 }
 
+async function attachHistory(cards: Card[], nowMs: number): Promise<Card[]> {
+  const url = Deno.env.get("SUPABASE_URL");
+  const key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  if (!url || !key) return cards;
+  const today = new Date(nowMs).toISOString().slice(0, 10);
+  const headers = {
+    apikey: key,
+    Authorization: `Bearer ${key}`,
+    "Content-Type": "application/json",
+    Prefer: "resolution=merge-duplicates,return=minimal",
+  };
+  const rows = cards
+    .filter((c): c is Extract<Card, { status: "ok" }> => c.status === "ok")
+    .map((c) => ({
+      product_id: c.id,
+      day: today,
+      users: c.users,
+      dau: c.dau,
+      wau: c.wau,
+      mau: c.mau,
+    }));
+  try {
+    if (rows.length) {
+      await fetch(`${url}/rest/v1/admin_stat_snapshots`, {
+        method: "POST",
+        headers,
+        body: JSON.stringify(rows),
+      });
+    }
+    const since = new Date(nowMs - 21 * 86400000).toISOString().slice(0, 10);
+    const res = await fetch(
+      `${url}/rest/v1/admin_stat_snapshots?select=product_id,day,users,dau,wau,mau&day=gte.${since}&order=day.asc`,
+      { headers: { apikey: key, Authorization: `Bearer ${key}` } },
+    );
+    if (!res.ok) return cards;
+    const snapshots = await res.json() as SnapshotRow[];
+    return applyHistory(cards, Array.isArray(snapshots) ? snapshots : [], today);
+  } catch {
+    return cards;
+  }
+}
+
 export async function handleRequest(req: Request, now: () => number = Date.now): Promise<Response> {
   const origin = req.headers.get("Origin");
   const headers = cors(origin);
@@ -81,7 +132,7 @@ export async function handleRequest(req: Request, now: () => number = Date.now):
     return new Response(JSON.stringify(cache.body), { status: 200, headers });
   }
 
-  const cards = await assembleCards();
+  const cards = await attachHistory(await assembleCards(), t);
   const body: StatsResponse = { generatedAt: new Date(t).toISOString(), cards };
   cache = { at: t, body };
   return new Response(JSON.stringify(body), { status: 200, headers });
