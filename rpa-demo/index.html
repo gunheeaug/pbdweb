@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document RPA Demo — Upstage Studio | PBD</title>
+    <meta name="robots" content="noindex">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0b;
+            --bg-2: #111113;
+            --bg-3: #18181b;
+            --border: #27272a;
+            --text: #fafafa;
+            --text-2: #a1a1aa;
+            --text-3: #71717a;
+            --accent: #6366f1;
+            --accent-2: #8b5cf6;
+            --ok: #22c55e;
+            --warn: #f59e0b;
+            --err: #ef4444;
+            --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+        .wrap { max-width: 960px; margin: 0 auto; padding: 48px 20px 80px; }
+        header { margin-bottom: 32px; }
+        header h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; }
+        header h1 span {
+            background: linear-gradient(90deg, var(--accent), var(--accent-2));
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+        }
+        header p { color: var(--text-2); margin-top: 6px; font-size: 15px; }
+        header p a { color: var(--text-2); }
+
+        .card {
+            background: var(--bg-2);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+        .card h2 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-3); margin-bottom: 14px; }
+
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+        label { display: block; font-size: 13px; color: var(--text-2); margin-bottom: 6px; }
+        input[type="text"], input[type="password"], select {
+            width: 100%;
+            background: var(--bg-3);
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 14px;
+            font-family: var(--mono);
+            outline: none;
+        }
+        input:focus, select:focus { border-color: var(--accent); }
+        .row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 12px; font-size: 13px; color: var(--text-2); }
+        .row label { display: inline-flex; align-items: center; gap: 6px; margin: 0; cursor: pointer; }
+        .hint { font-size: 12px; color: var(--text-3); margin-top: 10px; }
+
+        .drop {
+            border: 2px dashed var(--border);
+            border-radius: 14px;
+            padding: 44px 20px;
+            text-align: center;
+            color: var(--text-2);
+            cursor: pointer;
+            transition: border-color .15s, background .15s;
+            margin-bottom: 16px;
+        }
+        .drop:hover, .drop.over { border-color: var(--accent); background: rgba(99,102,241,.06); }
+        .drop.disabled { opacity: .5; cursor: not-allowed; }
+        .drop strong { color: var(--text); display: block; font-size: 16px; margin-bottom: 4px; }
+        .drop small { font-size: 12px; color: var(--text-3); }
+        .drop input { display: none; }
+
+        .job { padding: 0; overflow: hidden; }
+        .job-head { display: flex; align-items: center; gap: 12px; padding: 14px 18px; flex-wrap: wrap; }
+        .job-name { font-weight: 600; font-size: 14px; flex: 1; min-width: 160px; word-break: break-all; }
+        .job-meta { font-size: 12px; color: var(--text-3); font-family: var(--mono); }
+        .badge {
+            font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+            padding: 3px 9px; border-radius: 999px; border: 1px solid var(--border); color: var(--text-2);
+            white-space: nowrap;
+        }
+        .badge.run { border-color: var(--warn); color: var(--warn); }
+        .badge.ok { border-color: var(--ok); color: var(--ok); }
+        .badge.err { border-color: var(--err); color: var(--err); }
+        .spin { display: inline-block; width: 10px; height: 10px; border: 2px solid var(--warn); border-right-color: transparent; border-radius: 50%; animation: spin .8s linear infinite; margin-right: 6px; vertical-align: -1px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .job-body { border-top: 1px solid var(--border); }
+        .toolbar { display: flex; gap: 8px; padding: 10px 18px; background: var(--bg-3); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+        button {
+            font-family: inherit; font-size: 12px; font-weight: 500;
+            background: var(--bg-2); color: var(--text-2);
+            border: 1px solid var(--border); border-radius: 6px;
+            padding: 5px 10px; cursor: pointer;
+        }
+        button:hover { color: var(--text); border-color: var(--text-3); }
+        button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+        button.primary:hover { background: #5558e6; }
+        pre {
+            font-family: var(--mono); font-size: 12.5px; line-height: 1.55;
+            padding: 16px 18px; overflow: auto; max-height: 520px;
+            color: #e4e4e7; white-space: pre; tab-size: 2;
+        }
+        .err-text { padding: 14px 18px; color: var(--err); font-size: 13px; font-family: var(--mono); white-space: pre-wrap; word-break: break-word; }
+        details summary { cursor: pointer; padding: 10px 18px; font-size: 12px; color: var(--text-3); border-top: 1px solid var(--border); user-select: none; }
+        details summary:hover { color: var(--text-2); }
+        .k { color: #93c5fd; } .s { color: #86efac; } .n { color: #fcd34d; } .b { color: #f0abfc; } .z { color: var(--text-3); }
+        .empty { text-align: center; color: var(--text-3); font-size: 13px; padding: 8px 0 0; }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <header>
+        <h1>Document <span>RPA</span> Demo</h1>
+        <p>Drop any document → runs your <a href="https://console.upstage.ai/studio" target="_blank" rel="noopener">Upstage Studio</a> workflow → returns the extracted fields as JSON.</p>
+    </header>
+
+    <section class="card">
+        <h2>Connection</h2>
+        <div class="grid">
+            <div>
+                <label for="apiKey">Upstage API key</label>
+                <input id="apiKey" type="password" placeholder="up_••••••••••••••••" autocomplete="off" spellcheck="false">
+            </div>
+            <div>
+                <label for="agentId">Workflow / Agent ID</label>
+                <input id="agentId" type="text" placeholder="agt_xxxxxxxxxxxxxxxxxxxx" autocomplete="off" spellcheck="false">
+            </div>
+        </div>
+        <div class="row">
+            <label><input id="remember" type="checkbox"> Remember in this browser</label>
+            <label>Output
+                <select id="include" style="width:auto; padding:4px 8px; font-size:12px;">
+                    <option value="last">Final step only</option>
+                    <option value="all">All steps</option>
+                </select>
+            </label>
+        </div>
+        <p class="hint">Your key is sent only to <code>api.upstage.ai</code> directly from this browser. Copy the Agent ID from the Studio “Code” panel of your workflow.</p>
+    </section>
+
+    <div class="drop" id="drop">
+        <input id="fileInput" type="file" multiple>
+        <strong>Drop documents here or click to browse</strong>
+        <small>PDF, images, Office docs — each file runs as its own job</small>
+    </div>
+
+    <div id="jobs"></div>
+    <p class="empty" id="empty">No documents yet.</p>
+</div>
+
+<script>
+(() => {
+    const API = 'https://api.upstage.ai/v2';
+    const $ = (id) => document.getElementById(id);
+    const apiKey = $('apiKey'), agentId = $('agentId'), remember = $('remember'), include = $('include');
+    const drop = $('drop'), fileInput = $('fileInput'), jobsEl = $('jobs'), emptyEl = $('empty');
+
+    // ---- persist settings -------------------------------------------------
+    const LS = 'pbd.rpa-demo';
+    try {
+        const saved = JSON.parse(localStorage.getItem(LS) || 'null');
+        if (saved) { apiKey.value = saved.apiKey || ''; agentId.value = saved.agentId || ''; include.value = saved.include || 'last'; remember.checked = true; }
+    } catch {}
+    const persist = () => {
+        if (remember.checked) localStorage.setItem(LS, JSON.stringify({ apiKey: apiKey.value, agentId: agentId.value, include: include.value }));
+        else localStorage.removeItem(LS);
+    };
+    [apiKey, agentId, remember, include].forEach(el => el.addEventListener('change', persist));
+
+    // ---- drop zone --------------------------------------------------------
+    drop.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', () => { handleFiles(fileInput.files); fileInput.value = ''; });
+    ['dragenter', 'dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
+    ['dragleave', 'drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); }));
+    drop.addEventListener('drop', e => handleFiles(e.dataTransfer.files));
+
+    function handleFiles(files) {
+        if (!files || !files.length) return;
+        const key = apiKey.value.trim(), agent = agentId.value.trim();
+        if (!key || !agent) {
+            alert('Enter your Upstage API key and Workflow / Agent ID first.');
+            (key ? agentId : apiKey).focus();
+            return;
+        }
+        emptyEl.style.display = 'none';
+        [...files].forEach(f => runJob(f, key, agent, include.value));
+    }
+
+    // ---- API ----------------------------------------------------------------
+    async function upstage(path, opts) {
+        const res = await fetch(API + path, opts);
+        const text = await res.text();
+        let data; try { data = JSON.parse(text); } catch { data = text; }
+        if (!res.ok) {
+            const msg = (data && data.error && (data.error.message || data.error)) || data.message || text || res.statusText;
+            throw new Error(`HTTP ${res.status}: ${typeof msg === 'string' ? msg : JSON.stringify(msg)}`);
+        }
+        return data;
+    }
+
+    async function runJob(file, key, agent, inc) {
+        const ui = jobCard(file);
+        const auth = { Authorization: `Bearer ${key}` };
+        const started = Date.now();
+        const tick = setInterval(() => ui.meta(`${((Date.now() - started) / 1000).toFixed(0)}s`), 1000);
+
+        try {
+            ui.status('run', 'Uploading');
+            const fd = new FormData();
+            fd.append('file', file, file.name);
+            fd.append('purpose', 'user_data');
+            const up = await upstage('/files', { method: 'POST', headers: auth, body: fd });
+
+            ui.status('run', 'Queued');
+            let job = await upstage('/responses', {
+                method: 'POST',
+                headers: { ...auth, 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    model: agent,
+                    include: [inc],
+                    input: [{ role: 'user', content: [{ type: 'input_file', file_id: up.id }] }],
+                }),
+            });
+
+            while (job.status === 'queued' || job.status === 'in_progress') {
+                ui.status('run', job.status === 'queued' ? 'Queued' : 'Processing');
+                await new Promise(r => setTimeout(r, 2000));
+                job = await upstage(`/responses/${encodeURIComponent(job.id)}?include[]=${inc}`, { headers: auth });
+            }
+
+            clearInterval(tick);
+            ui.meta(`${((Date.now() - started) / 1000).toFixed(1)}s · ${job.id}`);
+
+            if (job.status !== 'completed') {
+                ui.status('err', job.status || 'Failed');
+                ui.error(job.error ? JSON.stringify(job.error, null, 2) : `Job ended with status "${job.status}".`);
+                ui.raw(job);
+                return;
+            }
+
+            ui.status('ok', 'Completed');
+            ui.result(extractResult(job, inc), file.name);
+            ui.raw(job);
+        } catch (err) {
+            clearInterval(tick);
+            ui.status('err', 'Error');
+            ui.error(err.message || String(err));
+        }
+    }
+
+    // Final step → parsed JSON of output_text. All steps → { step_name: parsed text, ... }
+    function extractResult(job, inc) {
+        const steps = (job.output || []).filter(o => o.type === 'message');
+        const textOf = (step) => (step.content || []).filter(c => c.type === 'output_text').map(c => c.text).join('\n');
+        if (inc === 'all' && steps.length > 1) {
+            const out = {};
+            steps.forEach((s, i) => { out[s.model || `step_${i + 1}`] = tryJson(textOf(s)); });
+            return out;
+        }
+        const last = steps[steps.length - 1];
+        return last ? tryJson(textOf(last)) : job.output_text ?? job;
+    }
+    const tryJson = (t) => { try { return JSON.parse(t); } catch { return t; } };
+
+    // ---- UI ----------------------------------------------------------------
+    function jobCard(file) {
+        const card = document.createElement('section');
+        card.className = 'card job';
+        card.innerHTML = `
+            <div class="job-head">
+                <div class="job-name">${esc(file.name)}</div>
+                <div class="job-meta">${fmtBytes(file.size)}</div>
+                <div class="job-meta meta">0s</div>
+                <span class="badge">Pending</span>
+            </div>
+            <div class="job-body"></div>`;
+        jobsEl.prepend(card);
+        const badge = card.querySelector('.badge'), meta = card.querySelector('.meta'), body = card.querySelector('.job-body');
+        return {
+            status(kind, label) { badge.className = `badge ${kind}`; badge.innerHTML = (kind === 'run' ? '<span class="spin"></span>' : '') + esc(label); },
+            meta(t) { meta.textContent = t; },
+            error(msg) { const d = document.createElement('div'); d.className = 'err-text'; d.textContent = msg; body.appendChild(d); },
+            result(data, name) {
+                const json = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
+                const tb = document.createElement('div'); tb.className = 'toolbar';
+                const copy = btn('Copy JSON', async () => { await navigator.clipboard.writeText(json); copy.textContent = 'Copied'; setTimeout(() => copy.textContent = 'Copy JSON', 1200); });
+                const dl = btn('Download .json', () => download(json, name.replace(/\.[^.]+$/, '') + '.json'));
+                dl.classList.add('primary');
+                tb.append(copy, dl);
+                const pre = document.createElement('pre'); pre.innerHTML = typeof data === 'string' ? esc(data) : hl(json);
+                body.append(tb, pre);
+            },
+            raw(job) {
+                const det = document.createElement('details');
+                det.innerHTML = `<summary>Raw API response</summary>`;
+                const pre = document.createElement('pre'); pre.innerHTML = hl(JSON.stringify(job, null, 2));
+                det.appendChild(pre); body.appendChild(det);
+            },
+        };
+    }
+    const btn = (label, fn) => { const b = document.createElement('button'); b.textContent = label; b.onclick = fn; return b; };
+    const download = (text, name) => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], { type: 'application/json' })); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000); };
+    const esc = (s) => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const fmtBytes = (b) => b < 1024 ? `${b} B` : b < 1048576 ? `${(b / 1024).toFixed(1)} KB` : `${(b / 1048576).toFixed(1)} MB`;
+    const hl = (json) => esc(json).replace(
+        /("(\\u[a-fA-F0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false)\b|\bnull\b|-?\d+(\.\d+)?([eE][+-]?\d+)?)/g,
+        (m) => {
+            let cls = 'n';
+            if (/^"/.test(m)) cls = /:$/.test(m) ? 'k' : 's';
+            else if (/true|false/.test(m)) cls = 'b';
+            else if (/null/.test(m)) cls = 'z';
+            return `<span class="${cls}">${m}</span>`;
+        });
+})();
+</script>
+</body>
+</html>
