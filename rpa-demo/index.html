@@ -7,182 +7,281 @@
     <meta name="robots" content="noindex">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
+        /* Tokens aligned to Upstage Studio (studio.upstage.ai) */
         :root {
-            --bg: #0a0a0b;
-            --bg-2: #111113;
-            --bg-3: #18181b;
-            --border: #27272a;
-            --text: #fafafa;
-            --text-2: #a1a1aa;
-            --text-3: #71717a;
-            --accent: #6366f1;
-            --accent-2: #8b5cf6;
-            --ok: #22c55e;
-            --warn: #f59e0b;
-            --err: #ef4444;
-            --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+            --bg: hsl(210 40% 98%);
+            --surface: hsl(0 0% 100%);
+            --muted: hsl(210 40% 96%);
+            --muted-light: hsl(210 40% 98%);
+            --border: hsl(214 32% 91%);
+            --border-medium: hsl(213 27% 84%);
+            --fg: hsl(222 47% 11%);
+            --fg-muted: hsl(215 16% 47%);
+            --fg-subtle: hsl(215 20% 65%);
+
+            --brand: hsl(243 100% 66%);
+            --brand-hover: hsl(248 90% 58%);
+            --brand-bg: hsl(227 100% 96%);
+            --brand-fg: hsl(248 65% 41%);
+            --brand-light: hsl(233 100% 80%);
+            --ring: hsl(231 100% 88%);
+
+            --parse: hsl(243 100% 66%);
+            --classify: hsl(14 100% 70%);
+            --extract: hsl(323 84% 60%);
+            --instruct: hsl(182 100% 40%);
+
+            --success-bg: hsl(158 85% 96%); --success-fg: hsl(163 88% 20%); --success-icon: hsl(165 100% 34%);
+            --warning-bg: hsl(46 100% 95%); --warning-fg: hsl(39 100% 27%); --warning-icon: hsl(36 100% 57%);
+            --error-bg: hsl(356 100% 97%); --error-fg: hsl(350 86% 29%); --error-icon: hsl(350 100% 61%);
+
+            --radius: 8px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 1px 2px hsl(220 30% 10% / .1);
+            --shadow-md: 0 4px 6px -1px hsl(220 30% 10% / .08), 0 2px 4px -2px hsl(220 30% 10% / .08);
+            --sans: 'Geist', ui-sans-serif, system-ui, -apple-system, sans-serif;
+            --mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.5;
-            min-height: 100vh;
-        }
-        .wrap { max-width: 960px; margin: 0 auto; padding: 48px 20px 80px; }
-        header { margin-bottom: 32px; }
-        header h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; }
-        header h1 span {
-            background: linear-gradient(90deg, var(--accent), var(--accent-2));
-            -webkit-background-clip: text; background-clip: text; color: transparent;
-        }
-        header p { color: var(--text-2); margin-top: 6px; font-size: 15px; }
-        header p a { color: var(--text-2); }
+        html { -webkit-font-smoothing: antialiased; }
+        body { font-family: var(--sans); background: var(--bg); color: var(--fg); font-size: 14px; line-height: 20px; min-height: 100vh; }
+        a { color: var(--brand); text-decoration: none; }
+        a:hover { color: var(--brand-fg); }
 
-        .card {
-            background: var(--bg-2);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 20px;
-            margin-bottom: 16px;
+        /* Top bar */
+        .topbar {
+            height: 56px; background: var(--surface); border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between; padding: 0 24px;
+            position: sticky; top: 0; z-index: 10;
         }
-        .card h2 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-3); margin-bottom: 14px; }
+        .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 14px; }
+        .brand-mark { width: 24px; height: 24px; border-radius: 6px; background: var(--brand); display: grid; place-items: center; }
+        .brand-mark svg { width: 14px; height: 14px; }
+        .brand span { color: var(--fg-muted); font-weight: 400; }
 
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .wrap { max-width: 1000px; margin: 0 auto; padding: 32px 24px 80px; }
+
+        /* Hero (navy card) */
+        .hero {
+            background: var(--fg); color: #fff; border-radius: var(--radius-lg);
+            padding: 40px 48px; margin-bottom: 32px; position: relative; overflow: hidden;
+        }
+        .hero .eyebrow { color: hsl(215 20% 65%); font-size: 14px; margin-bottom: 8px; }
+        .hero h1 { font-size: 40px; line-height: 44px; font-weight: 600; letter-spacing: -0.02em; max-width: 640px; }
+        .hero h1 em { font-style: normal; color: hsl(233 100% 80%); }
+        .hero .flow { display: flex; align-items: center; gap: 8px; margin-top: 28px; flex-wrap: wrap; }
+        .node {
+            display: inline-flex; align-items: center; gap: 8px; background: #fff; color: var(--fg);
+            border-radius: var(--radius); padding: 6px 12px 6px 6px; font-size: 13px; font-weight: 500; border: 1px solid var(--border);
+        }
+        .node i { width: 22px; height: 22px; border-radius: 6px; display: grid; place-items: center; }
+        .node i svg { width: 13px; height: 13px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .edge { width: 24px; height: 1px; background: hsl(215 20% 45%); position: relative; }
+        .edge::after { content: ''; position: absolute; right: -1px; top: -3px; border: 3.5px solid transparent; border-left-color: hsl(215 20% 45%); }
+        .hero-deco {
+            position: absolute; right: -20px; top: -20px; width: 320px; height: 320px; pointer-events: none;
+            background: radial-gradient(circle at 70% 30%, hsl(243 100% 66% / .35), transparent 60%);
+        }
+        @media (max-width: 720px) { .hero { padding: 28px 24px; } .hero h1 { font-size: 30px; line-height: 34px; } }
+
+        /* Section label (uppercase + rule) */
+        .section { margin-bottom: 28px; }
+        .section-label {
+            font-size: 11px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--fg-muted);
+            padding-bottom: 10px; border-bottom: 1px solid var(--border); margin-bottom: 16px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .section-label .sub { text-transform: none; letter-spacing: 0; font-size: 12px; color: var(--fg-subtle); font-weight: 400; }
+
+        /* Card */
+        .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); }
+        .card-pad { padding: 20px; }
+
+        /* Form */
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
         @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
-        label { display: block; font-size: 13px; color: var(--text-2); margin-bottom: 6px; }
-        input[type="text"], input[type="password"], select {
-            width: 100%;
-            background: var(--bg-3);
-            border: 1px solid var(--border);
-            color: var(--text);
-            border-radius: 8px;
-            padding: 10px 12px;
-            font-size: 14px;
-            font-family: var(--mono);
-            outline: none;
+        label { display: block; font-size: 13px; font-weight: 500; color: var(--fg); margin-bottom: 6px; }
+        .input {
+            width: 100%; height: 36px; background: var(--surface); border: 1px solid var(--border);
+            color: var(--fg); border-radius: var(--radius); padding: 0 12px; font-size: 14px;
+            font-family: var(--mono); outline: none; transition: border-color .15s, box-shadow .15s;
         }
-        input:focus, select:focus { border-color: var(--accent); }
-        .row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 12px; font-size: 13px; color: var(--text-2); }
-        .row label { display: inline-flex; align-items: center; gap: 6px; margin: 0; cursor: pointer; }
-        .hint { font-size: 12px; color: var(--text-3); margin-top: 10px; }
+        .input::placeholder { color: var(--fg-subtle); }
+        .input:hover { border-color: var(--border-medium); }
+        .input:focus { border-color: var(--brand); box-shadow: 0 0 0 3px var(--ring); }
+        .controls { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 16px; font-size: 13px; color: var(--fg-muted); }
+        .controls label { display: inline-flex; align-items: center; gap: 8px; margin: 0; font-weight: 400; color: var(--fg-muted); cursor: pointer; }
+        .controls input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--brand); }
+        .seg { display: inline-flex; background: var(--muted); border-radius: var(--radius); padding: 2px; }
+        .seg button { border: 0; background: transparent; color: var(--fg-subtle); font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-family: inherit; }
+        .seg button.on { background: var(--surface); color: var(--fg); box-shadow: var(--shadow-sm); }
+        .hint { font-size: 12px; color: var(--fg-subtle); margin-top: 14px; }
+        .hint code { font-family: var(--mono); font-size: 11.5px; background: var(--muted); padding: 1px 5px; border-radius: 4px; color: var(--fg-muted); }
 
+        /* Dropzone */
         .drop {
-            border: 2px dashed var(--border);
-            border-radius: 14px;
-            padding: 44px 20px;
-            text-align: center;
-            color: var(--text-2);
-            cursor: pointer;
-            transition: border-color .15s, background .15s;
-            margin-bottom: 16px;
+            border: 1.5px dashed var(--border-medium); background: var(--surface); border-radius: var(--radius-lg);
+            padding: 40px 20px; text-align: center; cursor: pointer; transition: border-color .15s, background .15s;
         }
-        .drop:hover, .drop.over { border-color: var(--accent); background: rgba(99,102,241,.06); }
-        .drop.disabled { opacity: .5; cursor: not-allowed; }
-        .drop strong { color: var(--text); display: block; font-size: 16px; margin-bottom: 4px; }
-        .drop small { font-size: 12px; color: var(--text-3); }
+        .drop:hover, .drop.over { border-color: var(--brand); background: var(--brand-bg); }
+        .drop .plus { width: 40px; height: 40px; border-radius: 10px; background: var(--brand-bg); color: var(--brand); display: grid; place-items: center; margin: 0 auto 12px; font-size: 22px; line-height: 1; transition: background .15s, color .15s; }
+        .drop:hover .plus, .drop.over .plus { background: var(--brand); color: #fff; }
+        .drop strong { display: block; font-weight: 600; font-size: 14px; color: var(--fg); }
+        .drop small { display: block; font-size: 12px; color: var(--fg-muted); margin-top: 4px; }
         .drop input { display: none; }
 
-        .job { padding: 0; overflow: hidden; }
+        /* Jobs */
+        .job { margin-bottom: 12px; overflow: hidden; }
         .job-head { display: flex; align-items: center; gap: 12px; padding: 14px 18px; flex-wrap: wrap; }
+        .job-icon { width: 32px; height: 32px; border-radius: 8px; background: var(--muted); display: grid; place-items: center; color: var(--fg-muted); flex-shrink: 0; }
+        .job-icon svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
         .job-name { font-weight: 600; font-size: 14px; flex: 1; min-width: 160px; word-break: break-all; }
-        .job-meta { font-size: 12px; color: var(--text-3); font-family: var(--mono); }
+        .job-meta { font-size: 12px; color: var(--fg-subtle); font-family: var(--mono); }
         .badge {
-            font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
-            padding: 3px 9px; border-radius: 999px; border: 1px solid var(--border); color: var(--text-2);
-            white-space: nowrap;
+            display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500;
+            padding: 2px 8px; border-radius: 6px; background: var(--muted); color: var(--fg-muted); white-space: nowrap;
         }
-        .badge.run { border-color: var(--warn); color: var(--warn); }
-        .badge.ok { border-color: var(--ok); color: var(--ok); }
-        .badge.err { border-color: var(--err); color: var(--err); }
-        .spin { display: inline-block; width: 10px; height: 10px; border: 2px solid var(--warn); border-right-color: transparent; border-radius: 50%; animation: spin .8s linear infinite; margin-right: 6px; vertical-align: -1px; }
+        .badge.run { background: var(--warning-bg); color: var(--warning-fg); }
+        .badge.ok { background: var(--success-bg); color: var(--success-fg); }
+        .badge.err { background: var(--error-bg); color: var(--error-fg); }
+        .badge .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+        .badge.ok .dot { background: var(--success-icon); }
+        .badge.err .dot { background: var(--error-icon); }
+        .spin { width: 10px; height: 10px; border: 2px solid var(--warning-icon); border-right-color: transparent; border-radius: 50%; animation: spin .8s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
         .job-body { border-top: 1px solid var(--border); }
-        .toolbar { display: flex; gap: 8px; padding: 10px 18px; background: var(--bg-3); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
-        button {
-            font-family: inherit; font-size: 12px; font-weight: 500;
-            background: var(--bg-2); color: var(--text-2);
-            border: 1px solid var(--border); border-radius: 6px;
-            padding: 5px 10px; cursor: pointer;
+        .toolbar { display: flex; align-items: center; gap: 8px; padding: 10px 18px; background: var(--muted-light); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+        .toolbar .spacer { flex: 1; }
+        .btn {
+            font-family: inherit; font-size: 13px; font-weight: 500; height: 32px; padding: 0 12px;
+            background: var(--surface); color: var(--fg); border: 1px solid var(--border); border-radius: var(--radius); cursor: pointer;
+            display: inline-flex; align-items: center; gap: 6px; transition: background .15s, border-color .15s;
         }
-        button:hover { color: var(--text); border-color: var(--text-3); }
-        button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-        button.primary:hover { background: #5558e6; }
+        .btn:hover { background: var(--muted-light); border-color: var(--border-medium); }
+        .btn.primary { background: var(--brand); border-color: var(--brand); color: #fff; }
+        .btn.primary:hover { background: var(--brand-hover); border-color: var(--brand-hover); }
+        .btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
         pre {
-            font-family: var(--mono); font-size: 12.5px; line-height: 1.55;
-            padding: 16px 18px; overflow: auto; max-height: 520px;
-            color: #e4e4e7; white-space: pre; tab-size: 2;
+            font-family: var(--mono); font-size: 12.5px; line-height: 1.6; padding: 16px 18px; overflow: auto; max-height: 520px;
+            background: var(--surface); color: var(--fg); white-space: pre; tab-size: 2;
         }
-        .err-text { padding: 14px 18px; color: var(--err); font-size: 13px; font-family: var(--mono); white-space: pre-wrap; word-break: break-word; }
-        details summary { cursor: pointer; padding: 10px 18px; font-size: 12px; color: var(--text-3); border-top: 1px solid var(--border); user-select: none; }
-        details summary:hover { color: var(--text-2); }
-        .k { color: #93c5fd; } .s { color: #86efac; } .n { color: #fcd34d; } .b { color: #f0abfc; } .z { color: var(--text-3); }
-        .empty { text-align: center; color: var(--text-3); font-size: 13px; padding: 8px 0 0; }
+        .k { color: var(--brand-fg); } .s { color: var(--success-fg); } .n { color: hsl(358 81% 34%); } .b { color: hsl(329 82% 42%); } .z { color: var(--fg-subtle); }
+
+        .step-chip { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; padding: 2px 8px; border-radius: 6px; border: 1px solid var(--border); background: var(--surface); }
+        .step-chip i { width: 8px; height: 8px; border-radius: 2px; background: var(--fg-subtle); }
+        .step-chip.parse { color: var(--parse); } .step-chip.parse i { background: var(--parse); }
+        .step-chip.classify { color: var(--classify); } .step-chip.classify i { background: var(--classify); }
+        .step-chip.extract { color: var(--extract); } .step-chip.extract i { background: var(--extract); }
+        .step-chip.instruct { color: var(--instruct); } .step-chip.instruct i { background: var(--instruct); }
+        .step-block + .step-block { border-top: 1px solid var(--border); }
+        .step-block .toolbar { background: var(--surface); }
+
+        .err-text { padding: 14px 18px; background: var(--error-bg); color: var(--error-fg); font-size: 13px; font-family: var(--mono); white-space: pre-wrap; word-break: break-word; }
+        details summary { cursor: pointer; padding: 10px 18px; font-size: 12px; color: var(--fg-subtle); border-top: 1px solid var(--border); user-select: none; background: var(--muted-light); }
+        details summary:hover { color: var(--fg-muted); }
+        details pre { border-top: 1px solid var(--border); background: var(--muted-light); }
+        .empty { text-align: center; color: var(--fg-subtle); font-size: 13px; padding: 24px 0 0; }
+
+        footer { text-align: center; font-size: 12px; color: var(--fg-subtle); padding: 32px 0 0; }
+        footer a { color: var(--fg-muted); text-decoration: underline; text-underline-offset: 2px; }
     </style>
 </head>
 <body>
-<div class="wrap">
-    <header>
-        <h1>Document <span>RPA</span> Demo</h1>
-        <p>Drop any document → runs your <a href="https://console.upstage.ai/studio" target="_blank" rel="noopener">Upstage Studio</a> workflow → returns the extracted fields as JSON.</p>
-    </header>
+<div class="topbar">
+    <div class="brand">
+        <div class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg></div>
+        Document RPA Demo <span>· PBD</span>
+    </div>
+    <a class="btn" href="https://studio.upstage.ai/" target="_blank" rel="noopener">Open Upstage Studio <svg viewBox="0 0 24 24"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></a>
+</div>
 
-    <section class="card">
-        <h2>Connection</h2>
-        <div class="grid">
-            <div>
-                <label for="apiKey">Upstage API key</label>
-                <input id="apiKey" type="password" placeholder="up_••••••••••••••••" autocomplete="off" spellcheck="false">
-            </div>
-            <div>
-                <label for="agentId">Workflow / Agent ID</label>
-                <input id="agentId" type="text" placeholder="agt_xxxxxxxxxxxxxxxxxxxx" autocomplete="off" spellcheck="false">
-            </div>
+<div class="wrap">
+    <section class="hero">
+        <div class="hero-deco"></div>
+        <div class="eyebrow">Stop re-typing documents</div>
+        <h1>Every document, <em>extracted</em> and ready to use.</h1>
+        <div class="flow">
+            <span class="node"><i style="background:var(--parse)"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></i>Parse</span>
+            <span class="edge"></span>
+            <span class="node"><i style="background:var(--classify)"><svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></i>Classify</span>
+            <span class="edge"></span>
+            <span class="node"><i style="background:var(--extract)"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg></i>Extract</span>
+            <span class="edge"></span>
+            <span class="node"><i style="background:var(--instruct)"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></i>Instruct</span>
+            <span class="edge"></span>
+            <span class="node" style="background:var(--brand); color:#fff; border-color:var(--brand); padding-left:12px;">{ } JSON</span>
         </div>
-        <div class="row">
-            <label><input id="remember" type="checkbox"> Remember in this browser</label>
-            <label>Output
-                <select id="include" style="width:auto; padding:4px 8px; font-size:12px;">
-                    <option value="last">Final step only</option>
-                    <option value="all">All steps</option>
-                </select>
-            </label>
-        </div>
-        <p class="hint">Your key is sent only to <code>api.upstage.ai</code> directly from this browser. Copy the Agent ID from the Studio “Code” panel of your workflow.</p>
     </section>
 
-    <div class="drop" id="drop">
-        <input id="fileInput" type="file" multiple>
-        <strong>Drop documents here or click to browse</strong>
-        <small>PDF, images, Office docs — each file runs as its own job</small>
-    </div>
+    <section class="section">
+        <div class="section-label">Connection <span class="sub">Agent ID is in the Studio “Code” panel of your workflow</span></div>
+        <div class="card card-pad">
+            <div class="grid">
+                <div>
+                    <label for="apiKey">Upstage API key</label>
+                    <input id="apiKey" class="input" type="password" placeholder="up_••••••••••••••••" autocomplete="off" spellcheck="false">
+                </div>
+                <div>
+                    <label for="agentId">Workflow / Agent ID</label>
+                    <input id="agentId" class="input" type="text" placeholder="agt_xxxxxxxxxxxxxxxxxxxx" autocomplete="off" spellcheck="false">
+                </div>
+            </div>
+            <div class="controls">
+                <label><input id="remember" type="checkbox"> Remember in this browser</label>
+                <span>Output
+                    <span class="seg" id="include" role="radiogroup">
+                        <button type="button" data-v="last" class="on">Final step only</button>
+                        <button type="button" data-v="all">All steps</button>
+                    </span>
+                </span>
+            </div>
+            <p class="hint">Your key is sent only to <code>api.upstage.ai</code>, directly from this browser. Nothing is stored on our servers.</p>
+        </div>
+    </section>
 
-    <div id="jobs"></div>
-    <p class="empty" id="empty">No documents yet.</p>
+    <section class="section">
+        <div class="section-label">Try it yourself <span class="sub">Each file runs as its own job</span></div>
+        <div class="drop" id="drop">
+            <input id="fileInput" type="file" multiple>
+            <div class="plus">+</div>
+            <strong>Drop documents here or click to browse</strong>
+            <small>PDF, images, Office documents</small>
+        </div>
+    </section>
+
+    <section class="section" id="resultsSection" hidden>
+        <div class="section-label">Results <span class="sub" id="resultsCount"></span></div>
+        <div id="jobs"></div>
+    </section>
+
+    <footer>Built by <a href="https://pbd.team">PBD</a> · Powered by the <a href="https://console.upstage.ai/docs/agents" target="_blank" rel="noopener">Upstage Agents API</a>. Not affiliated with Upstage.</footer>
 </div>
 
 <script>
 (() => {
     const API = 'https://api.upstage.ai/v2';
     const $ = (id) => document.getElementById(id);
-    const apiKey = $('apiKey'), agentId = $('agentId'), remember = $('remember'), include = $('include');
-    const drop = $('drop'), fileInput = $('fileInput'), jobsEl = $('jobs'), emptyEl = $('empty');
+    const apiKey = $('apiKey'), agentId = $('agentId'), remember = $('remember'), includeSeg = $('include');
+    const drop = $('drop'), fileInput = $('fileInput'), jobsEl = $('jobs'), resultsSection = $('resultsSection'), resultsCount = $('resultsCount');
+    let include = 'last', jobCount = 0;
 
     // ---- persist settings -------------------------------------------------
     const LS = 'pbd.rpa-demo';
+    const setInclude = (v) => { include = v; includeSeg.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.v === v)); };
     try {
         const saved = JSON.parse(localStorage.getItem(LS) || 'null');
-        if (saved) { apiKey.value = saved.apiKey || ''; agentId.value = saved.agentId || ''; include.value = saved.include || 'last'; remember.checked = true; }
+        if (saved) { apiKey.value = saved.apiKey || ''; agentId.value = saved.agentId || ''; setInclude(saved.include || 'last'); remember.checked = true; }
     } catch {}
     const persist = () => {
-        if (remember.checked) localStorage.setItem(LS, JSON.stringify({ apiKey: apiKey.value, agentId: agentId.value, include: include.value }));
+        if (remember.checked) localStorage.setItem(LS, JSON.stringify({ apiKey: apiKey.value, agentId: agentId.value, include }));
         else localStorage.removeItem(LS);
     };
-    [apiKey, agentId, remember, include].forEach(el => el.addEventListener('change', persist));
+    [apiKey, agentId, remember].forEach(el => el.addEventListener('change', persist));
+    includeSeg.addEventListener('click', e => { const b = e.target.closest('button'); if (b) { setInclude(b.dataset.v); persist(); } });
 
     // ---- drop zone --------------------------------------------------------
     drop.addEventListener('click', () => fileInput.click());
@@ -199,8 +298,9 @@
             (key ? agentId : apiKey).focus();
             return;
         }
-        emptyEl.style.display = 'none';
-        [...files].forEach(f => runJob(f, key, agent, include.value));
+        resultsSection.hidden = false;
+        [...files].forEach(f => runJob(f, key, agent, include));
+        resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     // ---- API ----------------------------------------------------------------
@@ -256,7 +356,9 @@
             }
 
             ui.status('ok', 'Completed');
-            ui.result(extractResult(job, inc), file.name);
+            const steps = (job.output || []).filter(o => o.type === 'message');
+            if (inc === 'all' && steps.length > 1) ui.steps(steps.map(s => ({ name: s.model || 'step', data: tryJson(textOf(s)) })), file.name);
+            else ui.result(steps.length ? tryJson(textOf(steps[steps.length - 1])) : (job.output_text ?? job), file.name);
             ui.raw(job);
         } catch (err) {
             clearInterval(tick);
@@ -265,47 +367,50 @@
         }
     }
 
-    // Final step → parsed JSON of output_text. All steps → { step_name: parsed text, ... }
-    function extractResult(job, inc) {
-        const steps = (job.output || []).filter(o => o.type === 'message');
-        const textOf = (step) => (step.content || []).filter(c => c.type === 'output_text').map(c => c.text).join('\n');
-        if (inc === 'all' && steps.length > 1) {
-            const out = {};
-            steps.forEach((s, i) => { out[s.model || `step_${i + 1}`] = tryJson(textOf(s)); });
-            return out;
-        }
-        const last = steps[steps.length - 1];
-        return last ? tryJson(textOf(last)) : job.output_text ?? job;
-    }
+    const textOf = (step) => (step.content || []).filter(c => c.type === 'output_text').map(c => c.text).join('\n');
     const tryJson = (t) => { try { return JSON.parse(t); } catch { return t; } };
+    const stepKind = (name) => (['parse', 'classify', 'extract', 'instruct'].find(k => name.toLowerCase().includes(k)) || '');
 
     // ---- UI ----------------------------------------------------------------
     function jobCard(file) {
+        jobCount++; resultsCount.textContent = `${jobCount} document${jobCount === 1 ? '' : 's'}`;
         const card = document.createElement('section');
         card.className = 'card job';
         card.innerHTML = `
             <div class="job-head">
+                <div class="job-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
                 <div class="job-name">${esc(file.name)}</div>
                 <div class="job-meta">${fmtBytes(file.size)}</div>
                 <div class="job-meta meta">0s</div>
-                <span class="badge">Pending</span>
+                <span class="badge"><span class="dot"></span>Pending</span>
             </div>
             <div class="job-body"></div>`;
         jobsEl.prepend(card);
         const badge = card.querySelector('.badge'), meta = card.querySelector('.meta'), body = card.querySelector('.job-body');
+        const resultBlock = (data, name, parent, chip) => {
+            const json = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
+            const tb = document.createElement('div'); tb.className = 'toolbar';
+            if (chip) tb.appendChild(chip);
+            const sp = document.createElement('div'); sp.className = 'spacer';
+            const copy = btn('Copy JSON', ICON.copy, async () => { await navigator.clipboard.writeText(json); copy.lastChild.textContent = 'Copied'; setTimeout(() => copy.lastChild.textContent = 'Copy JSON', 1200); });
+            const dl = btn('Download .json', ICON.download, () => download(json, name.replace(/\.[^.]+$/, '') + '.json'));
+            dl.classList.add('primary');
+            tb.append(sp, copy, dl);
+            const pre = document.createElement('pre'); pre.innerHTML = typeof data === 'string' ? esc(data) : hl(json);
+            parent.append(tb, pre);
+        };
         return {
-            status(kind, label) { badge.className = `badge ${kind}`; badge.innerHTML = (kind === 'run' ? '<span class="spin"></span>' : '') + esc(label); },
+            status(kind, label) { badge.className = `badge ${kind}`; badge.innerHTML = (kind === 'run' ? '<span class="spin"></span>' : '<span class="dot"></span>') + esc(label); },
             meta(t) { meta.textContent = t; },
             error(msg) { const d = document.createElement('div'); d.className = 'err-text'; d.textContent = msg; body.appendChild(d); },
-            result(data, name) {
-                const json = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
-                const tb = document.createElement('div'); tb.className = 'toolbar';
-                const copy = btn('Copy JSON', async () => { await navigator.clipboard.writeText(json); copy.textContent = 'Copied'; setTimeout(() => copy.textContent = 'Copy JSON', 1200); });
-                const dl = btn('Download .json', () => download(json, name.replace(/\.[^.]+$/, '') + '.json'));
-                dl.classList.add('primary');
-                tb.append(copy, dl);
-                const pre = document.createElement('pre'); pre.innerHTML = typeof data === 'string' ? esc(data) : hl(json);
-                body.append(tb, pre);
+            result(data, name) { resultBlock(data, name, body); },
+            steps(list, name) {
+                list.forEach(({ name: step, data }) => {
+                    const block = document.createElement('div'); block.className = 'step-block';
+                    const chip = document.createElement('span'); chip.className = `step-chip ${stepKind(step)}`; chip.innerHTML = `<i></i>${esc(step)}`;
+                    resultBlock(data, `${name.replace(/\.[^.]+$/, '')}.${step}`, block, chip);
+                    body.appendChild(block);
+                });
             },
             raw(job) {
                 const det = document.createElement('details');
@@ -315,11 +420,15 @@
             },
         };
     }
-    const btn = (label, fn) => { const b = document.createElement('button'); b.textContent = label; b.onclick = fn; return b; };
+    const ICON = {
+        copy: '<svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>',
+        download: '<svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>',
+    };
+    const btn = (label, icon, fn) => { const b = document.createElement('button'); b.className = 'btn'; b.innerHTML = icon + '<span></span>'; b.lastChild.textContent = label; b.onclick = fn; return b; };
     const download = (text, name) => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], { type: 'application/json' })); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000); };
     const esc = (s) => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
     const fmtBytes = (b) => b < 1024 ? `${b} B` : b < 1048576 ? `${(b / 1024).toFixed(1)} KB` : `${(b / 1048576).toFixed(1)} MB`;
-    const hl = (json) => esc(json).replace(
+    const hl = (json) => json.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c])).replace(
         /("(\\u[a-fA-F0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false)\b|\bnull\b|-?\d+(\.\d+)?([eE][+-]?\d+)?)/g,
         (m) => {
             let cls = 'n';
